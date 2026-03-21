@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mordis — A History of the Known World</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --parchment: #e8d5a3;
+    --parchment-dark: #c9b87a;
+    --gold: #C9A84C;
+    --gold-bright: #e8c96a;
+    --crimson: #7a1a1a;
+    --crimson-bright: #a02020;
+    --text-light: #d4c4a0;
+    --text-mid: #8a7355;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--ink);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end;
+    padding-bottom: 4rem; overflow: hidden;
+  }
+  .hero-map {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    filter: brightness(0.45) saturate(0.8) sepia(0.3);
+    transform: scale(1.05); transition: transform 20s ease;
+  }
+  .hero:hover .hero-map { transform: scale(1.08); }
+  .hero-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(10,8,4,0.4) 60%, rgba(10,8,4,0.95) 100%);
+  }
+  .hero-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+    background: linear-gradient(to bottom, transparent, var(--ink));
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 2rem;
+    animation: fadeInUp 1.4s ease both;
+  }
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif; font-size: 0.85rem;
+    letter-spacing: 0.35em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 1.2rem; opacity: 0.85;
+  }
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900; line-height: 1.05; color: var(--parchment);
+    text-shadow: 0 0 60px rgba(201,168,76,0.3), 0 4px 30px rgba(0,0,0,0.9);
+    margin-bottom: 0.5rem;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-divider {
+    width: 200px; height: 1px; margin: 1.2rem auto;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .hero-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.78rem, 1.6vw, 1rem);
+    color: var(--parchment-dark); margin-bottom: 2.5rem;
+    white-space: nowrap; display: block; letter-spacing: 0.16em;
+  }
+  .hero-scroll {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.3em; color: var(--text-mid);
+    text-transform: uppercase;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    animation: pulse 2s infinite;
+  }
+  .hero-scroll::after {
+    content: ''; width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* NAV */
+  .chapter-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(20,15,8,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.2); padding: 0.8rem 0;
+  }
+  .chapter-nav ul {
+    display: flex; justify-content: center; gap: 2.5rem;
+    list-style: none; flex-wrap: wrap; padding: 0 1rem;
+  }
+  .chapter-nav a {
+    font-family: 'Cinzel', serif; font-size: 0.72rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-mid); text-decoration: none; transition: color 0.3s;
+  }
+  .chapter-nav a:hover { color: var(--gold); }
+
+  /* CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+  /* SECTIONS */
+  .section {
+    padding: 6rem 0 4rem;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-divider {
+    display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;
+  }
+  .section-divider::before {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.4));
+  }
+  .section-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.4));
+  }
+  .section-num {
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    letter-spacing: 0.3em; color: var(--gold); opacity: 0.6;
+  }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700; color: var(--parchment); line-height: 1.2; margin-bottom: 0.5rem;
+  }
+  .section-title.gold { color: var(--gold); }
+  .section-title.crimson { color: var(--crimson-bright); }
+  .section-lead {
+    font-family: 'Cinzel', serif; font-size: 0.85rem;
+    letter-spacing: 0.15em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8;
+  }
+
+  /* BODY TEXT */
+  p { color: var(--text-light); margin-bottom: 1.4rem; font-size: 1.05rem; }
+  .drop-cap::first-letter {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 3.5rem; font-weight: 900; line-height: 0.8;
+    float: left; margin-right: 0.1em; color: var(--gold);
+    text-shadow: 0 0 20px rgba(201,168,76,0.4);
+  }
+  em { font-style: italic; color: var(--parchment); }
+  strong { font-weight: 600; color: var(--gold); }
+  hr { border: none; border-top: 1px solid rgba(201,168,76,0.15); margin: 3rem 0; }
+
+  /* CITATIONS */
+  .citation {
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--text-mid);
+    opacity: 0.7; vertical-align: super;
+  }
+
+  /* FOOTNOTES */
+  .footnotes {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding-top: 1.2rem; margin-top: 2rem;
+  }
+  .footnote {
+    font-size: 0.82rem; color: var(--text-mid);
+    margin-bottom: 0.6rem; line-height: 1.5;
+    padding-left: 1.5rem; text-indent: -1.5rem;
+  }
+  .footnote-num {
+    font-family: 'Cinzel', serif; font-size: 0.68rem;
+    color: var(--gold); opacity: 0.7; margin-right: 0.4rem;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    position: relative; margin: 3rem 0;
+    padding: 2.5rem 3rem;
+    border-left: 3px solid var(--gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+  }
+  .pull-quote::before {
+    content: '\201C'; font-family: 'Cinzel Decorative', serif;
+    font-size: 8rem; line-height: 0;
+    position: absolute; top: 3rem; left: 1rem;
+    color: var(--gold); opacity: 0.15;
+  }
+  .pull-quote p {
+    font-style: italic; font-size: 1.25rem;
+    line-height: 1.7; color: var(--parchment); margin-bottom: 1rem;
+  }
+  .pull-quote p::first-letter { all: unset; font-size: inherit; }
+  .pull-quote cite {
+    font-family: 'Cinzel', serif; font-size: 0.72rem;
+    letter-spacing: 0.2em; color: var(--gold);
+    text-transform: uppercase; opacity: 0.7;
+  }
+
+  /* THEORY CARDS */
+  .theory-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.4rem; margin: 2.5rem 0;
+  }
+  .theory-card {
+    padding: 1.8rem; border: 1px solid rgba(201,168,76,0.12);
+    background: rgba(255,255,255,0.015);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .theory-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-2px); }
+  .theory-number {
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.3em; color: var(--gold); opacity: 0.5;
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .theory-name {
+    font-family: 'Cinzel', serif; font-size: 1rem;
+    font-weight: 700; color: var(--parchment); margin-bottom: 0.8rem; line-height: 1.3;
+  }
+  .theory-body { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; margin: 0; }
+  .theory-card.consensus { border-top: 2px solid rgba(201,168,76,0.4); }
+  .theory-card.minority  { border-top: 2px solid rgba(122,26,26,0.4); }
+  .theory-card.fringe    { border-top: 2px solid rgba(80,80,140,0.4); }
+  .theory-badge {
+    display: inline-block; margin-top: 1rem;
+    font-family: 'Cinzel', serif; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border: 1px solid;
+  }
+  .theory-card.consensus .theory-badge { color: var(--gold); border-color: rgba(201,168,76,0.3); }
+  .theory-card.minority  .theory-badge { color: #c06060; border-color: rgba(122,26,26,0.3); }
+  .theory-card.fringe    .theory-badge { color: #9080c8; border-color: rgba(80,80,140,0.3); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 2.5rem; margin: 3rem 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem;
+    width: 1px; background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1));
+  }
+  .timeline-entry {
+    position: relative; margin-bottom: 2.5rem;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .timeline-entry.visible { opacity: 1; transform: translateX(0); }
+  .timeline-entry::before {
+    content: ''; position: absolute; left: -2.7rem; top: 0.4rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 12px var(--gold);
+  }
+  .timeline-entry.major::before {
+    width: 14px; height: 14px; left: -2.95rem; top: 0.15rem;
+    background: var(--crimson-bright); box-shadow: 0 0 16px var(--crimson-bright);
+  }
+  .timeline-year {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.25em; color: var(--gold); margin-bottom: 0.3rem; text-transform: uppercase;
+  }
+  .timeline-event {
+    font-family: 'Cinzel', serif; font-size: 1.05rem;
+    color: var(--parchment); margin-bottom: 0.4rem; font-weight: 600;
+  }
+  .timeline-desc { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; margin: 0; }
+
+  /* LORE BOX */
+  .lore-box {
+    border: 1px solid rgba(201,168,76,0.2);
+    background: linear-gradient(135deg, rgba(201,168,76,0.04), rgba(122,26,26,0.04));
+    padding: 2rem 2.5rem; margin: 2.5rem 0; position: relative;
+  }
+  .lore-box::before {
+    content: '✦'; position: absolute; top: -0.7rem; left: 50%;
+    transform: translateX(-50%); background: var(--ink);
+    padding: 0 0.8rem; color: var(--gold); font-size: 0.9rem;
+  }
+  .lore-title {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  .lore-box p { font-size: 0.95rem; margin-bottom: 0; }
+
+  /* NATION CARDS */
+  .nations-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem; margin: 3rem 0;
+  }
+  .nation-card {
+    position: relative; padding: 2rem;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
+    transition: border-color 0.3s, transform 0.3s; overflow: hidden;
+  }
+  .nation-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; }
+  .nation-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
+  .nation-card:hover::before { opacity: 1; }
+  .nation-card.moricci  { border-top: 3px solid #4a90c8; }
+  .nation-card.moricci::before { background: linear-gradient(135deg, rgba(74,144,200,0.05), transparent); }
+  .nation-card.nakensia { border-top: 3px solid var(--crimson-bright); }
+  .nation-card.nakensia::before { background: linear-gradient(135deg, rgba(160,32,32,0.08), transparent); }
+  .nation-card.alems    { border-top: 3px solid #5a9a4a; }
+  .nation-card.alems::before { background: linear-gradient(135deg, rgba(90,154,74,0.06), transparent); }
+  .nation-card.eingarden { border-top: 3px solid var(--gold); }
+  .nation-card.eingarden::before { background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent); }
+  .nation-name { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.3rem; }
+  .nation-ruler { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; opacity: 0.75; }
+  .nation-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+  .tag { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.1em; padding: 0.2rem 0.6rem; border: 1px solid rgba(201,168,76,0.2); color: var(--text-mid); text-transform: uppercase; }
+  .nation-desc { font-size: 0.9rem; line-height: 1.6; color: var(--text-light); margin: 0; }
+
+  /* CHARACTER CARDS */
+  .party-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem; margin: 3rem 0;
+  }
+  .character-card {
+    padding: 1.8rem 1.5rem; border: 1px solid rgba(201,168,76,0.1);
+    background: rgba(255,255,255,0.015);
+    position: relative; transition: border-color 0.3s;
+  }
+  .character-card:hover { border-color: rgba(201,168,76,0.35); }
+  .char-class { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 0.5rem; }
+  .char-name { font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.3rem; }
+  .char-origin { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); text-transform: uppercase; margin-bottom: 0.8rem; font-style: italic; }
+  .char-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; margin: 0; }
+  .char-burden { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-left: 2px solid var(--crimson); font-size: 0.82rem; font-style: italic; color: var(--text-mid); }
+
+  /* GALILEI PATRON */
+  .character-card.galilei {
+    border-color: rgba(110, 70, 160, 0.25);
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .character-card.galilei:hover {
+    border-color: rgba(130, 80, 190, 0.5);
+    box-shadow: 0 0 30px rgba(110, 70, 160, 0.1);
+  }
+  .patron-annotation {
+    margin-top: 1rem;
+    padding: 0.6rem 0.8rem;
+    border-left: 2px solid rgba(110, 70, 160, 0.5);
+    font-size: 0.78rem; font-style: italic;
+    color: rgba(170, 130, 220, 0.7); line-height: 1.5;
+  }
+  .const-svg { width: 100%; height: 70px; margin-top: 0.5rem; display: block; }
+  .c-line {
+    stroke: rgba(130, 80, 200, 0.45); stroke-width: 0.8;
+    stroke-dasharray: 40; stroke-dashoffset: 40;
+    animation: drawln 1.6s ease forwards;
+    fill: none;
+  }
+  .c-line:nth-child(1) { animation-delay: 0.1s; }
+  .c-line:nth-child(2) { animation-delay: 0.4s; }
+  .c-line:nth-child(3) { animation-delay: 0.7s; }
+  .c-line:nth-child(4) { animation-delay: 1.0s; }
+  .c-line:nth-child(5) { animation-delay: 1.2s; }
+  .c-star { fill: rgba(190, 150, 240, 0.85); }
+  .c-eye {
+    opacity: 0;
+    animation: eyeAppear 0.4s ease 2.1s forwards;
+    transform-origin: center;
+  }
+  @keyframes drawln { to { stroke-dashoffset: 0; } }
+  @keyframes eyeAppear { to { opacity: 1; } }
+  .c-blink { animation: cblink 5s ease-in-out infinite; transform-origin: center; }
+  @keyframes cblink {
+    0%,90%,100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.08); }
+  }
+  .patron-label {
+    font-family: 'Cinzel', serif; font-size: 0.62rem;
+    letter-spacing: 0.15em; color: rgba(140, 100, 200, 0.5);
+    margin-top: 0.2rem; display: block; text-align: right;
+  }
+
+  /* MAP */
+  .map-full {
+    position: relative; width: 100vw;
+    left: 50%; transform: translateX(-50%);
+    margin: 4rem 0; overflow: hidden;
+  }
+  .map-full img {
+    width: 100%; display: block;
+    filter: brightness(0.75) saturate(0.85); transition: filter 0.4s;
+  }
+  .map-full:hover img { filter: brightness(0.88) saturate(0.95); }
+  .map-caption {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem;
+    background: linear-gradient(to top, rgba(10,8,4,0.9), transparent);
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.2em; color: var(--gold); text-align: center; text-transform: uppercase;
+  }
+
+  /* ORNAMENT */
+  .ornament { text-align: center; font-size: 1.2rem; color: var(--gold); opacity: 0.4; margin: 2rem 0; letter-spacing: 1rem; }
+
+  /* FOOTER */
+  .site-footer { margin-top: 8rem; padding: 4rem 2rem; border-top: 1px solid rgba(201,168,76,0.15); text-align: center; }
+  .footer-title { font-family: 'Cinzel Decorative', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 0.5rem; }
+  .footer-sub { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.25em; color: var(--text-mid); text-transform: uppercase; }
+  .footer-parts { display: flex; justify-content: center; gap: 3rem; margin-top: 2.5rem; flex-wrap: wrap; }
+  .footer-part { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .footer-part.active { color: var(--gold); }
+  .footer-part.inactive { color: var(--text-mid); opacity: 0.4; }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  @media (max-width: 680px) {
+    .theory-grid, .nations-grid { grid-template-columns: 1fr; }
+    .party-grid { grid-template-columns: 1fr 1fr; }
+    .chapter-nav ul { gap: 1rem; }
+    .hero-subtitle { white-space: normal; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" id="top">
+  <img class="hero-map" src="mordis.png" alt="Map of Mordis" />
+  <div class="hero-vignette"></div>
+  <div class="hero-bottom"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">The Known World &mdash; Part I</p>
+    <h1 class="hero-title">Mor<span>dis</span></h1>
+    <div class="hero-divider"></div>
+    <span class="hero-subtitle">A History of the Known World &nbsp;&middot;&nbsp; First Volume</span>
+    <div class="hero-scroll">Begin reading</div>
+  </div>
+</section>
+
+<nav class="chapter-nav">
+  <ul>
+    <li><a href="#origins">I. Origins</a></li>
+    <li><a href="#kelvin">II. Kelvopolis</a></li>
+    <li><a href="#settlement">III. The Age of Roots</a></li>
+    <li><a href="#sun">IV. Sun of Lathander</a></li>
+    <li><a href="#nations">V. The Three Nations</a></li>
+    <li><a href="#voyagers">VI. The Voyagers</a></li>
+  </ul>
+</nav>
+
+<main class="content">
+
+  <div class="map-full">
+    <img src="mordis.png" alt="Map of Mordis — The Known World" />
+    <div class="map-caption">Mordis &mdash; Cartographic Survey, Year 1261 of the Kelvian Calendar &nbsp;&middot;&nbsp; Reproduced by the Liebshire Institute of Geographic Studies</div>
+  </div>
+
+  <!-- I: ORIGINS / PRE-HISTORY -->
+  <section class="section" id="origins">
+    <div class="section-divider"><span class="section-num">Chapter I</span></div>
+    <p class="section-lead">Pre-Kelvian Era &middot; Before the Calendar Begins</p>
+    <h2 class="section-title">Before the Reckoning</h2>
+
+    <p class="drop-cap">The history of Mordis, in any formal sense, begins at Year Zero of the Kelvian Calendar — the year a man named Kelvin founded the city of Kelvopolis on the eastern shore of this continent. Everything that came before that moment is, by scholarly consensus, <em>pre-history</em>: a territory of myth, oral tradition, and considerable academic disagreement. We have no written record from before the founding. We have no ruins we can confidently attribute to a prior civilization. We have only what subsequent generations chose to remember, which is to say: we have stories.</p>
+
+    <p>What the historical record can tell us is this: Kelvin did not arrive from nowhere. He arrived with purpose, with people, and with the apparent intention of permanence. Where he came from, what drove him here, and how exactly he crossed the phenomenon now known as the Divide — these are questions the evidence cannot answer. They have not, however, stopped people from trying.</p>
+
+    <p>Three dominant theories have emerged over the centuries of Mordisian scholarship. They are presented below not as fact, but as the landscape of current intellectual debate. The student is encouraged to treat each with appropriate skepticism.<span class="citation">[1]</span></p>
+
+    <div class="theory-grid">
+      <div class="theory-card consensus">
+        <p class="theory-number">Theory I &middot; Consensus View</p>
+        <p class="theory-name">The Exile Theory</p>
+        <p class="theory-body">Kelvin was a refugee fleeing some catastrophe in a distant land — a war, a collapse, a disaster of sufficient scale to drive a westward migration. The Divide, in this reading, was not something Kelvin created but something he discovered and crossed out of necessity. His founding of Kelvopolis was the act of a man who could not go back and built the best thing he could from what he had.</p>
+        <span class="theory-badge">Consensus View</span>
+      </div>
+      <div class="theory-card minority">
+        <p class="theory-number">Theory II &middot; Minority Position</p>
+        <p class="theory-name">The Karsus Theory</p>
+        <p class="theory-body">A persistent minority school holds that Kelvin's crossing was caused by a figure called <em>Karsus</em> — a mage of enormous power said to have attempted something catastrophic with the fundamental nature of magic. In this version, the Divide is the scar left by that attempt, and Kelvin was either fleeing it or was the only one who could contain the damage. Karsus himself leaves no archaeological footprint. His name appears only in fragmented myth cycles, and most contemporary scholars treat him as a narrative construct rather than a historical person.</p>
+        <span class="theory-badge">Minority View</span>
+      </div>
+      <div class="theory-card fringe">
+        <p class="theory-number">Theory III &middot; Fringe Position</p>
+        <p class="theory-name">The Divine Mandate Theory</p>
+        <p class="theory-body">Favored in certain Lathanderian and Selunite theological traditions, this theory holds that Kelvin was sent — by divine instruction or cosmic necessity — to found a new civilization from scratch. The Divide is not a wound but a deliberate boundary, and Kelvin's crossing was an act of ordained will. Most secular historians regard this as faith wearing the clothes of history, though the theological institutions that hold it are too influential to dismiss the view entirely.</p>
+        <span class="theory-badge">Fringe View</span>
+      </div>
+    </div>
+
+    <div class="lore-box">
+      <p class="lore-title">On the Figure of Karsus</p>
+      <p>The name Karsus appears in fewer than a dozen surviving texts, none of which predate the third century of the Kelvian Calendar, and all of which appear to be drawing from the same lost source. He is described variously as a sorcerer, a philosopher, a king, and in one particularly dramatic fragment, as "the man who asked the sky a question it could not survive answering." No tomb, city, relic, or contemporary account has ever been attributed to him. The scholarly consensus treats him as a mythological figure — a narrative device used to explain the unexplainable origin of the Divide. His name is nonetheless spoken with a certain unease, as though the myth itself carries weight regardless of the facts underpinning it.</p>
+    </div>
+
+    <div class="footnotes">
+      <p class="footnote"><span class="footnote-num">[1]</span> The three-theory framework was formalized by Professor Aldric Vane of the Liebshire Institute in his 1198 K.C. survey <em>Foundations and Fictions: Pre-Kelvian Historiography</em>, which remains the standard introductory text on the subject.</p>
+    </div>
+  </section>
+
+  <!-- II: KELVIN -->
+  <section class="section" id="kelvin">
+    <div class="section-divider"><span class="section-num">Chapter II</span></div>
+    <p class="section-lead">Year Zero &middot; The Calendar Begins</p>
+    <h2 class="section-title">Kelvin &amp; the Founding of Kelvopolis</h2>
+
+    <p class="drop-cap">Whatever brought him here, Kelvin arrived. The archaeological evidence for the founding of Kelvopolis is unambiguous: structures dated to Year Zero through Year 40 have been excavated, catalogued, and verified by multiple independent institutions. He came with a group of settlers — estimates based on early foundation footprints suggest somewhere between two hundred and eight hundred individuals — and founded a city on the eastern shore of the continent with clear intention of permanence.</p>
+
+    <p>What kind of man he was is nearly entirely lost to us. The texts that survive from the early Kelvian period are administrative in nature: land grants, resource inventories, a partial census dated to approximately Year 12. They describe a functioning settlement, not a founding hero. The historical Kelvin does not speak in them. He is referenced only in the third person — as "the Founder" or occasionally "the Architect" — and his decisions are recorded without explanation or commentary.</p>
+
+    <p>The city he built did not ultimately survive him. The eastern geography Kelvin had chosen lacked the natural mountain barriers that would later shield the settlements of Sarangshi, Sebrela, and Liebshire from the raids that came from the north and east. Over the following centuries, as orc and giant incursions increased, Kelvopolis found itself progressively exposed. Its population dispersed toward the more defensible interior. By the modern era, what remains is largely ruin — reclaimed, piece by piece, by the descendants of the very peoples the early settlers displaced.<span class="citation">[2]</span></p>
+
+    <div class="lore-box">
+      <p class="lore-title">The Divide</p>
+      <p>The Divide is the common name for the phenomenon in the western ocean marking the apparent edge of navigable space. Ships that have crossed it report disorientation in the stars — constellations shift, certain stars vanish entirely, and the sense of direction becomes unreliable. The experience appears to be consistent across accounts: those who cross it sailing westward cannot turn back. The ocean behind them stretches without measurable end. The only direction is forward. Two individuals, in living memory, have claimed successful crossings: a Tortle scholar of some repute, and a Drow captain operating out of the western ports. Neither has submitted to formal academic inquiry. The dominant scholarly view holds that the Divide is a natural oceanic phenomenon of unusual character. A growing minority finds that explanation increasingly inadequate.</p>
+    </div>
+
+    <div class="footnotes">
+      <p class="footnote"><span class="footnote-num">[2]</span> The current state of Kelvopolis ruins was surveyed by the Eingarden Geographic Commission in 1247 K.C. Their report, <em>The Eastern Reaches: A Field Survey</em>, documents substantial goblin and orc habitation across the original city footprint, with several structures in active use.</p>
+    </div>
+  </section>
+
+  <!-- III: SETTLEMENT -->
+  <section class="section" id="settlement">
+    <div class="section-divider"><span class="section-num">Chapter III</span></div>
+    <p class="section-lead">Year 50 – Year 433 &middot; The Age of Roots</p>
+    <h2 class="section-title">Expansion &amp; Coexistence</h2>
+
+    <p class="drop-cap">The centuries following the founding of Kelvopolis were not ones of dramatic event. They were centuries of movement — of marriage, of trade routes slowly becoming roads, of roads slowly becoming towns. Human settlers spread west and south from Kelvopolis into a continent that was already inhabited: <em>dwarves</em> in the deep mountain ranges to the north and east, <em>elves</em> woven through the ancient forests of the central regions, <em>halflings</em> established across the fertile grassland belts that ran between the mountains and the coasts.</p>
+
+    <p>The historical record for this period is rich in archaeology and thin in written text. What we can confirm is that coexistence was the norm, not the exception. Intermarriage between human settlers and local populations is evidenced in skeletal record, material culture, and the linguistic mixing present in the earliest formal documents of all three major polities. Dozens of small settlements rose and fell. Three endured long enough to become something more.</p>
+
+    <div class="timeline">
+      <div class="timeline-entry">
+        <p class="timeline-year">Year 0 &middot; The Kelvian Calendar</p>
+        <p class="timeline-event">The Founding of Kelvopolis</p>
+        <p class="timeline-desc">Kelvin arrives on the eastern shore of the continent with a group of settlers. The Kelvian Calendar begins. All subsequent dates are measured from this moment.</p>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Years 50–300 &middot; The Quiet Centuries</p>
+        <p class="timeline-event">The Westward Dispersal</p>
+        <p class="timeline-desc">Settlers move inland and southward from Kelvopolis, intermingling with dwarven, elven, and halfling communities. Regional culture begins to differentiate along geographic lines. No single power dominates. Dozens of holds and small cities rise, trade, and disappear.</p>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Before Year 420 &middot; Exact Date Disputed</p>
+        <p class="timeline-event">The Burning of the Southern Forests</p>
+        <p class="timeline-desc">Sectarian tensions between the early Nakensia and Moricci regions over Selunite religious practices in Liebshire result in widespread arson across elven forest communities in the south. Thousands of elves are displaced. The land they held — which had served as a natural defensive buffer — is left open. This will matter within the decade.</p>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year ~433</p>
+        <p class="timeline-event">Three Cities Emerge</p>
+        <p class="timeline-desc">Sarangshi, Sebrela, and Liebshire consolidate regional influence. What had been informal centers of trade begin to assert territorial and cultural identity. The seeds of Nakensia, Moricci, and Alems are formally planted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- IV: SUN OF LATHANDER -->
+  <section class="section" id="sun">
+    <div class="section-divider"><span class="section-num">Chapter IV</span></div>
+    <p class="section-lead">Year 420–433 &middot; The Defining Event</p>
+    <h2 class="section-title gold">The Sun of Lathander</h2>
+
+    <p class="drop-cap">The single most consequential event in the recorded history of Mordis did not occur in a palace or a council chamber. It occurred in an open valley below the Braburg pass, during the worst military crisis the continent has ever faced. A wave of orcs, giants, and goblins — the historical record is consistent on scale; this was not a raiding party but a coordinated migration of force — pressed south and west through the mountain passes and across the open lands of northern Alems and Nakensia. The settlements of Liebshire, already weakened by the recent displacement of the elven communities who had served as their southern wall, faced destruction.</p>
+
+    <p>What happened at Braburg Valley is historically attested — the physical evidence of the valley itself is beyond dispute — though its mechanism remains the subject of ongoing theological argument. Nine paladins of the Order of Lathander, identified in contemporary accounts as the finest of their generation, gathered at Braburg and invoked something. The texts disagree on what to call it. They agree on what followed: the valley below the pass was rendered entirely to glass overnight. The advancing force did not retreat. It simply ceased to exist in any meaningful military sense. The nine paladins were not found among the living. Nor among the dead.</p>
+
+    <div class="pull-quote">
+      <p>The valley was glass by morning. The Selunite elves who survived called it sacred ground. No scholar who has visited has been eager to disagree with them.</p>
+      <cite>&mdash; Vane, A. <em>Foundations and Fictions</em>, Year 1198 K.C.</cite>
+    </div>
+
+    <p>The political legacy of Braburg is as significant as the military one. The nine paladins are the founding ancestors of the ruling dynasties of Mordis. Their descendants hold corridors of power in all three major nations, and in the court of Eingarden. The Order of Lathander, built on their memory, remains one of the continent's most politically influential religious institutions — a fact that sits in complex tension with the Selunite communities whose survival it achieved.<span class="citation">[3]</span></p>
+
+    <div class="lore-box">
+      <p class="lore-title">The Selunite Question</p>
+      <p>The faith of Selune holds that Selune and Lathander exist in balanced co-equality: the moon and sun are two aspects of the same divine order, neither subordinate to the other. The Order of Lathander — whose foundational myth involves a paladin invoking divine solar fire powerful enough to glass a valley — has historically been comfortable with readings that place Lathander at the center. The Selunite elven communities of Liebshire and the forests around Meselia are less comfortable. This tension is theological in its expression and political in its substance, and it has never been formally resolved. It periodically produces events that diplomatic correspondence describes, with careful neutrality, as "incidents of communal disagreement."</p>
+    </div>
+
+    <div class="footnotes">
+      <p class="footnote"><span class="footnote-num">[3]</span> For a full accounting of the dynastic lineages descending from the Braburg Nine, see Hartmann, L. <em>Blood and Fire: The Dynastic Legacy of the Order of Lathander</em>, Liebshire Press, 1231 K.C.</p>
+    </div>
+  </section>
+
+  <!-- V: NATIONS -->
+  <section class="section" id="nations">
+    <div class="section-divider"><span class="section-num">Chapter V</span></div>
+    <p class="section-lead">The Modern Age &middot; Year 800 to Present</p>
+    <h2 class="section-title">The Powers of Mordis</h2>
+
+    <p class="drop-cap">Eight centuries of war, diplomacy, plague, famine, religious schism, and dynastic maneuvering have produced a continent in permanent, uneasy equilibrium. Three great powers dominate. A fourth sits at the center of all of them, claims to control nothing, and quietly holds everything together.</p>
+
+    <div class="nations-grid">
+      <div class="nation-card moricci">
+        <p class="nation-name">Moricci</p>
+        <p class="nation-ruler">King Charles &middot; Western Seaboard</p>
+        <div class="nation-tags"><span class="tag">Naval Power</span><span class="tag">Trade</span><span class="tag">Theology</span></div>
+        <p class="nation-desc">The dominant maritime power on the continent, Moricci controls the western sea lanes through superior naval architecture, fortified island chains, and centuries of mercantile calculation. Its society carries the sharpest inequalities on Mordis: a wealthy merchant and clerical class at the apex, a substantial slave class at the base, and limited passage between them. The question of Lis — pirate island chains to the west that raid Alems and embarrass Morician claims to oceanic dominance — has defined its foreign policy for a generation. That question appears close to resolution.</p>
+      </div>
+      <div class="nation-card nakensia">
+        <p class="nation-name">Nakensia</p>
+        <p class="nation-ruler">Queen Kati &middot; Southern Reaches</p>
+        <div class="nation-tags"><span class="tag">Military</span><span class="tag">Magic</span><span class="tag">Cultural Diversity</span></div>
+        <p class="nation-desc">Nakensia was not born unified — it was forged into unity through centuries of conquest and absorption. Dozens of tribes, city-states, and magical traditions were brought under central authority through processes that historians variously describe as consolidation or subjugation, depending on their sympathies. The result is a nation of extraordinary cultural depth and persistent internal tension: fiercely proud of its diversity, constantly negotiating the boundary between the authority of the center and the autonomy of its constituent peoples. Its military tradition is without peer on the continent.</p>
+      </div>
+      <div class="nation-card alems">
+        <p class="nation-name">Alems</p>
+        <p class="nation-ruler">King Unther &middot; Northern Plains</p>
+        <div class="nation-tags"><span class="tag">Population</span><span class="tag">Agricultural Wealth</span><span class="tag">Bulwark</span></div>
+        <p class="nation-desc">The most populous nation on Mordis by a considerable margin, Alems stretches across the great northern plains and forest belts from the Lunara'a strait to the open grasslands of the east. Its wealth is agricultural; its chronic vulnerability is the same. When the crops fail, the cities starve. When the Lunara'a strait freezes — a rare but historically catastrophic event — armies walk across it. Alems has historically served as the continent's breadbasket and its northern bleeding edge: the civilization that absorbs the first shocks so that others do not have to.</p>
+      </div>
+      <div class="nation-card eingarden">
+        <p class="nation-name">Eingarden</p>
+        <p class="nation-ruler">King Ivan &middot; The Central Sanctum</p>
+        <div class="nation-tags"><span class="tag">Diplomacy</span><span class="tag">Dynastic Legitimacy</span><span class="tag">Spiritual Authority</span></div>
+        <p class="nation-desc">Eingarden commands no great army, holds no great resource, and controls no great territory. It holds something more durable: the only legitimate neutral ground on the continent. King Ivan is uncle to Charles of Moricci, brother to Unther of Alems, and nephew to Queen Kati of Nakensia. The web of blood connecting the ruling families of Mordis passes through Eingarden's court. When the three powers need to stop fighting without appearing to back down, Eingarden is the table they agree to sit at. Ivan is exceptionally good at setting tables.</p>
+      </div>
+    </div>
+
+    <div class="ornament">&middot; ✦ &middot;</div>
+
+    <div class="lore-box">
+      <p class="lore-title">The Present Balance</p>
+      <p>The current political moment favors Moricci. The island war of recent decades, in which Nakensia ceded significant holdings above the Zaremia coast, shifted the naval balance decisively westward. The earlier Lunara'a freezing and subsequent Alems incursion into Morician territory left relations between those two powers in managed tension. The Republics of Kaerlel and Cosayv, diplomatically released from Morician authority within living memory, remain economically dependent on Morician sea lane access. And a transaction of uncertain but potentially significant character recently took place aboard a Drow captain's vessel in the western approaches — its terms are unknown to all three courts, and its consequences have not yet become apparent.</p>
+    </div>
+  </section>
+
+  <!-- VI: VOYAGERS -->
+  <section class="section" id="voyagers">
+    <div class="section-divider"><span class="section-num">Chapter VI</span></div>
+    <p class="section-lead">Year 1261 &middot; The Present Day</p>
+    <h2 class="section-title">The Voyagers</h2>
+
+    <p class="drop-cap">In the twelve hundred and sixty-first year of the Kelvian Calendar, a small vessel departed the western ports under royal commission, tasked with crossing the Divide. Its complement was not assembled for heroism. It was assembled for utility: a navigator, a survivalist, a demonstration of physical prowess, and an administrator whose name carried more institutional weight than his current condition might suggest to a casual observer.</p>
+
+    <p>They have crossed. Where they are now is, by definition, beyond the reach of this account. What they left behind is a continent in motion — old alliances recalibrating, old grievances resurfacing, and at least one agreement made in circumstances that none of the courts on Mordis yet knows about.</p>
+
+    <div class="party-grid">
+      <div class="character-card">
+        <p class="char-class">Halfling Ranger &middot; Survivalist</p>
+        <p class="char-name">Belnan</p>
+        <p class="char-origin">Lunara'a &middot; Alems Border Territory</p>
+        <p class="char-desc">For many years he was a fixture of the trade roads between Lunara'a and Eberne — a caravan guard with a reputation for bringing travelers home intact. Then something interrupted that life. He came back from it, to a family that had waited. He does not discuss the interval. The commission offered him a direction that was not back.</p>
+        <div class="char-burden">What he doesn't know is that the family he came back to is still inside whatever took him.</div>
+      </div>
+
+      <div class="character-card galilei">
+        <p class="char-class">Elven Warlock &middot; Navigator</p>
+        <p class="char-name">Galilei</p>
+        <p class="char-origin">Meselia &middot; Liebshire &middot; Steins Gate Observatory</p>
+        <p class="char-desc">His published argument — that the world turns around the sun, not the moon — attracted sufficient theological complaint that his family's safety in the Liebshire community could no longer be taken for granted. The commission offered distance. His patron, the Tortle scholar who originally inspired his theories, gave him a children's book describing three constellations. Each, correctly identified, points toward a different city somewhere west of the Divide.</p>
+        <div class="char-burden">He has been seeing things in the stars since before the crossing. Lines, at first. Since the sky changed above the Divide, the shapes are nearly resolved into something with eyes.</div>
+        <div class="patron-annotation">
+          <svg class="const-svg" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+            <line class="c-line" x1="18" y1="52" x2="48" y2="30"/>
+            <line class="c-line" x1="48" y1="30" x2="82" y2="18"/>
+            <line class="c-line" x1="82" y1="18" x2="110" y2="40"/>
+            <line class="c-line" x1="110" y1="40" x2="148" y2="14"/>
+            <line class="c-line" x1="148" y1="14" x2="185" y2="45"/>
+            <circle class="c-star" cx="18"  cy="52" r="2.2"/>
+            <circle class="c-star" cx="48"  cy="30" r="1.8"/>
+            <circle class="c-star" cx="82"  cy="18" r="2.2"/>
+            <circle class="c-star" cx="110" cy="40" r="2"/>
+            <circle class="c-star" cx="148" cy="14" r="2.2"/>
+            <circle class="c-star" cx="185" cy="45" r="2"/>
+            <g class="c-eye c-blink">
+              <ellipse cx="100" cy="37" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
+              <ellipse cx="122" cy="33" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
+              <circle  cx="101" cy="38" r="2.5" fill="rgba(40,10,60,0.95)"/>
+              <circle  cx="123" cy="34" r="2.5" fill="rgba(40,10,60,0.95)"/>
+            </g>
+          </svg>
+          <span class="patron-label">margin notation &mdash; Galilei's personal journal, undated, post-crossing</span>
+        </div>
+      </div>
+
+      <div class="character-card">
+        <p class="char-class">Dwarf Fighter &middot; Champion</p>
+        <p class="char-name">Fugoki</p>
+        <p class="char-origin">Mines of Uroy &middot; Mines of Tabra'an</p>
+        <p class="char-desc">His mother is an oracle of the Mines of Uroy. His father is the general-king of the Mines of the Tabra'an, a man who regarded his son's gentleness as a liability and resolved the problem by offering him to the crown for the westward expedition. Fugoki accepted. There is nothing left to prove under his father's ceiling. There is everything to prove everywhere else.</p>
+        <div class="char-burden">He is the strongest person most people have ever encountered. His father made sure he knows that is not sufficient.</div>
+      </div>
+
+      <div class="character-card">
+        <p class="char-class">Human Monk &middot; Administrator</p>
+        <p class="char-name">Mark</p>
+        <p class="char-origin">Aquenta &middot; Studied in Fries &middot; Served in Sebrela</p>
+        <p class="char-desc">He held the title of Right Hand of the King, earned on the strength of a reputation built across years of clerical administration in Sebrela — until a client of infernal character took several things from him at once: his sight, his sister, and the memory of how either happened. He retains his title. He retains his name, which still opens doors. What he has lost, beyond the obvious, is something he cannot identify, because he no longer remembers what was taken.</p>
+        <div class="char-burden">Something of his remains in the devil's possession. He does not know what. He does not remember enough to ask the right question.</div>
+      </div>
+    </div>
+
+    <div class="ornament">&middot; ✦ &middot; ✦ &middot; ✦ &middot;</div>
+
+    <div class="lore-box">
+      <p class="lore-title">The Three Constellations</p>
+      <p>The Tortle scholar's gift to Galilei was, on its surface, a children's picture book: simple illustrations of three star formations, labeled in a script that does not match any currently catalogued writing system. Each constellation, correctly identified in the night sky, points toward one of three cities somewhere to the west of the Divide. The book was written for children, the Tortle explained, because adults look at stars and see what they expect to see. The cities are not named in the book. They will have to be found.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer content">
+  <p class="footer-title">Mordis</p>
+  <p class="footer-sub">The World Codex &middot; A Living Document</p>
+  <div class="footer-parts">
+    <span class="footer-part active">I &middot; History</span>
+    <span class="footer-part inactive">II &middot; Candlekeep &amp; the New World</span>
+    <span class="footer-part inactive">III &middot; Celestial Truths</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.section, .timeline-entry').forEach(el => observer.observe(el));
+document.querySelectorAll('.timeline').forEach(tl => {
+  tl.querySelectorAll('.timeline-entry').forEach((e, i) => { e.style.transitionDelay = `${i * 0.12}s`; });
+});
+</script>
+</body>
+</html>
