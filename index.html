@@ -139,6 +139,33 @@
     font-family: 'Cinzel', serif; font-size: 0.7rem;
     letter-spacing: 0.3em; color: var(--gold); opacity: 0.6;
   }
+
+  /* SUN OF LATHANDER — sacred section treatment */
+  .section-sacred {
+    position: relative;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .section-sacred .section-divider::before,
+  .section-sacred .section-divider::after {
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.7));
+    height: 2px;
+    box-shadow: 0 0 8px rgba(201,168,76,0.3);
+  }
+  .section-sacred .section-divider::after {
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.7));
+  }
+  .section-sacred .section-num {
+    opacity: 1;
+    text-shadow: 0 0 18px rgba(201,168,76,0.5);
+    letter-spacing: 0.4em;
+  }
+  .section-sacred::before {
+    content: '☀';
+    position: absolute; top: 5.2rem; left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.1rem; color: var(--gold);
+    opacity: 0.18; pointer-events: none;
+  }
   .section-title {
     font-family: 'Cinzel Decorative', serif;
     font-size: clamp(1.6rem, 4vw, 2.6rem);
@@ -294,7 +321,7 @@
 
   /* NATION CARDS */
   .nations-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem; margin: 3rem 0;
   }
   .nation-card {
@@ -303,7 +330,7 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
     transition: border-color 0.3s, transform 0.3s; overflow: hidden;
   }
-  .nation-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; }
+  .nation-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
   .nation-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
   .nation-card:hover::before { opacity: 1; }
   .nation-card.moricci  { border-top: 3px solid #4a90c8; }
@@ -322,27 +349,49 @@
 
   /* CHARACTER CARDS */
   .party-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.2rem; margin: 3rem 0;
   }
   .character-card {
     padding: 1.8rem 1.5rem; border: 1px solid rgba(201,168,76,0.1);
     background: rgba(255,255,255,0.015);
-    position: relative; transition: border-color 0.3s;
+    position: relative; transition: border-color 0.3s, box-shadow 0.3s;
   }
   .character-card:hover { border-color: rgba(201,168,76,0.35); }
+  .character-card.belnan:hover { border-color: rgba(160,160,160,0.6); box-shadow: 0 0 30px rgba(200,200,200,0.15); }
+  .character-card.fugoki:hover { border-color: rgba(180,40,40,0.6); box-shadow: 0 0 30px rgba(200,40,40,0.18); }
+  .character-card.mark:hover { border-color: rgba(201,168,76,0.7); box-shadow: 0 0 30px rgba(201,168,76,0.18); }
   .char-class { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 0.5rem; }
   .char-name { font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.3rem; }
   .char-origin { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); text-transform: uppercase; margin-bottom: 0.8rem; font-style: italic; }
   .char-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; margin: 0; }
   .char-burden { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-left: 2px solid var(--crimson); font-size: 0.82rem; font-style: italic; color: var(--text-mid); }
+  .char-fear   { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-left: 2px solid rgba(140,100,210,0.55); font-size: 0.82rem; font-style: italic; color: var(--text-mid); }
+
+  /* EXPAND / COLLAPSE */
+  .expand-toggle {
+    display: block; background: none; border: none; cursor: pointer;
+    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold); opacity: 0.45;
+    padding: 0.55rem 0; margin: 0; transition: opacity 0.2s;
+  }
+  .expand-toggle:hover { opacity: 1; }
+  .expand-body { display: none; }
+  .expand-body.open { display: block; animation: expandFade 0.3s ease; }
+  @keyframes expandFade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CONSTELLATION GRID */
+  .const-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.8rem 0 0.5rem; }
+  .const-figure { text-align: center; }
+  .const-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-top: 0.6rem; display: block; }
+  @media (max-width: 680px) { .const-grid { grid-template-columns: 1fr; } }
 
   /* GALILEI PATRON */
-  .character-card.galilei {
+  .character-card.galicus {
     border-color: rgba(110, 70, 160, 0.25);
     transition: border-color 0.4s, box-shadow 0.4s;
   }
-  .character-card.galilei:hover {
+  .character-card.galicus:hover {
     border-color: rgba(130, 80, 190, 0.5);
     box-shadow: 0 0 30px rgba(110, 70, 160, 0.1);
   }
@@ -353,36 +402,9 @@
     font-size: 0.78rem; font-style: italic;
     color: rgba(170, 130, 220, 0.7); line-height: 1.5;
   }
-  .const-svg { width: 100%; height: 70px; margin-top: 0.5rem; display: block; }
-  .c-line {
-    stroke: rgba(130, 80, 200, 0.45); stroke-width: 0.8;
-    stroke-dasharray: 40; stroke-dashoffset: 40;
-    animation: drawln 1.6s ease forwards;
-    fill: none;
-  }
-  .c-line:nth-child(1) { animation-delay: 0.1s; }
-  .c-line:nth-child(2) { animation-delay: 0.4s; }
-  .c-line:nth-child(3) { animation-delay: 0.7s; }
-  .c-line:nth-child(4) { animation-delay: 1.0s; }
-  .c-line:nth-child(5) { animation-delay: 1.2s; }
-  .c-star { fill: rgba(190, 150, 240, 0.85); }
-  .c-eye {
-    opacity: 0;
-    animation: eyeAppear 0.4s ease 2.1s forwards;
-    transform-origin: center;
-  }
-  @keyframes drawln { to { stroke-dashoffset: 0; } }
-  @keyframes eyeAppear { to { opacity: 1; } }
-  .c-blink { animation: cblink 5s ease-in-out infinite; transform-origin: center; }
-  @keyframes cblink {
-    0%,90%,100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.08); }
-  }
-  .patron-label {
-    font-family: 'Cinzel', serif; font-size: 0.62rem;
-    letter-spacing: 0.15em; color: rgba(140, 100, 200, 0.5);
-    margin-top: 0.2rem; display: block; text-align: right;
-  }
+  .bokeby-doodle { float: right; margin: 0 0 0.5rem 1.5rem; text-align: center; opacity: 0.6; }
+  .bokeby-doodle svg { width: 58px; height: 65px; display: block; margin: 0 auto; }
+  .bokeby-label { display: block; font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(180,140,230,0.55); margin-top: 0.3rem; }
 
   /* MAP */
   .map-full {
@@ -424,6 +446,32 @@
     .chapter-nav ul { gap: 1rem; }
     .hero-subtitle { white-space: normal; text-align: center; }
   }
+
+  /* NPC REGISTER */
+  .npc-register { margin: 2.2rem 0; }
+  .npc-group-header { padding: 1.3rem 0 0.45rem; border-bottom: 1px solid rgba(201,168,76,0.14); margin-bottom: 0.3rem; }
+  .npc-group-title { display: block; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); }
+  .npc-group-sub { display: block; font-family: 'Crimson Text', serif; font-size: 0.82rem; color: var(--text-mid); font-style: italic; margin-top: 0.14rem; }
+  .npc-entry {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.8rem;
+    border-left: 2px solid rgba(201,168,76,0.2);
+    padding: 0.6rem 0 0.6rem 1.1rem; margin-bottom: 0.2rem;
+    transition: border-color 0.2s;
+  }
+  .npc-entry:hover { border-color: rgba(201,168,76,0.45); }
+  .npc-crew  { border-left-color: rgba(201,168,76,0.3); }
+  .npc-ally  { border-left-color: rgba(80,195,247,0.28); }
+  .npc-shadow { border-left-color: rgba(160,32,32,0.5); }
+  .npc-header { flex: 1; min-width: 180px; display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  .npc-name { font-family: 'Cinzel', serif; font-size: 0.87rem; color: var(--parchment); letter-spacing: 0.04em; }
+  .npc-role { font-size: 0.76rem; color: var(--text-mid); font-style: italic; }
+  .expand-toggle.npc-btn { flex: 0 0 auto; padding: 0; line-height: 1; }
+  .npc-entry .expand-body { flex: 0 0 100%; }
+  .npc-desc-inner {
+    padding-top: 0.55rem; margin-top: 0.45rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    font-size: 0.87rem; line-height: 1.65; color: var(--text-light); margin-bottom: 0;
+  }
 </style>
 </head>
 <body>
@@ -443,10 +491,10 @@
 
 <nav class="chapter-nav">
   <ul>
-    <li><a href="#origins">I. Origins</a></li>
-    <li><a href="#kelvin">II. Kelvopolis</a></li>
-    <li><a href="#settlement">III. The Age of Roots</a></li>
-    <li><a href="#sun">IV. Sun of Lathander</a></li>
+    <li><a href="#kelvin">I. Kelvopolis</a></li>
+    <li><a href="#settlement">II. The Age of Roots</a></li>
+    <li><a href="#sun">III. Sun of Lathander</a></li>
+    <li><a href="#longcenturies">IV. The Long Centuries</a></li>
     <li><a href="#nations">V. The Three Nations</a></li>
     <li><a href="#voyagers">VI. The Voyagers</a></li>
   </ul>
@@ -460,77 +508,29 @@
   </div>
 
   <!-- I: ORIGINS / PRE-HISTORY -->
-  <section class="section" id="origins">
-    <div class="section-divider"><span class="section-num">Chapter I</span></div>
-    <p class="section-lead">Pre-Kelvian Era &middot; Before the Calendar Begins</p>
-    <h2 class="section-title">Before the Reckoning</h2>
 
-    <p class="drop-cap">The history of Mordis, in any formal sense, begins at Year Zero of the Kelvian Calendar — the year a man named Kelvin founded the city of Kelvopolis on the eastern shore of this continent. Everything that came before that moment is, by scholarly consensus, <em>pre-history</em>: a territory of myth, oral tradition, and considerable academic disagreement. We have no written record from before the founding. We have no ruins we can confidently attribute to a prior civilization. We have only what subsequent generations chose to remember, which is to say: we have stories.</p>
-
-    <p>What the historical record can tell us is this: Kelvin did not arrive from nowhere. He arrived with purpose, with people, and with the apparent intention of permanence. Where he came from, what drove him here, and how exactly he crossed the phenomenon now known as the Divide — these are questions the evidence cannot answer. They have not, however, stopped people from trying.</p>
-
-    <p>Three dominant theories have emerged over the centuries of Mordisian scholarship. They are presented below not as fact, but as the landscape of current intellectual debate. The student is encouraged to treat each with appropriate skepticism.<span class="citation">[1]</span></p>
-
-    <div class="theory-grid">
-      <div class="theory-card consensus">
-        <p class="theory-number">Theory I &middot; Consensus View</p>
-        <p class="theory-name">The Exile Theory</p>
-        <p class="theory-body">Kelvin was a refugee fleeing some catastrophe in a distant land — a war, a collapse, a disaster of sufficient scale to drive a westward migration. The Divide, in this reading, was not something Kelvin created but something he discovered and crossed out of necessity. His founding of Kelvopolis was the act of a man who could not go back and built the best thing he could from what he had.</p>
-        <span class="theory-badge">Consensus View</span>
-      </div>
-      <div class="theory-card minority">
-        <p class="theory-number">Theory II &middot; Minority Position</p>
-        <p class="theory-name">The Karsus Theory</p>
-        <p class="theory-body">A persistent minority school holds that Kelvin's crossing was caused by a figure called <em>Karsus</em> — a mage of enormous power said to have attempted something catastrophic with the fundamental nature of magic. In this version, the Divide is the scar left by that attempt, and Kelvin was either fleeing it or was the only one who could contain the damage. Karsus himself leaves no archaeological footprint. His name appears only in fragmented myth cycles, and most contemporary scholars treat him as a narrative construct rather than a historical person.</p>
-        <span class="theory-badge">Minority View</span>
-      </div>
-      <div class="theory-card fringe">
-        <p class="theory-number">Theory III &middot; Fringe Position</p>
-        <p class="theory-name">The Divine Mandate Theory</p>
-        <p class="theory-body">Favored in certain Lathanderian and Selunite theological traditions, this theory holds that Kelvin was sent — by divine instruction or cosmic necessity — to found a new civilization from scratch. The Divide is not a wound but a deliberate boundary, and Kelvin's crossing was an act of ordained will. Most secular historians regard this as faith wearing the clothes of history, though the theological institutions that hold it are too influential to dismiss the view entirely.</p>
-        <span class="theory-badge">Fringe View</span>
-      </div>
-    </div>
-
-    <div class="lore-box">
-      <p class="lore-title">On the Figure of Karsus</p>
-      <p>The name Karsus appears in fewer than a dozen surviving texts, none of which predate the third century of the Kelvian Calendar, and all of which appear to be drawing from the same lost source. He is described variously as a sorcerer, a philosopher, a king, and in one particularly dramatic fragment, as "the man who asked the sky a question it could not survive answering." No tomb, city, relic, or contemporary account has ever been attributed to him. The scholarly consensus treats him as a mythological figure — a narrative device used to explain the unexplainable origin of the Divide. His name is nonetheless spoken with a certain unease, as though the myth itself carries weight regardless of the facts underpinning it.</p>
-    </div>
-
-    <div class="footnotes">
-      <p class="footnote"><span class="footnote-num">[1]</span> The three-theory framework was formalized by Professor Aldric Vane of the Liebshire Institute in his 1198 K.C. survey <em>Foundations and Fictions: Pre-Kelvian Historiography</em>, which remains the standard introductory text on the subject.</p>
-    </div>
-  </section>
-
-  <!-- II: KELVIN -->
+  <!-- I: KELVIN -->
   <section class="section" id="kelvin">
-    <div class="section-divider"><span class="section-num">Chapter II</span></div>
+    <div class="section-divider"><span class="section-num">Chapter I</span></div>
     <p class="section-lead">Year Zero &middot; The Calendar Begins</p>
     <h2 class="section-title">Kelvin &amp; the Founding of Kelvopolis</h2>
 
-    <p class="drop-cap">Whatever brought him here, Kelvin arrived. The archaeological evidence for the founding of Kelvopolis is unambiguous: structures dated to Year Zero through Year 40 have been excavated, catalogued, and verified by multiple independent institutions. He came with a group of settlers — estimates based on early foundation footprints suggest somewhere between two hundred and eight hundred individuals — and founded a city on the eastern shore of the continent with clear intention of permanence.</p>
+    <p class="drop-cap">Whatever brought him here, Kelvin arrived. He came with settlers and founded a city on the eastern shore of the continent with clear intention of permanence. The texts that survive from the early Kelvian period are administrative in nature — land grants, inventories, a partial census. They describe a functioning settlement, not a founding hero. He is referenced only as "the Founder." His decisions are recorded without explanation.</p>
 
-    <p>What kind of man he was is nearly entirely lost to us. The texts that survive from the early Kelvian period are administrative in nature: land grants, resource inventories, a partial census dated to approximately Year 12. They describe a functioning settlement, not a founding hero. The historical Kelvin does not speak in them. He is referenced only in the third person — as "the Founder" or occasionally "the Architect" — and his decisions are recorded without explanation or commentary.</p>
-
-    <p>The city he built did not ultimately survive him. The eastern geography Kelvin had chosen lacked the natural mountain barriers that would later shield the settlements of Sarangshi, Sebrela, and Liebshire from the raids that came from the north and east. Over the following centuries, as orc and giant incursions increased, Kelvopolis found itself progressively exposed. Its population dispersed toward the more defensible interior. By the modern era, what remains is largely ruin — reclaimed, piece by piece, by the descendants of the very peoples the early settlers displaced.<span class="citation">[2]</span></p>
-
-    <div class="lore-box">
-      <p class="lore-title">The Divide</p>
-      <p>The Divide is the common name for the phenomenon in the western ocean marking the apparent edge of navigable space. Ships that have crossed it report disorientation in the stars — constellations shift, certain stars vanish entirely, and the sense of direction becomes unreliable. The experience appears to be consistent across accounts: those who cross it sailing westward cannot turn back. The ocean behind them stretches without measurable end. The only direction is forward. Two individuals, in living memory, have claimed successful crossings: a Tortle scholar of some repute, and a Drow captain operating out of the western ports. Neither has submitted to formal academic inquiry. The dominant scholarly view holds that the Divide is a natural oceanic phenomenon of unusual character. A growing minority finds that explanation increasingly inadequate.</p>
-    </div>
+    <p>From Kelvopolis, settlers spread west and south, carrying their culture and technology to dwarven, elven, and halfling populations already living across the continent. Sarangshi, Sebrela, and Liebshire all attribute their founding to early Kelvian expeditions.<span class="citation">[1]</span></p>
 
     <div class="footnotes">
-      <p class="footnote"><span class="footnote-num">[2]</span> The current state of Kelvopolis ruins was surveyed by the Eingarden Geographic Commission in 1247 K.C. Their report, <em>The Eastern Reaches: A Field Survey</em>, documents substantial goblin and orc habitation across the original city footprint, with several structures in active use.</p>
+      <p class="footnote"><span class="footnote-num">[1]</span> The current state of Kelvopolis ruins was surveyed by the Moriccian Geographic Commission in 1247 K.C. Their report, <em>The Eastern Reaches: A Field Survey</em>, documents substantial goblin and orc habitation across the original city footprint, with several structures in active use.</p>
     </div>
   </section>
 
   <!-- III: SETTLEMENT -->
   <section class="section" id="settlement">
-    <div class="section-divider"><span class="section-num">Chapter III</span></div>
+    <div class="section-divider"><span class="section-num">Chapter II</span></div>
     <p class="section-lead">Year 50 – Year 433 &middot; The Age of Roots</p>
     <h2 class="section-title">Expansion &amp; Coexistence</h2>
 
-    <p class="drop-cap">The centuries following the founding of Kelvopolis were not ones of dramatic event. They were centuries of movement — of marriage, of trade routes slowly becoming roads, of roads slowly becoming towns. Human settlers spread west and south from Kelvopolis into a continent that was already inhabited: <em>dwarves</em> in the deep mountain ranges to the north and east, <em>elves</em> woven through the ancient forests of the central regions, <em>halflings</em> established across the fertile grassland belts that ran between the mountains and the coasts.</p>
+    <p class="drop-cap">The centuries following the founding of Kelvopolis were not ones of dramatic event. They were centuries of movement — of marriage, of trade routes slowly becoming roads, of roads slowly becoming towns. Human settlers spread west and south from Kelvopolis into a continent that was already inhabited: <em>dwarves</em> in the deep mountain ranges to the north and east, <em>elves</em> woven in the veins of ancient verdant forests, <em>halflings</em> along the fertile grasslands of their valleys.</p>
 
     <p>The historical record for this period is rich in archaeology and thin in written text. What we can confirm is that coexistence was the norm, not the exception. Intermarriage between human settlers and local populations is evidenced in skeletal record, material culture, and the linguistic mixing present in the earliest formal documents of all three major polities. Dozens of small settlements rose and fell. Three endured long enough to become something more.</p>
 
@@ -538,30 +538,40 @@
       <div class="timeline-entry">
         <p class="timeline-year">Year 0 &middot; The Kelvian Calendar</p>
         <p class="timeline-event">The Founding of Kelvopolis</p>
-        <p class="timeline-desc">Kelvin arrives on the eastern shore of the continent with a group of settlers. The Kelvian Calendar begins. All subsequent dates are measured from this moment.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Kelvin arrives on the eastern shore of the continent with a group of settlers. The Kelvian Calendar begins. All subsequent dates are measured from this moment.</p></div>
       </div>
       <div class="timeline-entry">
         <p class="timeline-year">Years 50–300 &middot; The Quiet Centuries</p>
         <p class="timeline-event">The Westward Dispersal</p>
-        <p class="timeline-desc">Settlers move inland and southward from Kelvopolis, intermingling with dwarven, elven, and halfling communities. Regional culture begins to differentiate along geographic lines. No single power dominates. Dozens of holds and small cities rise, trade, and disappear.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Settlers move inland and southward from Kelvopolis, intermingling with dwarven, elven, and halfling communities. Regional culture begins to differentiate along geographic lines. No single power dominates. Dozens of holds and small cities rise, trade, and disappear.</p></div>
       </div>
       <div class="timeline-entry">
-        <p class="timeline-year">Before Year 420 &middot; Exact Date Disputed</p>
+        <p class="timeline-year">Years 300–420 &middot; Three Cities Emerge</p>
+        <p class="timeline-event">The Shape of Things to Come</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Three regional centers grow from trading posts into genuine powers. Sarangshi rises from the southern steppes on overland trade and mountain pass control. Sebrela anchors the western coast on sea commerce. Liebshire, in the northern heartlands, becomes the continent's seat of both Lathanderian and Selunite tradition — the city whose fate will matter most in the decade to come.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Before Year 430 &middot; Exact Date Disputed</p>
         <p class="timeline-event">The Burning of the Southern Forests</p>
-        <p class="timeline-desc">Sectarian tensions between the early Nakensia and Moricci regions over Selunite religious practices in Liebshire result in widespread arson across elven forest communities in the south. Thousands of elves are displaced. The land they held — which had served as a natural defensive buffer — is left open. This will matter within the decade.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Sectarian tensions between the early Nakensia and Moricci regions over Selunite religious practices in Liebshire result in widespread arson across elven forest communities in the south. Thousands of elves are displaced. The land they held — which had served as a natural defensive buffer — is left open. This will matter within the decade.</p></div>
       </div>
       <div class="timeline-entry">
-        <p class="timeline-year">Year ~433</p>
-        <p class="timeline-event">Three Cities Emerge</p>
-        <p class="timeline-desc">Sarangshi, Sebrela, and Liebshire consolidate regional influence. What had been informal centers of trade begin to assert territorial and cultural identity. The seeds of Nakensia, Moricci, and Alems are formally planted.</p>
+        <p class="timeline-year">Years 430–433 &middot; The Invasion of the Tolkesh</p>
+        <p class="timeline-event">Fire Over the Mountains of Alems</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">A coordinated force of orcs, giants, and goblins presses south and west through the mountain passes — not raiders, but a sustained campaign. The elven forest communities displaced years prior had served as a natural buffer. That buffer is gone. The Tolkesh drive deep into Alems, burning settlements and destroying agricultural infrastructure, and push into the western reaches of Nakensia. The three young city-powers face it largely alone.</p></div>
       </div>
     </div>
   </section>
 
   <!-- IV: SUN OF LATHANDER -->
-  <section class="section" id="sun">
-    <div class="section-divider"><span class="section-num">Chapter IV</span></div>
-    <p class="section-lead">Year 420–433 &middot; The Defining Event</p>
+  <section class="section section-sacred" id="sun">
+    <div class="section-divider"><span class="section-num">Chapter III</span></div>
+    <p class="section-lead">Year 433 &middot; The Defining Event</p>
     <h2 class="section-title gold">The Sun of Lathander</h2>
 
     <p class="drop-cap">The single most consequential event in the recorded history of Mordis did not occur in a palace or a council chamber. It occurred in an open valley below the Braburg pass, during the worst military crisis the continent has ever faced. A wave of orcs, giants, and goblins — the historical record is consistent on scale; this was not a raiding party but a coordinated migration of force — pressed south and west through the mountain passes and across the open lands of northern Alems and Nakensia. The settlements of Liebshire, already weakened by the recent displacement of the elven communities who had served as their southern wall, faced destruction.</p>
@@ -573,7 +583,7 @@
       <cite>&mdash; Vane, A. <em>Foundations and Fictions</em>, Year 1198 K.C.</cite>
     </div>
 
-    <p>The political legacy of Braburg is as significant as the military one. The nine paladins are the founding ancestors of the ruling dynasties of Mordis. Their descendants hold corridors of power in all three major nations, and in the court of Eingarden. The Order of Lathander, built on their memory, remains one of the continent's most politically influential religious institutions — a fact that sits in complex tension with the Selunite communities whose survival it achieved.<span class="citation">[3]</span></p>
+    <p>The political legacy of Braburg is as significant as the military one. The nine paladins are the founding ancestors of the ruling dynasties of Mordis. Their descendants hold corridors of power in all three major nations, and in the court of Eingarden. The Order of Lathander, built on their memory, remains one of the continent's most politically influential religious institutions — a fact that sits in complex tension with the Selunite communities whose survival it achieved.<span class="citation">[2]</span></p>
 
     <div class="lore-box">
       <p class="lore-title">The Selunite Question</p>
@@ -581,7 +591,49 @@
     </div>
 
     <div class="footnotes">
-      <p class="footnote"><span class="footnote-num">[3]</span> For a full accounting of the dynastic lineages descending from the Braburg Nine, see Hartmann, L. <em>Blood and Fire: The Dynastic Legacy of the Order of Lathander</em>, Liebshire Press, 1231 K.C.</p>
+      <p class="footnote"><span class="footnote-num">[2]</span> For a full accounting of the dynastic lineages descending from the Braburg Nine, see Hartmann, L. <em>Blood and Fire: The Dynastic Legacy of the Order of Lathander</em>, Liebshire Press, 1231 K.C.</p>
+    </div>
+  </section>
+
+  <!-- IV: THE LONG CENTURIES -->
+  <section class="section" id="longcenturies">
+    <div class="section-divider"><span class="section-num">Chapter IV</span></div>
+    <p class="section-lead">Year 433 – Year 1261 &middot; Eight Centuries of Consequence</p>
+    <h2 class="section-title">The Long Centuries</h2>
+
+    <p class="drop-cap">The century following the Sun of Lathander remade the continent not through any single event but through the slow, merciless arithmetic of consequence. The Tolkesh invasion had emptied Alems of its mountain defenses and destroyed the agricultural communities that fed its east. The Holy Day had given the survivors a myth. What followed — famine, frost, territorial loss, and the grinding emergence of a lasting political order — built the world that now stands.</p>
+
+    <div class="timeline">
+      <div class="timeline-entry">
+        <p class="timeline-year">Years 433–480 &middot; The Famine of Eastern Alems</p>
+        <p class="timeline-event">The Nakensian Siphon</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">With eastern Alems' farming communities destroyed by the Tolkesh invasion, the region depends on food imports through Nakensian trade networks. Nakensia adjusts its pricing accordingly, diverting shipments to wealthier buyers while the east starves. The famine runs for decades. The distrust it produces shapes Alems foreign policy for centuries after.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year ~620 &middot; The Council of Eingarden</p>
+        <p class="timeline-event">The Doctrine of Mutual Dependence</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Tensions between the Order of Lathander and the Selunite communities reach a formal reckoning at Eingarden, the only city all parties will enter willingly. What emerges is not a resolution but a doctrine: that neither tradition can exist without the other, sun and moon inseparable. The political tensions do not disappear, but the Council establishes a vocabulary for coexistence that holds for centuries after.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year 821 &middot; The Freezing of the Strait of Luna&rsquo;ara</p>
+        <p class="timeline-event">The Kaerel Liberation</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">The Strait of Luna'ara freezes solid. Alems marches across and presses into Moriccian territory. Kaerel and Cosayv — Moricci's most productive client states — fall within a season. Alems releases both as independent republics rather than occupy them. Moricci loses its two most valuable northern outposts without a single naval engagement. It does not forget.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Years ~1180–1220 &middot; The Island War</p>
+        <p class="timeline-event">The Zaremian Succession Crisis</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">When the ruling line of a Nakensian vassal state above Zaremia collapses without an heir, Nakensia and Moricci both advance claims. Moricci wins not through force but through trade — outpricing and out-contracting Nakensia harbor by harbor until the island councils simply accept Moriccian terms. Two naval engagements are attempted and go badly. The treaty cedes the islands and several coastal towns to Moricci.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year 1258 &middot; The Tolkesh Siege of the East</p>
+        <p class="timeline-event">The Dardan Expedition</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">A coalition of Lathandarian admirals launches an armada crusade from Thassy — north, then east — to relieve the Tolkesh siege of Kelvopolis and Andiuvanos. Twenty percent of ships are lost in the northern seas where the ocean meets the ice. Half the soldiers who fought at Andiuvanos do not return. On the southern passage home, where the ocean meets the magma, eighty percent of the remaining fleet is lost. No survivor has ever spoken of what they encountered there. In formal Lathandarian records, the expedition is simply listed as having occurred.</p></div>
+      </div>
     </div>
   </section>
 
@@ -598,25 +650,29 @@
         <p class="nation-name">Moricci</p>
         <p class="nation-ruler">King Charles &middot; Western Seaboard</p>
         <div class="nation-tags"><span class="tag">Naval Power</span><span class="tag">Trade</span><span class="tag">Theology</span></div>
-        <p class="nation-desc">The dominant maritime power on the continent, Moricci controls the western sea lanes through superior naval architecture, fortified island chains, and centuries of mercantile calculation. Its society carries the sharpest inequalities on Mordis: a wealthy merchant and clerical class at the apex, a substantial slave class at the base, and limited passage between them. The question of Lis — pirate island chains to the west that raid Alems and embarrass Morician claims to oceanic dominance — has defined its foreign policy for a generation. That question appears close to resolution.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">The dominant maritime power on the continent. Moricci controls the western sea lanes through naval strength and centuries of mercantile calculation, with sharp class divisions between its merchant elite and a substantial slave class at the base. Its current foreign policy is defined by the question of Lis — pirate chains to the west that embarrass Moriccian claims to oceanic dominance. That question appears close to resolution.</p></div>
       </div>
       <div class="nation-card nakensia">
         <p class="nation-name">Nakensia</p>
         <p class="nation-ruler">Queen Kati &middot; Southern Reaches</p>
         <div class="nation-tags"><span class="tag">Military</span><span class="tag">Magic</span><span class="tag">Cultural Diversity</span></div>
-        <p class="nation-desc">Nakensia was not born unified — it was forged into unity through centuries of conquest and absorption. Dozens of tribes, city-states, and magical traditions were brought under central authority through processes that historians variously describe as consolidation or subjugation, depending on their sympathies. The result is a nation of extraordinary cultural depth and persistent internal tension: fiercely proud of its diversity, constantly negotiating the boundary between the authority of the center and the autonomy of its constituent peoples. Its military tradition is without peer on the continent.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">Forged through centuries of conquest and absorption, Nakensia is a nation of deep cultural diversity and persistent internal tension — proud of what it contains, constantly negotiating between central authority and the autonomy of its constituent peoples. Its military tradition is without peer on the continent.</p></div>
       </div>
       <div class="nation-card alems">
         <p class="nation-name">Alems</p>
         <p class="nation-ruler">King Unther &middot; Northern Plains</p>
         <div class="nation-tags"><span class="tag">Population</span><span class="tag">Agricultural Wealth</span><span class="tag">Bulwark</span></div>
-        <p class="nation-desc">The most populous nation on Mordis by a considerable margin, Alems stretches across the great northern plains and forest belts from the Lunara'a strait to the open grasslands of the east. Its wealth is agricultural; its chronic vulnerability is the same. When the crops fail, the cities starve. When the Lunara'a strait freezes — a rare but historically catastrophic event — armies walk across it. Alems has historically served as the continent's breadbasket and its northern bleeding edge: the civilization that absorbs the first shocks so that others do not have to.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">The most populous nation on Mordis, stretching across the northern plains from the Lunara'a strait to the eastern grasslands. Its wealth is agricultural; its vulnerability the same. When the strait freezes, armies walk across it. Alems absorbs the first shocks so that others do not have to.</p></div>
       </div>
       <div class="nation-card eingarden">
         <p class="nation-name">Eingarden</p>
         <p class="nation-ruler">King Ivan &middot; The Central Sanctum</p>
         <div class="nation-tags"><span class="tag">Diplomacy</span><span class="tag">Dynastic Legitimacy</span><span class="tag">Spiritual Authority</span></div>
-        <p class="nation-desc">Eingarden commands no great army, holds no great resource, and controls no great territory. It holds something more durable: the only legitimate neutral ground on the continent. King Ivan is uncle to Charles of Moricci, brother to Unther of Alems, and nephew to Queen Kati of Nakensia. The web of blood connecting the ruling families of Mordis passes through Eingarden's court. When the three powers need to stop fighting without appearing to back down, Eingarden is the table they agree to sit at. Ivan is exceptionally good at setting tables.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">No great army, no great territory — only the only legitimate neutral ground on the continent. King Ivan is uncle to Charles of Moricci, brother to Unther of Alems, and nephew to Queen Kati of Nakensia. When the three powers need to stop fighting without appearing to back down, Eingarden is the table. Ivan is exceptionally good at setting tables.</p></div>
       </div>
     </div>
 
@@ -634,63 +690,61 @@
     <p class="section-lead">Year 1261 &middot; The Present Day</p>
     <h2 class="section-title">The Voyagers</h2>
 
-    <p class="drop-cap">In the twelve hundred and sixty-first year of the Kelvian Calendar, a small vessel departed the western ports under royal commission, tasked with crossing the Divide. Its complement was not assembled for heroism. It was assembled for utility: a navigator, a survivalist, a demonstration of physical prowess, and an administrator whose name carried more institutional weight than his current condition might suggest to a casual observer.</p>
+    <p class="drop-cap">In the twelve hundred and sixty-first year of the Kelvian Calendar, a small vessel departed the western ports under royal commission, tasked with crossing the western expanse. Its complement was not assembled for heroism. It was assembled for utility: a navigator, a survivalist, a demonstration of physical prowess, and an administrator whose name carried more institutional weight than his current condition might suggest to a casual observer.</p>
 
     <p>They have crossed. Where they are now is, by definition, beyond the reach of this account. What they left behind is a continent in motion — old alliances recalibrating, old grievances resurfacing, and at least one agreement made in circumstances that none of the courts on Mordis yet knows about.</p>
 
     <div class="party-grid">
-      <div class="character-card">
+      <div class="character-card belnan">
         <p class="char-class">Halfling Ranger &middot; Survivalist</p>
         <p class="char-name">Belnan</p>
         <p class="char-origin">Lunara'a &middot; Alems Border Territory</p>
-        <p class="char-desc">For many years he was a fixture of the trade roads between Lunara'a and Eberne — a caravan guard with a reputation for bringing travelers home intact. Then something interrupted that life. He came back from it, to a family that had waited. He does not discuss the interval. The commission offered him a direction that was not back.</p>
-        <div class="char-burden">What he doesn't know is that the family he came back to is still inside whatever took him.</div>
-      </div>
-
-      <div class="character-card galilei">
-        <p class="char-class">Elven Warlock &middot; Navigator</p>
-        <p class="char-name">Galilei</p>
-        <p class="char-origin">Meselia &middot; Liebshire &middot; Steins Gate Observatory</p>
-        <p class="char-desc">His published argument — that the world turns around the sun, not the moon — attracted sufficient theological complaint that his family's safety in the Liebshire community could no longer be taken for granted. The commission offered distance. His patron, the Tortle scholar who originally inspired his theories, gave him a children's book describing three constellations. Each, correctly identified, points toward a different city somewhere west of the Divide.</p>
-        <div class="char-burden">He has been seeing things in the stars since before the crossing. Lines, at first. Since the sky changed above the Divide, the shapes are nearly resolved into something with eyes.</div>
-        <div class="patron-annotation">
-          <svg class="const-svg" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
-            <line class="c-line" x1="18" y1="52" x2="48" y2="30"/>
-            <line class="c-line" x1="48" y1="30" x2="82" y2="18"/>
-            <line class="c-line" x1="82" y1="18" x2="110" y2="40"/>
-            <line class="c-line" x1="110" y1="40" x2="148" y2="14"/>
-            <line class="c-line" x1="148" y1="14" x2="185" y2="45"/>
-            <circle class="c-star" cx="18"  cy="52" r="2.2"/>
-            <circle class="c-star" cx="48"  cy="30" r="1.8"/>
-            <circle class="c-star" cx="82"  cy="18" r="2.2"/>
-            <circle class="c-star" cx="110" cy="40" r="2"/>
-            <circle class="c-star" cx="148" cy="14" r="2.2"/>
-            <circle class="c-star" cx="185" cy="45" r="2"/>
-            <g class="c-eye c-blink">
-              <ellipse cx="100" cy="37" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
-              <ellipse cx="122" cy="33" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
-              <circle  cx="101" cy="38" r="2.5" fill="rgba(40,10,60,0.95)"/>
-              <circle  cx="123" cy="34" r="2.5" fill="rgba(40,10,60,0.95)"/>
-            </g>
-          </svg>
-          <span class="patron-label">margin notation &mdash; Galilei's personal journal, undated, post-crossing</span>
+        <p class="char-desc">For many years he was a fixture of the trade roads between Lunara'a and Eberne — a caravan guard with a reputation for bringing travelers home intact. A fresh rabbit for the hungry, a deer at the water's edge for the exhausted, a swift and quiet end for those who preyed on both.</p>
+        <div class="char-burden">Blood becomes an easy thing to spill when its in the service of your own.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">Then something found him on those roads. Not something that ambushed him — something that recognized him. The roads went dark in the years that followed, and the travelers who disappeared along them were not accidents. When Belnan came home, the roads were quieter. He does not explain why. He carries only what he cannot put down and the secrets he now must keep.</p>
+          <div class="char-fear">The darkness becomes harder to escape the more one sets out to play the role it hungers for.</div>
         </div>
       </div>
 
-      <div class="character-card">
+      <div class="character-card galicus">
+        <p class="char-class">Elven Warlock &middot; Navigator</p>
+        <p class="char-name">Galicus</p>
+        <p class="char-origin">Meselia &middot; Liebshire &middot; Steins Gate Observatory</p>
+        <p class="char-desc">His published argument — that the world turns around the sun, not the moon — attracted sufficient theological complaint that his family's safety in Liebshire could no longer be taken for granted. Amidst this, Selune has granted him providence.</p>
+        <div class="char-burden">The more he stares into the night sky, the more it seems to stare in return.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">He has spent his life at the edge of what is known, but he didn't expect the sky to close in. What is taking shape at the periphery of his observations is not something he can categorize, and the entity attending his work is not one he can name. He is not afraid of what he doesn't understand. He is afraid of what he may see.</p>
+          <div class="char-fear">You may always look into the unkown, but the void will always be staring back.</div>
+        </div>
+      </div>
+
+      <div class="character-card fugoki">
         <p class="char-class">Dwarf Fighter &middot; Champion</p>
         <p class="char-name">Fugoki</p>
         <p class="char-origin">Mines of Uroy &middot; Mines of Tabra'an</p>
-        <p class="char-desc">His mother is an oracle of the Mines of Uroy. His father is the general-king of the Mines of the Tabra'an, a man who regarded his son's gentleness as a liability and resolved the problem by offering him to the crown for the westward expedition. Fugoki accepted. There is nothing left to prove under his father's ceiling. There is everything to prove everywhere else.</p>
+        <p class="char-desc">His mother is an oracle of the Mines of Uroy, father the general-king of the Mines of the Tabra'an — a title won in blood, by tradition, since the lineage began. Fugoki was created, indoctrinated, and forged to be next. </p>
         <div class="char-burden">He is the strongest person most people have ever encountered. His father made sure he knows that is not sufficient.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">The succession fight is singular by tradition: two men enter, one man leaves. Fugoki entered the arena against his closest friend, Tarak, had him pinned and stood up. The title passed as he walked away, and with it his name in his father's house. He was sooner offered to the foreign crown rather than be acknowledged as a son who chose mercy over legacy. All too familiar with the lucha, the liberador sets out to conquer a ring of his own.</p>
+          <div class="char-fear">Every ache and weakness a mortal reminder that he will one day prove his father right .</div>
+        </div>
       </div>
 
-      <div class="character-card">
-        <p class="char-class">Human Monk &middot; Administrator</p>
+      <div class="character-card mark">
+        <p class="char-class">Tiefling Monk &middot; Administrator</p>
         <p class="char-name">Mark</p>
         <p class="char-origin">Aquenta &middot; Studied in Fries &middot; Served in Sebrela</p>
-        <p class="char-desc">He held the title of Right Hand of the King, earned on the strength of a reputation built across years of clerical administration in Sebrela — until a client of infernal character took several things from him at once: his sight, his sister, and the memory of how either happened. He retains his title. He retains his name, which still opens doors. What he has lost, beyond the obvious, is something he cannot identify, because he no longer remembers what was taken.</p>
-        <div class="char-burden">Something of his remains in the devil's possession. He does not know what. He does not remember enough to ask the right question.</div>
+        <p class="char-desc">Undefeated in court, renowned for knowing when someone in the room was righteous — a gift of divine vision he believed was Lathander's. An infernal twist of fortune tested his judgement and led him to wake from a coma without his sight or his sister.</p>
+        <div class="char-burden">He is working out what to do with a faith that was never wrong.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">The trial exists in adjacent documents, with all its details expunged from text and memory — only his tiefling blood left as a testament. He still carries the title of Late Great State Magistrate, and now serves as the Right Hand of the King. He travels in search of a reason that does not require him to stop believing in the faith that repeadt leaves him broken.</p>
+          <div class="char-fear">He is afraid his gift never failed. That Lathander saw this coming and called it good.</div>
+        </div>
       </div>
     </div>
 
@@ -698,7 +752,427 @@
 
     <div class="lore-box">
       <p class="lore-title">The Three Constellations</p>
-      <p>The Tortle scholar's gift to Galilei was, on its surface, a children's picture book: simple illustrations of three star formations, labeled in a script that does not match any currently catalogued writing system. Each constellation, correctly identified in the night sky, points toward one of three cities somewhere to the west of the Divide. The book was written for children, the Tortle explained, because adults look at stars and see what they expect to see. The cities are not named in the book. They will have to be found.</p>
+      <div class="bokeby-doodle">
+        <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+          <defs><filter id="bokglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <circle cx="12" cy="18" r="1.2" fill="rgba(201,168,76,0.55)"/>
+          <circle cx="69" cy="14" r="1.5" fill="rgba(180,140,230,0.45)"/>
+          <circle cx="74" cy="30" r="0.9" fill="rgba(201,168,76,0.4)"/>
+          <ellipse cx="28" cy="68" rx="9" ry="6" fill="rgba(158,118,208,0.85)"/>
+          <ellipse cx="52" cy="68" rx="9" ry="6" fill="rgba(158,118,208,0.85)"/>
+          <ellipse cx="13" cy="52" rx="8" ry="5" fill="rgba(168,128,218,0.75)" transform="rotate(-25,13,52)"/>
+          <ellipse cx="67" cy="52" rx="8" ry="5" fill="rgba(168,128,218,0.75)" transform="rotate(25,67,52)"/>
+          <ellipse cx="40" cy="47" rx="24" ry="22" fill="rgba(178,138,228,0.82)" filter="url(#bokglow)"/>
+          <circle cx="27" cy="52" r="6" fill="rgba(255,140,180,0.22)"/>
+          <circle cx="53" cy="52" r="6" fill="rgba(255,140,180,0.22)"/>
+          <ellipse cx="32" cy="44" rx="5.5" ry="6" fill="rgba(18,5,38,0.95)"/>
+          <ellipse cx="48" cy="44" rx="5.5" ry="6" fill="rgba(18,5,38,0.95)"/>
+          <circle cx="30" cy="42" r="2" fill="rgba(255,255,255,0.88)"/>
+          <circle cx="46" cy="42" r="2" fill="rgba(255,255,255,0.88)"/>
+        </svg>
+        <span class="bokeby-label">Bokeby</span>
+      </div>
+      <p>The Tortle scholar's gift to Galicus was, on its surface, a children's picture book: simple illustrations of three star formations, labeled in a script that does not match any currently catalogued writing system. Each constellation, correctly identified in the night sky, points toward one of three cities somewhere to the west of the western expanse. The book was written for children, the Tortle explained, because adults look at stars and see what they expect to see. The cities are not named in the book. They will have to be found.</p>
+      <div class="const-grid">
+        <figure class="const-figure">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="gb"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#F5A040" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="60" y1="18" x2="100" y2="15"/><line x1="60" y1="18" x2="80" y2="38"/><line x1="100" y1="15" x2="80" y2="38"/>
+              <line x1="80" y1="38" x2="52" y2="60"/><line x1="80" y1="38" x2="110" y2="58"/>
+              <line x1="52" y1="60" x2="80" y2="80"/><line x1="110" y1="58" x2="80" y2="80"/>
+              <line x1="80" y1="80" x2="48" y2="100"/><line x1="80" y1="80" x2="112" y2="98"/>
+              <line x1="110" y1="58" x2="135" y2="70"/><line x1="135" y1="70" x2="158" y2="76"/><line x1="158" y1="76" x2="150" y2="98"/>
+            </g>
+            <g filter="url(#gb)" fill="#F5A040">
+              <circle cx="60" cy="18" r="2.8"/><circle cx="100" cy="15" r="2.8"/>
+              <circle cx="80" cy="38" r="3.8"/>
+              <circle cx="52" cy="60" r="2.2"/><circle cx="110" cy="58" r="2.2"/>
+              <circle cx="80" cy="80" r="3.2"/>
+              <circle cx="48" cy="100" r="1.8"/><circle cx="112" cy="98" r="1.8"/>
+              <circle cx="135" cy="70" r="2.2"/><circle cx="158" cy="76" r="2.2"/><circle cx="150" cy="98" r="1.8"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#F5A040">The Beaver</span>
+        </figure>
+        <figure class="const-figure">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="go"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#4FC3F7" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="58" y1="16" x2="68" y2="40"/><line x1="112" y1="14" x2="102" y2="38"/>
+              <line x1="68" y1="40" x2="102" y2="38"/>
+              <line x1="68" y1="40" x2="85" y2="54"/><line x1="102" y1="38" x2="85" y2="54"/>
+              <line x1="30" y1="76" x2="58" y2="66"/><line x1="58" y1="66" x2="85" y2="54"/>
+              <line x1="85" y1="54" x2="112" y2="66"/><line x1="112" y1="66" x2="148" y2="76"/>
+              <line x1="85" y1="54" x2="85" y2="96"/>
+              <line x1="85" y1="96" x2="70" y2="118"/><line x1="85" y1="96" x2="100" y2="118"/>
+            </g>
+            <g filter="url(#go)" fill="#4FC3F7">
+              <circle cx="58" cy="16" r="2.2"/><circle cx="112" cy="14" r="2.2"/>
+              <circle cx="68" cy="40" r="3.8"/><circle cx="102" cy="38" r="3.8"/>
+              <circle cx="85" cy="54" r="2.8"/>
+              <circle cx="30" cy="76" r="1.8"/><circle cx="58" cy="66" r="2.2"/>
+              <circle cx="112" cy="66" r="2.2"/><circle cx="148" cy="76" r="1.8"/>
+              <circle cx="85" cy="96" r="2.8"/>
+              <circle cx="70" cy="118" r="1.8"/><circle cx="100" cy="118" r="1.8"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#4FC3F7">The Owl</span>
+        </figure>
+        <figure class="const-figure">
+          <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="gs"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#EF5350" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="22" y1="38" x2="42" y2="55"/><line x1="42" y1="55" x2="22" y2="72"/>
+              <line x1="42" y1="55" x2="62" y2="52"/><line x1="62" y1="52" x2="82" y2="55"/>
+              <line x1="82" y1="55" x2="100" y2="58"/><line x1="100" y1="58" x2="118" y2="60"/>
+              <line x1="118" y1="60" x2="132" y2="68"/>
+              <line x1="132" y1="68" x2="148" y2="56"/><line x1="148" y1="56" x2="162" y2="40"/>
+              <line x1="162" y1="40" x2="172" y2="24"/><line x1="172" y1="24" x2="180" y2="14"/>
+            </g>
+            <g filter="url(#gs)" fill="#EF5350">
+              <circle cx="22" cy="38" r="2.2"/><circle cx="22" cy="72" r="2.2"/>
+              <circle cx="42" cy="55" r="2.8"/>
+              <circle cx="62" cy="52" r="2.2"/>
+              <circle cx="82" cy="55" r="3.5"/>
+              <circle cx="100" cy="58" r="2.2"/><circle cx="118" cy="60" r="2.2"/>
+              <circle cx="132" cy="68" r="1.8"/>
+              <circle cx="148" cy="56" r="2.2"/><circle cx="162" cy="40" r="2.2"/>
+              <circle cx="172" cy="24" r="2.8"/><circle cx="180" cy="14" r="3.5"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#EF5350">The Scorpion</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- APPENDIX I: PERSONS OF PRESENT ACCOUNT -->
+  <section class="section" id="persons">
+    <div class="section-divider"><span class="section-num">Appendix I</span></div>
+    <p class="section-lead">Field Annotations &middot; Known Associates</p>
+    <h2 class="section-title">Persons of Present Account</h2>
+
+    <p>The following persons appear not as subjects of history but as participants in what history is currently becoming. They are listed here by commission and association. Their full accounts, where they exist, are not yet complete.</p>
+
+    <div class="npc-register">
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Known Kin</span>
+        <span class="npc-group-sub">Families, Friends &amp; Prior Associations</span>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Jen &amp; Ken</span>
+          <span class="npc-role">Mother &amp; Father &middot; Belnan's Kin &middot; Lunara'a</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Migrants from the plains to Luna'ara, Jen and Ken sought to give Belnan the best life they could. Ken was a laborer, hired for manual work in construction and agriculture, and his mother was a hostess for Jodi and Codi. No one have heard .</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Jodi &amp; Codi</span>
+          <span class="npc-role">Aunt &amp; Uncle &middot; Belnan's Kin</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Belnan's aunt and uncle. Their account has not been written.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Forja</span>
+          <span class="npc-role">Selunite Oracle &middot; Mines of Uroy &middot; Fugoki's Mother</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fugoki's mother. An oracle from a matriarchal line of Selunite priestesses whose blood carries weight that requires no title. She did not object when Fugoki was offered to the crown. She has not been asked why.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Tarkhazir</span>
+          <span class="npc-role">General-King &middot; Mines of Tabra'an &middot; Fugoki's Father</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fugoki's father. General-king of the Mines of Tabra'an, a title won in blood since the lineage began. He has not been wrong about Fugoki yet. Fugoki is working on it.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Tarak</span>
+          <span class="npc-role">Fighter &middot; Mines of Tabra'an</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fugoki's closest friend and the man who now holds the succession title he didn't finish taking. They did not part as enemies. That may be the part Fugoki cannot explain.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Emily</span>
+          <span class="npc-role">Mark's Sister &middot; Faerun</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Mark's sister. She is alive in Faerun. Her body is intact. Her soul is not.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Misty Wilson</span>
+          <span class="npc-role">Mark's Prior Associate</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A friend from Mark's career before the trial. Her account has not been written.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Juliana</span>
+          <span class="npc-role">Galicus's Mother &middot; Liebshire</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Galicus's mother. Last known in Liebshire, where his published work made certainty difficult to maintain.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Farziani</span>
+          <span class="npc-role">Galicus's Father &middot; Liebshire</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Galicus's father. The same.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Commission I &mdash; The First Vessel</span>
+        <span class="npc-group-sub">Team 1 &middot; Departed Second &middot; The Main Crossing</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Fugheris</span>
+          <span class="npc-role">Half-Orc Paladin &middot; Commander &middot; Islands of Da'a</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The leader of the first crossing commission. A half-orc paladin from the island territories southeast of Da'a, Fugheris carries his faith in Lathander openly and his burden in private. He is regarded as a sound commander by everyone under him; more so now brooding than angry.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Gabriel</span>
+          <span class="npc-role">Naturalist &middot; Cook &middot; Kovalta</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A naturalist and cook from Kovalta who attached himself to the expedition showing particular interest in Galicus's work and company. They really don't have anyone else.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Mehmed</span>
+          <span class="npc-role">Cook &middot; Nakensia &middot; Bar-I-Anai</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A young cook from the port districts of Nakensia, recruited near Bar-I-Anai by the Order. Looks forward to early mornings before breakfast getting swole with Fugoki.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Commission II &mdash; The Advance Party</span>
+        <span class="npc-group-sub">Team 2 &middot; Departed First &middot; Status Uncertain</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Morgan</span>
+          <span class="npc-role">Commander &middot; Soeros</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Leader of the second commission and its advance departure, from the port city of Soeros. Straightforward, competent, and thoroughly unremarkable in most respects he would name. He has read Galicus's work and likes Alexandra.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Yor</span>
+          <span class="npc-role">Late Great State Magistrate &middot; Left Hand of the King</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Son of a wealthy Aquenta noble, in contention for Late Great State Magistrate at twenty years old. He set out for glory and to serve Lathander, and has been appointed Left Hand of the King. He does not know that his second death has already been accounted for.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Alexandra</span>
+          <span class="npc-role">Arcanist &middot; Sarangshi &middot; Technocrat Lineage</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Daughter of a wealthy technocrat family from Sarangshi. Her specialisation is interrunic microthread magic — infusing lithographically inscribed orbs through necessary mediums as part of her incantations. Her ambitions are unknown, apart from her infatuation with Martin.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Martin Santos</span>
+          <span class="npc-role">Troubadour &middot; Origins Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Elusive, handsome, and wealthy troubadour. As quick to enter and leave a room as he is to captivate it. Origins and destinations unknown. In song, action, and word he has made it clear he points his sails only for Alexandra.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Dotty</span>
+          <span class="npc-role">Commission Member &middot; Vessel Second</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Equal parts vicious, equal parts gentleman. Dotty has a crazed look that can unsettle the most steadfast with mere sustained eye contact. Fugoki knows no such reserves upon meeting his gaze.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-cre w">
+        <div class="npc-header">
+          <span class="npc-name">David</span>
+          <span class="npc-role">Commission Member &middot; Vessel Second</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Lifetime Democratic People Society card holder. David believes steadfastly in the lifelong pursuit of self-improvement — as scholar, worker, father, and lover — in opposition to what he calls the binary asphyxiation of blind consumption. He and Belnan understand each other completely.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Persons of Interest</span>
+        <span class="npc-group-sub">Notable Figures &amp; Irregular Characters</span>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">Henri</span>
+          <span class="npc-role">Cambion &middot; Thierry Henri &middot; Whereabouts Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A cambion known to the party by first name and by the shape of the damage he leaves. His full name is Thierry Henri. The records that would formally account for his role in the trial suffer from the same selective amnesia as the records that would account for Mark. He has not been encountered since. The entity he represents has not introduced itself.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">King Charles</span>
+          <span class="npc-role">Sovereign &middot; Moricci &middot; Western Seaboard</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The reigning sovereign of Moricci and the authority behind both commissions. His ambitions in the western expanse have not been disclosed to those he sent into it. His name travels ahead of him in ways he has arranged.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">Captain Tom</span>
+          <span class="npc-role">Drow Captain &middot; Western Approaches &middot; Identity Unclear</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The captain who facilitated the crossing. His name is Tom in the way that all such names are Tom — a working title, issued by particular hands for a particular arrangement. He has not been seen since departure.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Companions &amp; Familiars</span>
+        <span class="npc-group-sub">Beasts, Allies &amp; Unlikely Friends</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Zacariah</span>
+          <span class="npc-role">Donkey &middot; Property of Galicus</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The donkey in Galicus's keeping, acquired before the crossing and technically still alive. Zacariah cannot speak, but he can understand — a fact made known to him regularly by a ranger who exercises his gift in that direction. He has sought help from everyone he has encountered. No one has listened.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Jocasta</span>
+          <span class="npc-role">Immortal Bird &middot; Belnan's Familiar</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">An immortal bird that arrived in Belnan's possession on the Queen's island — though possession overstates the arrangement. Where the albatross of the crossing was a thing of open sky and restraint, Jocasta is what answers when restraint is refused. She has not been tamed. She does not appear to require it.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Kermit</span>
+          <span class="npc-role">Frog &middot; Island of the Succession</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A frog. Kermit fought in no part for his Queen. He watched. He has since attached himself to the company on the understanding — held privately, shared with no one — that returning to that island as a bullywog is the only worthwhile ambition he has left. He does not discuss Queen Luciana.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Yertle</span>
+          <span class="npc-role">Tortle Scholar &middot; Origin Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A Tortle scholar whose work concerns reflections — specifically, whether the stars seen in still water are the same stars visible from the sky above, and whether the discrepancy, if one exists, is optical or cosmological. He puts the hell in shell. Patron in patronizing.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- APPENDIX II: THE GAUNTLET -->
+  <section class="section" id="game">
+    <div class="section-divider"><span class="section-num">Appendix II</span></div>
+    <p class="section-lead" style="text-align:center">A Diversion &middot; For the Weary Scholar</p>
+    <h2 class="section-title" style="text-align:center">The Gauntlet of Mordis</h2>
+    <p style="text-align:center;color:var(--text-mid);font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:0.12em;margin-bottom:1.8rem;">
+      Press <strong style="color:var(--gold)">Space</strong> or <strong style="color:var(--gold)">Tap</strong> to jump &middot; Survive what the world throws at you
+    </p>
+    <div style="display:flex;justify-content:center;">
+      <canvas id="mordisGame" width="820" height="260"
+        style="border:1px solid var(--gold-bright);border-radius:4px;background:#0a0804;max-width:100%;cursor:pointer;box-shadow:0 0 40px rgba(201,168,76,0.08);">
+      </canvas>
     </div>
   </section>
 
@@ -715,6 +1189,989 @@
 </footer>
 
 <script>
+/* ── MORDIS GAUNTLET — LANES EDITION ── */
+(function () {
+  const canvas = document.getElementById('mordisGame');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.height = 320;
+  const W = 820, H = 320;
+
+  function applyScale() {
+    const max = canvas.parentElement.clientWidth - 32;
+    if (W > max) { canvas.style.width = max+'px'; canvas.style.height = (H*max/W)+'px'; }
+    else { canvas.style.width=''; canvas.style.height=''; }
+  }
+  applyScale(); window.addEventListener('resize', applyScale);
+
+  const HORIZON = 138;
+  const LANES = [172, 215, 258];
+  const T_DUSK = 270, T_BOSS = 550;
+  const BOSS_HP_MAX = 5;
+  const SHOT_CD = 120;
+
+  const PAL = {
+    day:     ['#4a9acc','#b8e0f5','#1a5a8a','#0c3560'],
+    dusk:    ['#c05820','#e8a030','#384858','#1a2530'],
+    boss:    ['#060310','#150820','#5a1015','#280408'],
+    victory: ['#060310','#150820','#0c2040','#061828'],
+  };
+
+  function lerpC(a,b,t) {
+    const h=s=>[parseInt(s.slice(1,3),16),parseInt(s.slice(3,5),16),parseInt(s.slice(5,7),16)];
+    const [r1,g1,b1]=h(a),[r2,g2,b2]=h(b);
+    return `rgb(${~~(r1+(r2-r1)*t)},${~~(g1+(g2-g1)*t)},${~~(b1+(b2-b1)*t)})`;
+  }
+
+  const STARS = Array.from({length:100}, ()=>({
+    x:Math.random()*W, y:Math.random()*HORIZON*0.95, r:0.4+Math.random()*1.8,
+    tw:Math.random()*Math.PI*2, dx:Math.random()*W, dy:Math.random()*HORIZON*0.95,
+  }));
+
+  let state='idle', score=0, frame=0, spd=4.2;
+  let nextSpawn=80, obs=null, parts=[];
+  let victoryTick=0, bossFrame=0;
+  const keys={};
+
+  const ship = {
+    lane:1, x:130, y:LANES[1], targetY:LANES[1],
+    sway:0, swayV:0, bob:0, dead:false, hp:3,
+    laneCool:0, shotCool:0, shots:[],
+
+    reset() {
+      this.lane=1; this.x=130; this.y=LANES[1]; this.targetY=LANES[1];
+      this.sway=0; this.swayV=0; this.bob=0; this.dead=false; this.hp=3;
+      this.laneCool=0; this.shotCool=0; this.shots=[];
+    },
+
+    update(bossObj) {
+      if (this.laneCool>0) this.laneCool--;
+      if ((keys['KeyW']||keys['ArrowUp']) && this.lane>0 && this.laneCool===0) {
+        this.lane--; this.targetY=LANES[this.lane]; this.laneCool=14;
+      }
+      if ((keys['KeyS']||keys['ArrowDown']) && this.lane<2 && this.laneCool===0) {
+        this.lane++; this.targetY=LANES[this.lane]; this.laneCool=14;
+      }
+      if (state==='boss') {
+        if (keys['KeyA']||keys['ArrowLeft'])  this.x=Math.max(55,  this.x-2.5);
+        if (keys['KeyD']||keys['ArrowRight']) this.x=Math.min(260, this.x+2.5);
+      } else {
+        this.x += (130-this.x)*0.06;
+      }
+      this.y += (this.targetY-this.y)*0.2;
+      this.bob+=0.035;
+      this.swayV += Math.sin(this.bob)*0.006 - this.sway*0.05;
+      this.swayV *= 0.96; this.sway += this.swayV;
+      if (this.shotCool>0) this.shotCool--;
+      this.shots.forEach(s=>{ s.x+=8; s.propAngle+=0.35; });
+      if (bossObj) {
+        this.shots = this.shots.filter(s=>{
+          if (s.x >= bossObj.x-90) { bossObj.hit(); return false; }
+          return s.x < W+60;
+        });
+      } else {
+        this.shots = this.shots.filter(s=>s.x<W+60);
+      }
+    },
+
+    fire() {
+      if (this.shotCool>0) return;
+      this.shots.push({x:this.x+75, y:LANES[this.lane], propAngle:0});
+      this.shotCool=SHOT_CD;
+    },
+
+    draw() {
+      this.shots.forEach(s=>drawShotShip(s));
+      const {x,y,sway,dead}=this;
+      const hC=dead?'#5a0808':'#3a0a0a';
+      const dC=dead?'#4a0808':'#520d0d';
+      const rC=dead?'#6a1010':'#7a1515';
+      const sC=dead?'#280404':'#1a0404';
+      const sB=dead?'#3c0606':'#2e0808';
+      ctx.save(); ctx.translate(x,y); ctx.rotate(sway);
+      ctx.fillStyle='rgba(0,0,0,0.18)';
+      ctx.beginPath(); ctx.ellipse(0,34,60,10,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=hC;
+      ctx.beginPath(); ctx.moveTo(-60,0);
+      ctx.bezierCurveTo(-60,26,-38,38,0,40);
+      ctx.bezierCurveTo(38,38,60,26,60,0); ctx.lineTo(-60,0); ctx.fill();
+      ctx.strokeStyle='rgba(0,0,0,0.32)'; ctx.lineWidth=1;
+      for (let i=-42;i<=42;i+=18) { ctx.beginPath();ctx.moveTo(i,3);ctx.lineTo(i+5,33);ctx.stroke(); }
+      ctx.fillStyle=dC; ctx.fillRect(-57,-12,114,14);
+      ctx.fillStyle=rC; ctx.fillRect(-61,-20,122,10);
+      ctx.strokeStyle=dead?'#6a1818':'#8a2020'; ctx.lineWidth=1.5;
+      for (let i=-56;i<=56;i+=14) { ctx.beginPath();ctx.moveTo(i,-20);ctx.lineTo(i,-11);ctx.stroke(); }
+      ctx.strokeStyle=dC; ctx.lineWidth=4; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(44,-13); ctx.lineTo(80,-35); ctx.stroke();
+      ctx.fillStyle=sC;
+      ctx.beginPath(); ctx.moveTo(44,-13); ctx.lineTo(80,-35); ctx.lineTo(44,-28); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle=hC; ctx.lineWidth=5;
+      ctx.beginPath(); ctx.moveTo(-4,-12); ctx.lineTo(-4,-125); ctx.stroke();
+      ctx.lineWidth=3;
+      ctx.beginPath(); ctx.moveTo(-48,-85); ctx.lineTo(38,-85); ctx.stroke();
+      ctx.fillStyle=sC;
+      ctx.beginPath(); ctx.moveTo(-4,-121); ctx.lineTo(-46,-83); ctx.lineTo(-46,-28); ctx.lineTo(-4,-25); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=sB;
+      ctx.beginPath(); ctx.moveTo(-4,-115); ctx.bezierCurveTo(-30,-98,-40,-65,-38,-30); ctx.lineTo(-4,-27); ctx.closePath(); ctx.fill();
+      // SUN FLAG
+      ctx.fillStyle='#8a0a0a'; ctx.fillRect(-4,-127,28,20);
+      ctx.fillStyle='#f0c040'; ctx.beginPath(); ctx.arc(10,-117,5.5,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#f0c040'; ctx.lineWidth=1.8; ctx.lineCap='round';
+      for (let i=0;i<8;i++) { const a=i*Math.PI/4; ctx.beginPath(); ctx.moveTo(10+Math.cos(a)*7,-117+Math.sin(a)*7); ctx.lineTo(10+Math.cos(a)*10,-117+Math.sin(a)*10); ctx.stroke(); }
+      ctx.fillStyle='#e8a020'; ctx.beginPath(); ctx.arc(10,-117,3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=dead?'#802020':'#e8b830'; ctx.globalAlpha=0.85;
+      ctx.beginPath(); ctx.arc(-44,-20,4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(46,-20,4,0,Math.PI*2); ctx.fill();
+      if (!dead) {
+        const lg=ctx.createRadialGradient(-44,-20,0,-44,-20,15);
+        lg.addColorStop(0,'rgba(232,184,48,0.2)'); lg.addColorStop(1,'rgba(232,184,48,0)');
+        ctx.fillStyle=lg; ctx.beginPath(); ctx.arc(-44,-20,15,0,Math.PI*2); ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      ctx.restore();
+    }
+  };
+
+  function drawShotShip(s) {
+    ctx.save(); ctx.translate(s.x, s.y);
+    ctx.fillStyle='#221408';
+    ctx.beginPath(); ctx.moveTo(-22,0);
+    ctx.bezierCurveTo(-22,10,-12,14,0,15);
+    ctx.bezierCurveTo(12,14,22,10,22,0); ctx.lineTo(-22,0); ctx.fill();
+    ctx.fillStyle='#382410'; ctx.fillRect(-20,-5,40,7);
+    ctx.fillStyle='#4e2c12'; ctx.fillRect(-23,-10,46,7);
+    ctx.strokeStyle='#1e1208'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(-1,-5); ctx.lineTo(-1,-38); ctx.stroke();
+    // Small sun flag on attack ship
+    ctx.fillStyle='#8a0a0a'; ctx.fillRect(-1,-38,16,11);
+    ctx.fillStyle='#f0c040'; ctx.beginPath(); ctx.arc(7,-33,3.5,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#f0c040'; ctx.lineWidth=1.2; ctx.lineCap='round';
+    for (let i=0;i<8;i++) { const a=i*Math.PI/4; ctx.beginPath(); ctx.moveTo(7+Math.cos(a)*4.5,-33+Math.sin(a)*4.5); ctx.lineTo(7+Math.cos(a)*6.5,-33+Math.sin(a)*6.5); ctx.stroke(); }
+    ctx.fillStyle='#e8a020'; ctx.beginPath(); ctx.arc(7,-33,1.8,0,Math.PI*2); ctx.fill();
+    ctx.save(); ctx.translate(-26,0);
+    const pg=ctx.createRadialGradient(0,0,0,0,0,10);
+    pg.addColorStop(0,'rgba(155,110,255,0.55)'); pg.addColorStop(1,'rgba(155,110,255,0)');
+    ctx.fillStyle=pg; ctx.beginPath(); ctx.arc(0,0,10,0,Math.PI*2); ctx.fill();
+    ctx.save(); ctx.rotate(s.propAngle);
+    for (let i=0;i<3;i++) {
+      ctx.rotate(Math.PI*2/3);
+      ctx.fillStyle='rgba(195,170,255,0.9)';
+      ctx.beginPath(); ctx.ellipse(0,-7,2.5,7,0,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore(); ctx.restore();
+    ctx.restore();
+  }
+
+  const boss = {
+    x:W+80, y:215,
+    hp:BOSS_HP_MAX, hitFlash:0,
+    cballs:[], fireT:0, sliding:false, flashPorts:[],
+
+    reset() {
+      this.x=W+80; this.hp=BOSS_HP_MAX; this.hitFlash=0;
+      this.cballs=[]; this.fireT=0; this.sliding=false; this.flashPorts=[];
+    },
+
+    hit() {
+      if(this.hp<=0||this.sliding) return;
+      this.hp--; this.hitFlash=22;
+      explode(W-80, LANES[~~(Math.random()*3)], '#c83020', 18);
+      if(this.hp<=0){
+        explode(W-60, LANES[0], '#c83020', 35);
+        explode(W-60, LANES[2], '#e8a030', 28);
+        this.sliding=true;
+      }
+    },
+
+    update() {
+      if(this.sliding){
+        this.x+=3.5;
+        if(this.x>W+500 && state!=='victory'){ state='victory'; victoryTick=0; }
+        return;
+      }
+      if(this.x>W*0.67) this.x-=1.2;
+      if(this.hitFlash>0) this.hitFlash--;
+      this.fireT++;
+      const fi=65-(BOSS_HP_MAX-this.hp)*9;
+      if(this.fireT>fi){
+        this.fireT=0;
+        const col=~~(Math.random()*3), row=~~(Math.random()*3);
+        const colX=this.x+[45,135,225][col];
+        this.cballs.push({x:colX-20, y:LANES[row], lane:row, vx:-7-Math.random()*3});
+        this.flashPorts.push({col, row, t:12});
+      }
+      this.cballs.forEach(cb=>{ cb.x+=cb.vx; });
+      this.cballs=this.cballs.filter(cb=>cb.x>-70);
+      if(state==='boss'){
+        this.cballs.forEach(cb=>{
+          if(cb.lane===ship.lane && Math.abs(cb.x-ship.x)<38){
+            explode(ship.x,ship.y,'#C9A84C',8);
+          }
+        });
+      }
+      this.flashPorts.forEach(f=>f.t--);
+      this.flashPorts=this.flashPorts.filter(f=>f.t>0);
+    },
+
+    draw() {
+      if(this.sliding && this.x>W+480) return;
+      const fl=this.hitFlash>0;
+      const px=this.x|0;
+      // Hull fills right third
+      ctx.fillStyle=fl?'#3a1010':'#160e08';
+      ctx.fillRect(px,0,W-px+4,H);
+      // Plank lines
+      ctx.strokeStyle=fl?'#5a2010':'#2a1408'; ctx.lineWidth=2;
+      for(let hl=16;hl<H;hl+=24){
+        ctx.beginPath(); ctx.moveTo(px,hl); ctx.lineTo(W+4,hl); ctx.stroke();
+      }
+      // Column dividers (heavy beams)
+      const colW=(W-px)/3;
+      ctx.strokeStyle=fl?'#4a1808':'#1a0c06'; ctx.lineWidth=8;
+      [1,2].forEach(ci=>{
+        const bx=px+colW*ci;
+        ctx.beginPath(); ctx.moveTo(bx,0); ctx.lineTo(bx,H); ctx.stroke();
+      });
+      // 3×3 cannon ports
+      const colCenters=[px+colW*0.5, px+colW*1.5, px+colW*2.5];
+      [0,1,2].forEach(col=>{
+        const portX=colCenters[col]|0;
+        [0,1,2].forEach(row=>{
+          const py=LANES[row];
+          // Port opening
+          ctx.fillStyle='#060204';
+          ctx.beginPath(); ctx.roundRect(portX-20,py-16,40,32,5); ctx.fill();
+          ctx.strokeStyle=fl?'#7a3010':'#4a2808'; ctx.lineWidth=2.5;
+          ctx.beginPath(); ctx.roundRect(portX-22,py-18,44,36,7); ctx.stroke();
+          // Cannon barrel (points left)
+          const flash=this.flashPorts.find(f=>f.col===col&&f.row===row);
+          const bLen=flash?4:18;
+          ctx.fillStyle='#242018'; ctx.fillRect(portX-20-bLen,py-6,bLen+2,12);
+          ctx.fillStyle='#342e28'; ctx.beginPath(); ctx.arc(portX-20-bLen,py,6,0,Math.PI*2); ctx.fill();
+          // Muzzle flash
+          if(flash){
+            const fg=ctx.createRadialGradient(portX-22,py,0,portX-22,py,28);
+            fg.addColorStop(0,'rgba(255,230,100,0.95)');
+            fg.addColorStop(0.45,'rgba(255,110,20,0.55)');
+            fg.addColorStop(1,'rgba(255,30,0,0)');
+            ctx.fillStyle=fg; ctx.beginPath(); ctx.arc(portX-22,py,28,0,Math.PI*2); ctx.fill();
+          }
+        });
+      });
+      // Nameplate
+      ctx.fillStyle='rgba(0,0,0,0.78)'; ctx.fillRect(px+6,5,125,16);
+      ctx.fillStyle=fl?'#ff7040':'#d0b070'; ctx.font='bold 10px Cinzel,serif'; ctx.textAlign='left';
+      ctx.fillText('CAPTAIN TOM',px+10,18);
+      // HP pips
+      for(let i=0;i<BOSS_HP_MAX;i++){
+        ctx.fillStyle=i<this.hp?(fl?'#ff4040':'#c82020'):'#1e0808';
+        ctx.beginPath(); ctx.arc(px+14+i*22,30,8,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle='#5a1010'; ctx.lineWidth=1.5; ctx.stroke();
+      }
+      // Cannonballs
+      this.cballs.forEach(cb=>{
+        ctx.fillStyle='#1c1a16'; ctx.beginPath(); ctx.arc(cb.x,cb.y,14,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#343230'; ctx.beginPath(); ctx.arc(cb.x-3,cb.y-4,4,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle='#484644'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(cb.x,cb.y,13,0,Math.PI*2); ctx.stroke();
+      });
+    }
+  };
+
+  function drawAlbatross(o) {
+    o.wp+=0.09;
+    const wUp=Math.sin(o.wp)*18;
+    const col=o.black?'#151210':'#ece8df';
+    const x=o.x, y=o.y;
+    ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x-22,y+2); ctx.quadraticCurveTo(x-48,y-wUp+3,x-72,y-wUp+13); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+22,y+2); ctx.quadraticCurveTo(x+48,y-wUp+3,x+72,y-wUp+13); ctx.stroke();
+    ctx.strokeStyle=col; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(x-22,y); ctx.quadraticCurveTo(x-48,y-wUp,x-72,y-wUp+11); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+22,y); ctx.quadraticCurveTo(x+48,y-wUp,x+72,y-wUp+11); ctx.stroke();
+    ctx.strokeStyle=o.black?'rgba(80,60,40,0.35)':'rgba(255,255,255,0.45)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(x-32,y+2); ctx.quadraticCurveTo(x-56,y-wUp+6,x-72,y-wUp+15); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+32,y+2); ctx.quadraticCurveTo(x+56,y-wUp+6,x+72,y-wUp+15); ctx.stroke();
+    ctx.fillStyle=col; ctx.beginPath(); ctx.ellipse(x,y,22,10,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=o.black?'rgba(60,40,20,0.3)':'rgba(255,255,255,0.55)';
+    ctx.beginPath(); ctx.ellipse(x+5,y+2,10,5,0.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=col; ctx.beginPath(); ctx.ellipse(x-23,y-3,10,7,-0.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#d4a820';
+    ctx.beginPath(); ctx.moveTo(x-31,y-3); ctx.lineTo(x-42,y-1); ctx.lineTo(x-31,y+2); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#a07810';
+    ctx.beginPath(); ctx.moveTo(x-39,y-1); ctx.lineTo(x-44,y); ctx.lineTo(x-39,y+1.5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=o.black?'#d4a820':'#1a1208'; ctx.beginPath(); ctx.arc(x-25,y-4,2.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=o.black?'#1a1208':'#fff'; ctx.beginPath(); ctx.arc(x-24.5,y-4.5,1,0,Math.PI*2); ctx.fill();
+  }
+
+  function drawCannonball(o) {
+    const x=o.x, y=o.y;
+    o.trail=o.trail||[]; o.smk=o.smk||[];
+    o.trail.unshift({x,y}); if(o.trail.length>10) o.trail.pop();
+    if(Math.random()<0.35) o.smk.push({x:x-23,y:y+Math.random()*12-6,age:0,r:3+Math.random()*4});
+    o.smk.forEach(s=>s.age++); o.smk=o.smk.filter(s=>s.age<20);
+    // Speed lines (right = behind in travel direction)
+    ctx.lineCap='round';
+    [[y-11,24],[y,28],[y+11,24]].forEach(([ly,len],i)=>{
+      ctx.globalAlpha=0.4+i*0.05; ctx.strokeStyle='#786858'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(x+26,ly); ctx.lineTo(x+26+len,ly); ctx.stroke();
+    });
+    ctx.globalAlpha=1;
+    // Snort puffs ahead (left side)
+    o.smk.forEach(s=>{
+      ctx.globalAlpha=Math.max(0,(1-s.age/20)*0.52);
+      ctx.fillStyle='#c0b09a';
+      ctx.beginPath(); ctx.arc(s.x-s.age*1.4,s.y,s.r*(1+s.age*0.08),0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    // Shadow
+    ctx.fillStyle='rgba(0,0,0,0.22)'; ctx.beginPath(); ctx.ellipse(x+6,y+20,22,7,0,0,Math.PI*2); ctx.fill();
+    // Ball gradient
+    const bg=ctx.createRadialGradient(x-7,y-7,2,x,y,22);
+    bg.addColorStop(0,'#4a4844'); bg.addColorStop(0.5,'#1c1a16'); bg.addColorStop(1,'#0c0a08');
+    ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(x,y,22,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#383632'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y,22,0,Math.PI*2); ctx.stroke();
+    // Charging bull horns — sweep BACK (right) like a longhorn pointing behind
+    ctx.strokeStyle='#9a8038'; ctx.lineWidth=5; ctx.lineCap='round';
+    // Left horn: starts top-left, arcs right and back
+    ctx.beginPath(); ctx.moveTo(x-10,y-18); ctx.bezierCurveTo(x-18,y-32,x-10,y-42,x+2,y-44); ctx.stroke();
+    // Right horn: starts top-right, arcs far right and down
+    ctx.beginPath(); ctx.moveTo(x+13,y-18); ctx.bezierCurveTo(x+22,y-32,x+40,y-28,x+42,y-14); ctx.stroke();
+    // Horn tip accents
+    ctx.strokeStyle='#6a5820'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x-8,y-40); ctx.lineTo(x+2,y-44); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+38,y-26); ctx.lineTo(x+42,y-14); ctx.stroke();
+    // V-brow (angry)
+    ctx.strokeStyle='#b03010'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x-16,y-9); ctx.lineTo(x-8,y-4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+16,y-9); ctx.lineTo(x+8,y-4); ctx.stroke();
+    // Glowing red eyes
+    [{ex:x-8,ey:y-1},{ex:x+8,ey:y-1}].forEach(({ex,ey})=>{
+      const eg=ctx.createRadialGradient(ex,ey,0,ex,ey,6);
+      eg.addColorStop(0,'#ff7020'); eg.addColorStop(1,'rgba(180,10,0,0)');
+      ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(ex,ey,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#cc1800'; ctx.beginPath(); ctx.arc(ex,ey,3,0,Math.PI*2); ctx.fill();
+    });
+    // Nostrils
+    ctx.fillStyle='#1a1208';
+    ctx.beginPath(); ctx.ellipse(x-7,y+9,5,3,0.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x+7,y+9,5,3,-0.4,0,Math.PI*2); ctx.fill();
+    // Snort lines from nostrils (pointing left)
+    // snort lines removed
+  }
+
+  function drawTheatrical(o) {
+    o.rot += 0.24;
+    const x=o.x, y=o.y, r=44;
+
+    // Three theatrical ribbon streamers
+    const ribbons=[[0,'rgba(160,30,110,0.75)'],[Math.PI,'rgba(201,168,76,0.78)'],[Math.PI*0.62,'rgba(100,55,185,0.60)']];
+    ribbons.forEach(([phOff,rc],ri)=>{
+      ctx.beginPath();
+      for(let i=0;i<32;i++){
+        const rx=x+i*5.0, ry=y+Math.sin(o.rot-i*0.36+phOff)*r;
+        i===0?ctx.moveTo(rx,ry):ctx.lineTo(rx,ry);
+      }
+      ctx.strokeStyle=rc; ctx.lineWidth=ri===1?3.5:2.5; ctx.lineCap='round';
+      ctx.globalAlpha=0.74; ctx.stroke(); ctx.globalAlpha=1;
+    });
+
+    // Theatrical bouquet: feathers, big masks, cards, stars
+    const bouquet=[
+      {d:6,  ph:0,           type:'mask',   sz:12},
+      {d:16, ph:Math.PI*0.9, type:'feather',len:20,col:'#c03080'},
+      {d:26, ph:Math.PI,     type:'card',   suit:'\u2666'},
+      {d:36, ph:Math.PI*0.4, type:'feather',len:18,col:'#e0c030'},
+      {d:48, ph:Math.PI*1.6, type:'star',   sz:5.5},
+      {d:60, ph:Math.PI*0.7, type:'feather',len:16,col:'#7030c0'},
+      {d:74, ph:Math.PI*1.3, type:'star',   sz:5.5},
+      {d:90, ph:Math.PI*0.5, type:'card',   suit:'\u2660'},
+      {d:108,ph:Math.PI*1.8, type:'feather',len:14,col:'#c03080'},
+      {d:124,ph:Math.PI*1.1, type:'star',   sz:4},
+      {d:140,ph:Math.PI*0.25,type:'card',   suit:'\u2665'},
+    ];
+
+    bouquet.sort((a,b)=>Math.cos(o.rot-a.d*0.36+a.ph)-Math.cos(o.rot-b.d*0.36+b.ph))
+      .forEach(item=>{
+        const angle=o.rot-item.d*0.36+item.ph;
+        const ix=x+item.d, iy=y+Math.sin(angle)*r;
+        const depth=Math.cos(angle);
+        const fade=Math.max(0,1-item.d/155);
+        const alpha=Math.max(0.12,(depth+1)*0.5)*fade;
+        ctx.globalAlpha=alpha;
+
+        if(item.type==='feather'){
+          ctx.save(); ctx.translate(ix,iy);
+          // Orient feather perpendicular to travel axis (tangent to helix)
+          ctx.rotate(angle+Math.PI/2);
+          // Spine
+          ctx.strokeStyle=item.col; ctx.lineWidth=1.5; ctx.lineCap='round';
+          ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,-item.len); ctx.stroke();
+          // Vane — soft ellipse around spine
+          ctx.globalAlpha=alpha*0.55; ctx.fillStyle=item.col;
+          ctx.beginPath(); ctx.ellipse(0,-item.len*0.52,item.len*0.19,item.len*0.44,0,0,Math.PI*2); ctx.fill();
+          // Feather eye
+          ctx.globalAlpha=alpha;
+          ctx.fillStyle='#e8d040';
+          ctx.beginPath(); ctx.arc(0,-item.len*0.82,item.len*0.13,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle='#183080';
+          ctx.beginPath(); ctx.arc(0,-item.len*0.82,item.len*0.07,0,Math.PI*2); ctx.fill();
+          // Barb lines
+          ctx.strokeStyle=item.col; ctx.lineWidth=0.8; ctx.globalAlpha=alpha*0.45;
+          for(let b=2;b<item.len-2;b+=3){
+            const bx=item.len*0.17*(1-b/item.len);
+            ctx.beginPath(); ctx.moveTo(-bx,-b); ctx.lineTo(bx,-b); ctx.stroke();
+          }
+          ctx.restore();
+        } else if(item.type==='star'){
+          starShape(ix,iy,item.sz,'#e8d060',angle);
+        } else {
+          ctx.save(); ctx.translate(ix,iy); ctx.rotate(angle*0.4);
+          ctx.fillStyle='#f0e8d0'; ctx.strokeStyle='#5a3a05'; ctx.lineWidth=1;
+          ctx.fillRect(-5,-7,10,14); ctx.strokeRect(-5,-7,10,14);
+          ctx.fillStyle='#7a1a1a'; ctx.font='8px serif'; ctx.textAlign='center'; ctx.fillText(item.suit,0,3);
+          ctx.restore();
+        }
+        ctx.globalAlpha=1;
+      });
+
+    // Dagger — no wobble
+    ctx.save(); ctx.translate(x,y);
+    ctx.fillStyle='#d0ccc0';
+    ctx.beginPath(); ctx.moveTo(-28,0); ctx.lineTo(0,-4); ctx.lineTo(5,0); ctx.lineTo(0,4); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#9a9890'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(-24,0); ctx.lineTo(2,0); ctx.stroke();
+    ctx.fillStyle='#C9A84C'; ctx.fillRect(0,-8,5,16);
+    ctx.fillStyle='#3a2805'; ctx.fillRect(5,-3,16,6);
+    ctx.strokeStyle='#6a4810'; ctx.lineWidth=1;
+    for(let i=0;i<4;i++){ ctx.beginPath();ctx.moveTo(6+i*3.5,-3);ctx.lineTo(6+i*3.5,3);ctx.stroke(); }
+    ctx.fillStyle='#C9A84C'; ctx.beginPath(); ctx.arc(22,0,4.5,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGoldfish(o) {
+    o.emitT=(o.emitT||0)+1;
+    if(o.emitT%2===0){
+      const isSoul=Math.random()>0.42;
+      if(isSoul){
+        parts.push({x:o.x+14+Math.random()*12,y:o.y+(Math.random()-0.5)*18,
+          vx:1.5+Math.random()*3.5,vy:-(1.8+Math.random()*3),
+          life:65,maxLife:65,size:6.5,color:'#0a0606',gem:false,ring:true});
+      } else {
+        parts.push({x:o.x+14+Math.random()*12,y:o.y+(Math.random()-0.5)*18,
+          vx:1.5+Math.random()*3.5,vy:-(1.8+Math.random()*3),
+          life:60,maxLife:60,size:3.5,color:'#c8b840',gem:false});
+      }
+    }
+    const x=o.x, y=o.y;
+
+    // Body — infernal orange-red
+    ctx.fillStyle='#cc6a10';
+    ctx.beginPath(); ctx.ellipse(x,y,26,16,0,0,Math.PI*2); ctx.fill();
+    // Centre highlight (slightly redder)
+    ctx.fillStyle='#e88420';
+    ctx.beginPath(); ctx.ellipse(x-2,y-3,16,9,0,0,Math.PI*2); ctx.fill();
+    // Tail
+    ctx.fillStyle='#cc6a10';
+    ctx.beginPath();
+    ctx.moveTo(x+24,y); ctx.lineTo(x+40,y-13); ctx.lineTo(x+38,y-5); ctx.lineTo(x+34,y);
+    ctx.lineTo(x+38,y+5); ctx.lineTo(x+40,y+13); ctx.closePath(); ctx.fill();
+    // Dorsal fin
+    ctx.beginPath(); ctx.moveTo(x-4,y-16); ctx.quadraticCurveTo(x+2,y-23,x+10,y-16); ctx.closePath(); ctx.fill();
+    // Pectoral fin
+    ctx.fillStyle='#a85010';
+    ctx.beginPath(); ctx.moveTo(x-2,y+4); ctx.quadraticCurveTo(x-12,y+14,x+2,y+14); ctx.closePath(); ctx.fill();
+    // Devil horns — curving inward toward each other
+    ctx.fillStyle='#cc1808';
+    ctx.beginPath(); ctx.moveTo(x-10,y-16); ctx.lineTo(x-3,y-27); ctx.lineTo(x-5,y-18); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x+10,y-16); ctx.lineTo(x+3,y-27); ctx.lineTo(x+5,y-18); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#ff4020'; ctx.beginPath(); ctx.arc(x-3,y-27,1.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#ff4020'; ctx.beginPath(); ctx.arc(x+3,y-27,1.5,0,Math.PI*2); ctx.fill();
+    // Eye — dark with evil red glint
+    ctx.fillStyle='#1a1208'; ctx.beginPath(); ctx.arc(x-18,y-3,3.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#ff3010'; ctx.beginPath(); ctx.arc(x-17.5,y-3.8,1.3,0,Math.PI*2); ctx.fill();
+    // Mischievous smile (slightly more sinister arc)
+    ctx.strokeStyle='#6a2808'; ctx.lineWidth=1.8; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(x-12,y+3,6,0.2,Math.PI-0.2); ctx.stroke();
+  }
+
+  function starShape(x,y,r,color,rot) {
+    ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.fillStyle=color;
+    ctx.beginPath();
+    for (let i=0;i<5;i++) {
+      const a=i*4*Math.PI/5-Math.PI/2, b=(i*4+2)*Math.PI/5-Math.PI/2;
+      i===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+      ctx.lineTo(Math.cos(b)*r*0.4,Math.sin(b)*r*0.4);
+    }
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+
+  function drawBossPreview() {
+    if(state!=='boss'||bossFrame>100) return;
+    const p=bossFrame/100;
+    const alpha=Math.min(1,bossFrame/18)*Math.max(0,1-(bossFrame-72)/28)*0.82;
+    if(alpha<0.02) return;
+    // Ship starts visible in top-right, drifts off-screen to the right
+    const sx=W*0.80+p*(W*0.32);
+    const sy=HORIZON+3+Math.sin(p*Math.PI*3)*2;
+    ctx.globalAlpha=alpha*0.72;
+    ctx.save(); ctx.translate(sx,sy);
+    const sc=0.22; ctx.scale(sc,sc);
+    ctx.fillStyle='#0e0808';
+    ctx.beginPath(); ctx.moveTo(-65,0); ctx.bezierCurveTo(-65,24,-42,32,0,34); ctx.bezierCurveTo(42,32,65,24,65,0); ctx.lineTo(-65,0); ctx.fill();
+    ctx.fillStyle='#0a0504'; ctx.fillRect(-60,-11,120,13);
+    ctx.strokeStyle='#0e0808'; ctx.lineWidth=6; ctx.lineCap='square';
+    [-32,0,32].forEach(mx=>{ ctx.beginPath(); ctx.moveTo(mx,-11); ctx.lineTo(mx,-88); ctx.stroke(); });
+    ctx.fillStyle='#0c0808'; ctx.fillRect(0,-88,22,15);
+    ctx.fillStyle='#d0c8b8'; ctx.beginPath(); ctx.arc(11,-82,5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#0a0606';
+    ctx.beginPath(); ctx.arc(8.5,-84,1.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(13.5,-84,1.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(11,-81,1.1,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.globalAlpha=1;
+  }
+
+  function getBlend() {
+    if (state==='victory') {
+      // sky stays boss; water transitions to calm blue over 300 ticks
+      const wt=Math.min(1,victoryTick/300);
+      return {a:'boss',b:'victory',t:wt,skyT:0};
+    }
+    if (score<T_DUSK)    return {a:'day', b:'dusk', t:0};
+    if (score<T_DUSK+70) return {a:'day', b:'dusk', t:(score-T_DUSK)/70};
+    if (score<T_BOSS)    return {a:'dusk',b:'boss', t:0};
+    if (score<T_BOSS+80) return {a:'dusk',b:'boss', t:(score-T_BOSS)/80};
+    return {a:'boss',b:'boss',t:0};
+  }
+
+  function drawBG() {
+    const bl=getBlend(), A=PAL[bl.a], B=PAL[bl.b], t=bl.t;
+    const st=bl.skyT!==undefined?bl.skyT:t;
+    const sg=ctx.createLinearGradient(0,0,0,HORIZON);
+    sg.addColorStop(0,lerpC(A[0],B[0],st)); sg.addColorStop(1,lerpC(A[1],B[1],st));
+    ctx.fillStyle=sg; ctx.fillRect(0,0,W,HORIZON);
+    const sBase={day:0,dusk:0.12,boss:1,victory:1};
+    const sA=Math.min(1,(sBase[bl.a]||0)*(1-st)+(sBase[bl.b]||0)*st);
+    if (sA>0.01) {
+      // Star inversion: instant swap at victoryTick 300
+      const inverted=state==='victory'&&victoryTick>=300;
+      STARS.forEach(s=>{
+        s.tw+=0.038;
+        const bri=0.55+Math.sin(s.tw)*0.45;
+        const sx=inverted?s.dx:s.x, sy=inverted?s.dy:s.y;
+        ctx.globalAlpha=sA*bri;
+        ctx.fillStyle=inverted?'#b0c8f0':'#e8e0d4';
+        ctx.beginPath(); ctx.arc(sx,sy,s.r,0,Math.PI*2); ctx.fill();
+        // Water reflections appear after inversion
+        if (inverted&&victoryTick>305) {
+          const ra=Math.min(0.45,(victoryTick-305)/120);
+          ctx.globalAlpha=sA*bri*ra; ctx.fillStyle='#8098b8';
+          const ry=HORIZON+(HORIZON-sy)*0.55+28;
+          if (ry<H-8) { ctx.beginPath(); ctx.arc(sx+Math.sin(frame*0.04+sx*0.01)*2.5,ry,s.r*0.62,0,Math.PI*2); ctx.fill(); }
+        }
+      });
+      // Brief flash at inversion point
+      if (state==='victory'&&victoryTick>=298&&victoryTick<=308) {
+        const fp=1-Math.abs(victoryTick-303)/5;
+        ctx.globalAlpha=fp*0.35; ctx.fillStyle='#a0b8e8';
+        ctx.fillRect(0,0,W,HORIZON);
+      }
+      ctx.globalAlpha=1;
+    }
+    const wg=ctx.createLinearGradient(0,HORIZON,0,H);
+    wg.addColorStop(0,lerpC(A[2],B[2],t)); wg.addColorStop(1,lerpC(A[3],B[3],t));
+    ctx.fillStyle=wg; ctx.fillRect(0,HORIZON,W,H-HORIZON);
+    if (state==='running'||state==='boss') {
+      ctx.strokeStyle='rgba(255,255,255,0.055)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(0,(LANES[0]+LANES[1])/2); ctx.lineTo(W,(LANES[0]+LANES[1])/2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,(LANES[1]+LANES[2])/2); ctx.lineTo(W,(LANES[1]+LANES[2])/2); ctx.stroke();
+    }
+    for (let i=0;i<7;i++) {
+      const wy=HORIZON+14+i*24+Math.sin(frame*0.018+i)*3;
+      ctx.strokeStyle=`rgba(255,255,255,${0.04+i*0.011})`;
+      ctx.lineWidth=1.5; ctx.lineCap='round';
+      const off=(frame*(0.7+i*0.25))%W;
+      ctx.beginPath();
+      for (let wx=0;wx<=W+40;wx+=8) {
+        const wv=Math.sin((wx+off)*0.035+frame*0.035)*4;
+        wx===0?ctx.moveTo(wx,wy+wv):ctx.lineTo(wx,wy+wv);
+      }
+      ctx.stroke();
+    }
+    const hg=ctx.createLinearGradient(0,HORIZON-8,0,HORIZON+14);
+    hg.addColorStop(0,'rgba(255,255,255,0.03)');
+    hg.addColorStop(0.5,'rgba(255,255,255,0.09)');
+    hg.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=hg; ctx.fillRect(0,HORIZON-8,W,22);
+  }
+
+  function drawIsland(progress) {
+    const ix=W+80-progress*(W*0.28+80)|0, iy=LANES[1];
+    ctx.fillStyle='#284010';
+    ctx.beginPath(); ctx.moveTo(ix-65,iy+22);
+    ctx.bezierCurveTo(ix-85,iy-8,ix-52,iy-32,ix,iy-38);
+    ctx.bezierCurveTo(ix+52,iy-32,ix+85,iy-8,ix+65,iy+22); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#c8a850'; ctx.beginPath(); ctx.ellipse(ix,iy+18,60,17,0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#6a3e10'; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(ix+12,iy+18); ctx.bezierCurveTo(ix+10,iy-5,ix+18,iy-22,ix+22,iy-36); ctx.stroke();
+    ctx.fillStyle='#2a6018';
+    for (let i=0;i<5;i++) {
+      const la=i*Math.PI*0.42-Math.PI*0.55;
+      ctx.beginPath(); ctx.moveTo(ix+22,iy-36);
+      ctx.bezierCurveTo(ix+22+Math.cos(la)*14,iy-36+Math.sin(la)*9,ix+22+Math.cos(la)*26,iy-36+Math.sin(la)*17,ix+22+Math.cos(la)*28,iy-36+Math.sin(la)*19);
+      ctx.lineTo(ix+22+Math.cos(la)*22,iy-36+Math.sin(la)*15); ctx.closePath(); ctx.fill();
+    }
+    if (progress>0.6) {
+      ctx.fillStyle='#e8a020'; ctx.font='bold 18px serif'; ctx.textAlign='center';
+      ctx.fillText('X',ix-18,iy+2);
+    }
+  }
+
+  function spawnObs() {
+    const types=['albatross','cannonball','theatrical','goldfish'];
+    const t=types[~~(Math.random()*4)];
+    const lane=~~(Math.random()*3);
+    const y=LANES[lane];
+    if (t==='albatross')  return {type:t, x:W+72, y, lane, black:Math.random()>0.5, wp:0};
+    if (t==='cannonball') return {type:t, x:W+66, y, lane, sm:1.3+Math.random()*0.5, trail:[]};
+    if (t==='theatrical') return {type:t, x:W+66, y, lane, rot:0, oa:0};
+    if (t==='goldfish')   return {type:t, x:W+72, y, lane, finPhase:0, emitT:0};
+  }
+
+  function hitTest(o) {
+    if (o.lane!==ship.lane) return false;
+    return Math.abs(ship.x-o.x)<42;
+  }
+
+  function drawHUD() {
+    ctx.font='14px Cinzel,serif'; ctx.fillStyle='#C9A84C'; ctx.textAlign='left';
+    ctx.fillText('Score: '+~~score, 14, 22);
+    ctx.font='10px Cinzel,serif'; ctx.fillStyle='rgba(201,168,76,0.45)';
+    ctx.fillText(~~(score/10)+' leagues', 14, 38);
+    if (state==='boss') {
+      const ready=ship.shotCool===0;
+      const cdR=1-ship.shotCool/SHOT_CD;
+      ctx.textAlign='center';
+      ctx.fillStyle=ready?'#e8c040':'rgba(201,168,76,0.35)';
+      ctx.font=(ready?'bold ':'')+`11px Cinzel,serif`;
+      ctx.fillText(ready?'\u25b8 Space \u2014 Fire!':'Reloading\u2026',W/2,H-26);
+      ctx.fillStyle='rgba(201,168,76,0.18)'; ctx.fillRect(W/2-55,H-20,110,6);
+      ctx.fillStyle=ready?'#e8c040':'#C9A84C'; ctx.fillRect(W/2-55,H-20,110*cdR,6);
+      ctx.fillStyle='rgba(180,100,40,0.8)'; ctx.font='10px Cinzel,serif'; ctx.textAlign='right';
+      ctx.fillText('W/S: lanes  A/D: move',W-12,22);
+    }
+    if (state==='running') {
+      ctx.font='15px serif'; ctx.textAlign='right';
+      for(let i=0;i<3;i++){
+        ctx.fillStyle=i<ship.hp?'#cc2020':'#2a0808';
+        ctx.fillText('\u2665',W-12-i*18,22);
+      }
+    }
+    if (score<50) {
+      ctx.globalAlpha=0.38; ctx.fillStyle='#C9A84C'; ctx.font='10px Cinzel,serif'; ctx.textAlign='center';
+      ctx.fillText('W / S  to change lanes',W/2,H-13); ctx.globalAlpha=1;
+    }
+  }
+
+  function overlay(t1,t2) {
+    ctx.fillStyle='rgba(4,2,1,0.75)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#7a1a1a'; ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif'; ctx.textAlign='center';
+    ctx.fillText(t1,W/2,H/2-18);
+    ctx.fillStyle='#C9A84C'; ctx.font='13px Cinzel,serif'; ctx.fillText(t2,W/2,H/2+10);
+  }
+
+  function explode(x,y,color,count) {
+    for (let i=0;i<count;i++) {
+      const a=Math.random()*Math.PI*2, s=2+Math.random()*6;
+      parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,life:40+~~(Math.random()*22),maxLife:62,size:2+Math.random()*4,color,gem:false});
+    }
+  }
+
+  document.addEventListener('keydown', e=>{
+    keys[e.code]=true;
+    if (e.code==='Space') { e.preventDefault(); handleSpace(); }
+  });
+  document.addEventListener('keyup', e=>{ keys[e.code]=false; });
+  canvas.addEventListener('click', handleSpace);
+  canvas.addEventListener('touchstart', e=>{ e.preventDefault(); handleSpace(); },{passive:false});
+
+  function handleSpace() {
+    if (state==='idle')                     { state='running'; return; }
+    if (state==='dead'||state==='victory')  { resetAll(); return; }
+    if (state==='boss')                     { ship.fire(); return; }
+  }
+
+  function resetAll() {
+    score=0; frame=0; spd=4.2; nextSpawn=80;
+    obs=null; parts=[]; victoryTick=0;
+    boss.reset(); ship.reset(); state='running';
+  }
+
+  function drawCharacter(idx, cx, cy, t) {
+    const bob=Math.sin(t*0.12+idx*1.3)*5;
+    const sw=Math.sin(t*0.08+idx*0.9)*4;
+    ctx.save(); ctx.translate(cx+sw, cy+bob);
+    if(idx===0){ // Fugoki — stocky dwarf
+      ctx.fillStyle='#6a5030'; ctx.fillRect(-14,-24,28,24);
+      ctx.fillStyle='#1e1408'; ctx.fillRect(-15,0,12,13); ctx.fillRect(3,0,12,13);
+      ctx.fillStyle='#282010'; ctx.fillRect(-16,11,12,5); ctx.fillRect(4,11,12,5);
+      ctx.fillStyle='#d4a060'; ctx.beginPath(); ctx.arc(0,-34,13,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#686060'; ctx.beginPath(); ctx.arc(0,-34,13,Math.PI,0); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#484040'; ctx.fillRect(-15,-40,30,8);
+      ctx.fillStyle='#c8b060'; ctx.fillRect(-10,-24,20,8);
+      ctx.fillStyle='#281808'; ctx.beginPath(); ctx.arc(-5,-36,2,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(5,-36,2,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#888'; ctx.lineWidth=3; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(18,-26); ctx.lineTo(18,8); ctx.stroke();
+      ctx.fillStyle='#aaa'; ctx.beginPath(); ctx.moveTo(16,-24); ctx.lineTo(25,-17); ctx.lineTo(24,-8); ctx.lineTo(16,-16); ctx.fill();
+    } else if(idx===1){ // Mark — tall blind monk
+      const rg=ctx.createLinearGradient(0,-60,0,14);
+      rg.addColorStop(0,'#3a3055'); rg.addColorStop(1,'#1e1830');
+      ctx.fillStyle=rg; ctx.beginPath(); ctx.moveTo(-12,-60); ctx.lineTo(12,-60); ctx.lineTo(16,14); ctx.lineTo(-16,14); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle='#c0a030'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(-12,-60); ctx.lineTo(-16,14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(12,-60); ctx.lineTo(16,14); ctx.stroke();
+      ctx.fillStyle='#d4a878'; ctx.beginPath(); ctx.arc(0,-72,12,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#c8b890'; ctx.fillRect(-14,-78,28,8);
+      ctx.strokeStyle='#706050'; ctx.lineWidth=1; ctx.strokeRect(-14,-78,28,8);
+      ctx.strokeStyle='#a07858'; ctx.lineWidth=1.5; ctx.lineCap='round';
+      ctx.beginPath(); ctx.arc(0,-70,4,0.25,Math.PI-0.25); ctx.stroke();
+    } else if(idx===2){ // Belnan — halfling ranger
+      ctx.fillStyle='#5a4c28'; ctx.fillRect(-10,-22,20,22);
+      ctx.fillStyle='#1e1808'; ctx.fillRect(-11,0,9,11); ctx.fillRect(2,0,9,11);
+      ctx.fillStyle='#d0a060'; ctx.beginPath(); ctx.arc(0,-30,11,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#7a5018';
+      for(let ci=-7;ci<=7;ci+=7){ ctx.beginPath(); ctx.arc(ci,-38,5,Math.PI,0); ctx.fill(); }
+      ctx.fillStyle='#2e1808'; ctx.beginPath(); ctx.arc(-4,-32,1.8,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(4,-32,1.8,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#6a3808'; ctx.lineWidth=2.5; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(-14,-24); ctx.bezierCurveTo(-19,-14,-18,-5,-14,2); ctx.stroke();
+      ctx.strokeStyle='#c8c080'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(-14,-24); ctx.lineTo(-14,2); ctx.stroke();
+    } else { // Galicus — elf warlock
+      const eg=ctx.createLinearGradient(0,-72,0,14);
+      eg.addColorStop(0,'#1c1640'); eg.addColorStop(1,'#100c28');
+      ctx.fillStyle=eg; ctx.beginPath(); ctx.moveTo(-10,-72); ctx.lineTo(10,-72); ctx.lineTo(13,14); ctx.lineTo(-13,14); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='rgba(180,160,255,0.65)';
+      [[-2,-58],[6,-48],[-5,-40],[4,-32]].forEach(([sx,sy])=>{ ctx.beginPath(); ctx.arc(sx,sy,1.5,0,Math.PI*2); ctx.fill(); });
+      ctx.fillStyle='#d0c8b8'; ctx.beginPath(); ctx.ellipse(0,-84,9,12,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-9,-84); ctx.lineTo(-17,-78); ctx.lineTo(-9,-76); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(9,-84); ctx.lineTo(17,-78); ctx.lineTo(9,-76); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#5878ff'; ctx.beginPath(); ctx.arc(-3,-86,2.2,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(3,-86,2.2,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#d0c8b8'; ctx.lineWidth=2; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(-6,-74); ctx.quadraticCurveTo(-12,-62,-10,-50); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(6,-74); ctx.quadraticCurveTo(12,-62,10,-50); ctx.stroke();
+      ctx.strokeStyle='#8870a8'; ctx.lineWidth=2.5; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(16,-68); ctx.lineTo(16,12); ctx.stroke();
+      starShape(16,-74,4,'#c0a8ff',t*0.04);
+    }
+    ctx.restore();
+  }
+
+  function drawRowboat(bx,by) {
+    ctx.save(); ctx.translate(bx,by);
+    ctx.fillStyle='#4a3018';
+    ctx.beginPath(); ctx.moveTo(-20,0); ctx.bezierCurveTo(-20,11,-11,15,0,15); ctx.bezierCurveTo(11,15,20,11,20,0); ctx.lineTo(-20,0); ctx.fill();
+    ctx.fillStyle='#6a4820'; ctx.fillRect(-18,-5,36,7);
+    ctx.strokeStyle='#2e1808'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(0,8,20,Math.PI*0.14,Math.PI*0.86,true); ctx.stroke();
+    ctx.strokeStyle='#6a3e10'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-8,-5); ctx.lineTo(-26,-12); ctx.stroke();
+    ctx.fillStyle='#8a5818'; ctx.beginPath(); ctx.ellipse(-28,-13,6,3,0.4,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawArrivalScene(vt) {
+    if(vt<820) return;
+
+    if(vt<900) {
+      // Golden Lathander arrival flash: expands from island position
+      const fp=(vt-820)/80;
+      const gx=W*0.70, gy=H*0.52;
+      const glow=ctx.createRadialGradient(gx,gy,0,gx,gy,W*0.95);
+      glow.addColorStop(0,`rgba(255,238,160,${Math.min(1,fp*2.2)*0.92})`);
+      glow.addColorStop(0.3,`rgba(255,170,50,${fp*0.72})`);
+      glow.addColorStop(0.7,`rgba(220,90,10,${fp*0.28})`);
+      glow.addColorStop(1,'rgba(200,60,0,0)');
+      ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+      return;
+    }
+
+    // Beach scene fades in from tick 900
+    const fi=Math.min(1,(vt-900)/70);
+    ctx.globalAlpha=fi;
+
+    // Dawn sky — Lathander's light
+    const sky=ctx.createLinearGradient(0,0,0,HORIZON);
+    sky.addColorStop(0,'#18203c'); sky.addColorStop(0.55,'#48306a'); sky.addColorStop(1,'#c05828');
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,HORIZON);
+
+    // Horizon dawn glow (right side where island is)
+    const dg=ctx.createRadialGradient(W*0.72,HORIZON,0,W*0.72,HORIZON,W*0.55);
+    dg.addColorStop(0,'rgba(255,210,80,0.82)');
+    dg.addColorStop(0.35,'rgba(255,140,40,0.48)');
+    dg.addColorStop(1,'rgba(200,60,0,0)');
+    ctx.fillStyle=dg; ctx.fillRect(0,0,W,HORIZON);
+
+    // A few dawn stars still visible upper-left sky
+    ctx.fillStyle='rgba(220,210,240,0.55)';
+    [[40,18],[110,10],[190,28],[62,8],[152,22]].forEach(([sx,sy])=>{
+      ctx.beginPath(); ctx.arc(sx,sy,1+Math.sin(vt*0.05+sx)*0.5,0,Math.PI*2); ctx.fill();
+    });
+
+    // Ocean left ~28% — deep dusk water
+    const og=ctx.createLinearGradient(0,HORIZON,0,H);
+    og.addColorStop(0,'#1c3858'); og.addColorStop(1,'#0c1e30');
+    ctx.fillStyle=og; ctx.fillRect(0,HORIZON,W*0.32,H-HORIZON);
+
+    // Sandy beach — right 72%
+    const sg=ctx.createLinearGradient(0,HORIZON+18,0,H);
+    sg.addColorStop(0,'#d8b462'); sg.addColorStop(0.45,'#c89040'); sg.addColorStop(1,'#a87030');
+    ctx.fillStyle=sg; ctx.fillRect(W*0.22,HORIZON+18,W*0.78+4,H-HORIZON-18);
+
+    // Water/sand foam edge
+    ctx.strokeStyle='rgba(200,228,255,0.65)'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath();
+    for(let wx=W*0.18;wx<=W*0.36;wx+=6){
+      const wy=HORIZON+24+Math.sin(wx*0.07+vt*0.04)*4;
+      wx===W*0.18?ctx.moveTo(wx,wy):ctx.lineTo(wx,wy);
+    }
+    ctx.stroke();
+
+    // Wet sand shimmer
+    ctx.fillStyle='rgba(180,220,255,0.14)';
+    ctx.fillRect(W*0.22,HORIZON+18,W*0.12,H-HORIZON-18);
+
+    // Pebbles
+    ctx.fillStyle='rgba(140,120,90,0.55)';
+    [0,1,2,3,4,5].forEach(i=>{
+      ctx.beginPath(); ctx.ellipse(W*0.28+i*38+Math.sin(i*5)*10,HORIZON+30+i%2*6,3+i%3,2,0,0,Math.PI*2); ctx.fill();
+    });
+
+    // Small ship silhouette moored left (player's ship)
+    const ssx=W*0.12, ssy=HORIZON+16;
+    ctx.fillStyle='rgba(20,10,6,0.75)';
+    ctx.beginPath(); ctx.moveTo(ssx-28,ssy+2); ctx.bezierCurveTo(ssx-28,ssy+14,ssx-12,ssy+18,ssx,ssy+18); ctx.bezierCurveTo(ssx+12,ssy+18,ssx+28,ssy+14,ssx+28,ssy+2); ctx.fill();
+    ctx.fillStyle='rgba(26,14,8,0.7)'; ctx.fillRect(ssx-26,ssy-4,52,8);
+    ctx.strokeStyle='rgba(16,8,4,0.65)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(ssx,ssy-4); ctx.lineTo(ssx,ssy-28); ctx.stroke();
+    // Small sun flag on background ship
+    ctx.fillStyle='rgba(120,20,20,0.6)'; ctx.fillRect(ssx,ssy-28,12,8);
+    ctx.fillStyle='rgba(220,160,40,0.6)'; ctx.beginPath(); ctx.arc(ssx+6,ssy-24,3,0,Math.PI*2); ctx.fill();
+
+    // Palm tree — island
+    const ptx=W*0.66, pty=HORIZON+44;
+    ctx.strokeStyle='#5a3610'; ctx.lineWidth=5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(ptx,pty); ctx.bezierCurveTo(ptx,pty-22,ptx+6,pty-36,ptx+10,pty-56); ctx.stroke();
+    ctx.fillStyle='#286018';
+    for(let li=0;li<5;li++){
+      const la=li*Math.PI*0.4-Math.PI*0.55;
+      ctx.beginPath(); ctx.moveTo(ptx+10,pty-56);
+      ctx.bezierCurveTo(ptx+10+Math.cos(la)*18,pty-56+Math.sin(la)*10,ptx+10+Math.cos(la)*32,pty-56+Math.sin(la)*19,ptx+10+Math.cos(la)*36,pty-56+Math.sin(la)*22);
+      ctx.lineTo(ptx+10+Math.cos(la)*28,pty-56+Math.sin(la)*17); ctx.closePath(); ctx.fill();
+    }
+    // Coconuts
+    ctx.fillStyle='#5a3810';
+    ctx.beginPath(); ctx.arc(ptx+8,pty-50,3.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ptx+13,pty-46,3,0,Math.PI*2); ctx.fill();
+
+    // Characters: walk on at tick 960, dance from tick 1030
+    if(vt>=960){
+      const walkP=Math.min(1,(vt-960)/80);
+      const danceT=Math.max(0,vt-1030);
+      // Walk in from water edge, spread across beach
+      const targets=[W*0.33,W*0.46,W*0.59,W*0.71];
+      const startX=W*0.24;
+      for(let i=0;i<4;i++){
+        const delay=i*12;
+        const wp=Math.max(0,Math.min(1,(vt-960-delay)/80));
+        const cx=startX+(targets[i]-startX)*wp;
+        const cy=HORIZON+56;
+        drawCharacter(i,cx,cy,Math.max(0,danceT-i*8));
+      }
+    }
+
+    ctx.globalAlpha=1;
+  }
+
+  function loop() {
+    ctx.clearRect(0,0,W,H);
+    drawBG();
+    if (state==='running'||state==='boss') { frame++; score+=0.07; spd=4.0+score*0.006+Math.min(score/T_BOSS,1)**2*2.5; }
+    if (state==='running') {
+      ship.update(null);
+      if (score>=T_BOSS) { state='boss'; boss.reset(); bossFrame=0; }
+      if (!obs&&frame>=nextSpawn) obs=spawnObs();
+      if (obs) {
+        obs.x-=spd*(obs.sm||1);
+        if (obs.type==='albatross') obs.y+=Math.sin(frame*0.055)*0.7;
+        if (hitTest(obs)) {
+          explode(ship.x,ship.y,'#C9A84C',8); ship.hp--;
+          if(ship.hp<=0){ state='dead'; ship.dead=true; }
+          obs=null; nextSpawn=frame+20+~~(Math.random()*35);
+        } else if (obs.x<-160) { obs=null; nextSpawn=frame+20+~~(Math.random()*35); }
+      }
+    }
+    if (state==='boss') { ship.update(boss); boss.update(); bossFrame++; }
+    if (state==='victory') {
+      victoryTick++;
+      boss.update(); // handles sliding
+      // Phase 1 (0-600): gentle drift
+      if (victoryTick<=600) {
+        ship.bob+=0.025; ship.x+=(W*0.38-ship.x)*0.008;
+        ship.swayV+=Math.sin(ship.bob)*0.005-ship.sway*0.04;
+        ship.swayV*=0.96; ship.sway+=ship.swayV;
+      }
+      // Phase 2 (600+): sail toward island
+      if (victoryTick>600) {
+        ship.bob+=0.025; if(ship.x<W*0.56) ship.x+=1.1;
+        ship.swayV+=Math.sin(ship.bob)*0.003-ship.sway*0.03;
+        ship.swayV*=0.96; ship.sway+=ship.swayV;
+      }
+    }
+    parts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.18; p.life--; });
+    parts=parts.filter(p=>p.life>0);
+    parts.forEach(p=>{
+      ctx.globalAlpha=p.life/(p.maxLife||40); ctx.fillStyle=p.color;
+      if (p.gem) {
+        ctx.beginPath(); ctx.moveTo(p.x,p.y-p.size); ctx.lineTo(p.x+p.size,p.y);
+        ctx.lineTo(p.x,p.y+p.size); ctx.lineTo(p.x-p.size,p.y); ctx.closePath(); ctx.fill();
+      } else if (p.ring) {
+        ctx.fillStyle='#8a0808';
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.size*0.52,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle=p.color; ctx.lineWidth=2.5;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.stroke();
+      } else { ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }
+    });
+    ctx.globalAlpha=1;
+    if (obs&&state==='running') {
+      if (obs.type==='albatross')  drawAlbatross(obs);
+      if (obs.type==='cannonball') drawCannonball(obs);
+      if (obs.type==='theatrical') drawTheatrical(obs);
+      if (obs.type==='goldfish')   drawGoldfish(obs);
+    }
+    if (state==='victory'&&victoryTick>620&&victoryTick<840) drawIsland(Math.min(1,(victoryTick-620)/170));
+    if (state==='boss'||(state==='victory'&&boss.x<=W+480)) boss.draw();
+    if (state==='boss') drawBossPreview();
+    if (!(state==='victory'&&victoryTick>=880)) ship.draw();
+    if (state==='victory'&&victoryTick>=820) drawArrivalScene(victoryTick);
+    drawHUD();
+    if (state==='idle') overlay('The Gauntlet of Mordis','W / S for lanes  \u00b7  Space to Set Sail');
+    if (state==='dead') overlay('Ship Lost to Mordis','Score: '+~~score+'  \u00b7  Space to Sail Again');
+    if (state==='victory'&&victoryTick>1150) {
+      const fa=Math.min(1,(victoryTick-1150)/80);
+      ctx.fillStyle=`rgba(4,2,12,${0.75*fa})`; ctx.fillRect(0,0,W,H);
+      ctx.globalAlpha=fa;
+      ctx.fillStyle='#f0d888'; ctx.font='bold 26px "Cinzel Decorative",Cinzel,serif'; ctx.textAlign='center';
+      ctx.fillText('for lathandar',W/2,H/2-18);
+      ctx.fillStyle='#d0c8a0'; ctx.font='14px Cinzel,serif';
+      ctx.fillText('we stay pogging',W/2,H/2+10);
+      ctx.fillStyle='rgba(180,170,140,0.65)'; ctx.font='10px Cinzel,serif';
+      ctx.fillText('Space to sail again',W/2,H/2+32);
+      ctx.globalAlpha=1;
+    }
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();
+</script>
+
+<script>
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
@@ -722,6 +2179,20 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.section, .timeline-entry').forEach(el => observer.observe(el));
 document.querySelectorAll('.timeline').forEach(tl => {
   tl.querySelectorAll('.timeline-entry').forEach((e, i) => { e.style.transitionDelay = `${i * 0.12}s`; });
+});
+</script>
+
+<script>
+/* ── EXPAND / COLLAPSE ── */
+document.querySelectorAll('.expand-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var body = this.nextElementSibling;
+    var open = body.classList.toggle('open');
+    var lo = this.dataset.labelOpen   || '\u00b7 close \u00b7';
+    var lc = this.dataset.labelClosed || '\u00b7 read \u00b7';
+    this.textContent = open ? lo : lc;
+    this.setAttribute('aria-expanded', open);
+  });
 });
 </script>
 </body>
