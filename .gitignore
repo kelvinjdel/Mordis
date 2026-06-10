@@ -1,0 +1,14 @@
+# Claude lore system — DM tools, not part of the published site
+CLAUDE.md
+lore/
+questions_for_dm.txt
+test/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# Reference photos, not site assets
+IMG_*.PNG
+IMG_*.JPG

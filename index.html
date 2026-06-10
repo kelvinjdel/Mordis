@@ -139,6 +139,33 @@
     font-family: 'Cinzel', serif; font-size: 0.7rem;
     letter-spacing: 0.3em; color: var(--gold); opacity: 0.6;
   }
+
+  /* SUN OF LATHANDER — sacred section treatment */
+  .section-sacred {
+    position: relative;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .section-sacred .section-divider::before,
+  .section-sacred .section-divider::after {
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.7));
+    height: 2px;
+    box-shadow: 0 0 8px rgba(201,168,76,0.3);
+  }
+  .section-sacred .section-divider::after {
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.7));
+  }
+  .section-sacred .section-num {
+    opacity: 1;
+    text-shadow: 0 0 18px rgba(201,168,76,0.5);
+    letter-spacing: 0.4em;
+  }
+  .section-sacred::before {
+    content: '☀';
+    position: absolute; top: 5.2rem; left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.1rem; color: var(--gold);
+    opacity: 0.18; pointer-events: none;
+  }
   .section-title {
     font-family: 'Cinzel Decorative', serif;
     font-size: clamp(1.6rem, 4vw, 2.6rem);
@@ -303,7 +330,7 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
     transition: border-color 0.3s, transform 0.3s; overflow: hidden;
   }
-  .nation-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; }
+  .nation-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
   .nation-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
   .nation-card:hover::before { opacity: 1; }
   .nation-card.moricci  { border-top: 3px solid #4a90c8; }
@@ -332,20 +359,39 @@
   }
   .character-card:hover { border-color: rgba(201,168,76,0.35); }
   .character-card.belnan:hover { border-color: rgba(160,160,160,0.6); box-shadow: 0 0 30px rgba(200,200,200,0.15); }
-  .character-card.fugoki:hover { border-color: rgba(180,40,40,0.6); box-shadow: 0 0 30px rgba(200,40,40,0.18); }
+  .character-card.fogguki:hover { border-color: rgba(180,40,40,0.6); box-shadow: 0 0 30px rgba(200,40,40,0.18); }
   .character-card.mark:hover { border-color: rgba(201,168,76,0.7); box-shadow: 0 0 30px rgba(201,168,76,0.18); }
   .char-class { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 0.5rem; }
   .char-name { font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.3rem; }
   .char-origin { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); text-transform: uppercase; margin-bottom: 0.8rem; font-style: italic; }
   .char-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; margin: 0; }
   .char-burden { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-left: 2px solid var(--crimson); font-size: 0.82rem; font-style: italic; color: var(--text-mid); }
+  .char-fear   { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-left: 2px solid rgba(140,100,210,0.55); font-size: 0.82rem; font-style: italic; color: var(--text-mid); }
+
+  /* EXPAND / COLLAPSE */
+  .expand-toggle {
+    display: block; background: none; border: none; cursor: pointer;
+    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold); opacity: 0.45;
+    padding: 0.55rem 0; margin: 0; transition: opacity 0.2s;
+  }
+  .expand-toggle:hover { opacity: 1; }
+  .expand-body { display: none; }
+  .expand-body.open { display: block; animation: expandFade 0.3s ease; }
+  @keyframes expandFade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CONSTELLATION GRID */
+  .const-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.8rem 0 0.5rem; }
+  .const-figure { text-align: center; }
+  .const-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-top: 0.6rem; display: block; }
+  @media (max-width: 680px) { .const-grid { grid-template-columns: 1fr; } }
 
   /* GALILEI PATRON */
-  .character-card.galilei {
+  .character-card.galicus {
     border-color: rgba(110, 70, 160, 0.25);
     transition: border-color 0.4s, box-shadow 0.4s;
   }
-  .character-card.galilei:hover {
+  .character-card.galicus:hover {
     border-color: rgba(130, 80, 190, 0.5);
     box-shadow: 0 0 30px rgba(110, 70, 160, 0.1);
   }
@@ -356,36 +402,9 @@
     font-size: 0.78rem; font-style: italic;
     color: rgba(170, 130, 220, 0.7); line-height: 1.5;
   }
-  .const-svg { width: 100%; height: 70px; margin-top: 0.5rem; display: block; }
-  .c-line {
-    stroke: rgba(130, 80, 200, 0.45); stroke-width: 0.8;
-    stroke-dasharray: 40; stroke-dashoffset: 40;
-    animation: drawln 1.6s ease forwards;
-    fill: none;
-  }
-  .c-line:nth-child(1) { animation-delay: 0.1s; }
-  .c-line:nth-child(2) { animation-delay: 0.4s; }
-  .c-line:nth-child(3) { animation-delay: 0.7s; }
-  .c-line:nth-child(4) { animation-delay: 1.0s; }
-  .c-line:nth-child(5) { animation-delay: 1.2s; }
-  .c-star { fill: rgba(190, 150, 240, 0.85); }
-  .c-eye {
-    opacity: 0;
-    animation: eyeAppear 0.4s ease 2.1s forwards;
-    transform-origin: center;
-  }
-  @keyframes drawln { to { stroke-dashoffset: 0; } }
-  @keyframes eyeAppear { to { opacity: 1; } }
-  .c-blink { animation: cblink 5s ease-in-out infinite; transform-origin: center; }
-  @keyframes cblink {
-    0%,90%,100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.08); }
-  }
-  .patron-label {
-    font-family: 'Cinzel', serif; font-size: 0.62rem;
-    letter-spacing: 0.15em; color: rgba(140, 100, 200, 0.5);
-    margin-top: 0.2rem; display: block; text-align: right;
-  }
+  .bokeby-doodle { float: right; margin: 0 0 0.5rem 1.5rem; text-align: center; opacity: 0.6; }
+  .bokeby-doodle svg { width: 58px; height: 65px; display: block; margin: 0 auto; }
+  .bokeby-label { display: block; font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(180,140,230,0.55); margin-top: 0.3rem; }
 
   /* MAP */
   .map-full {
@@ -427,6 +446,32 @@
     .chapter-nav ul { gap: 1rem; }
     .hero-subtitle { white-space: normal; text-align: center; }
   }
+
+  /* NPC REGISTER */
+  .npc-register { margin: 2.2rem 0; }
+  .npc-group-header { padding: 1.3rem 0 0.45rem; border-bottom: 1px solid rgba(201,168,76,0.14); margin-bottom: 0.3rem; }
+  .npc-group-title { display: block; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); }
+  .npc-group-sub { display: block; font-family: 'Crimson Text', serif; font-size: 0.82rem; color: var(--text-mid); font-style: italic; margin-top: 0.14rem; }
+  .npc-entry {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.8rem;
+    border-left: 2px solid rgba(201,168,76,0.2);
+    padding: 0.6rem 0 0.6rem 1.1rem; margin-bottom: 0.2rem;
+    transition: border-color 0.2s;
+  }
+  .npc-entry:hover { border-color: rgba(201,168,76,0.45); }
+  .npc-crew  { border-left-color: rgba(201,168,76,0.3); }
+  .npc-ally  { border-left-color: rgba(80,195,247,0.28); }
+  .npc-shadow { border-left-color: rgba(160,32,32,0.5); }
+  .npc-header { flex: 1; min-width: 180px; display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  .npc-name { font-family: 'Cinzel', serif; font-size: 0.87rem; color: var(--parchment); letter-spacing: 0.04em; }
+  .npc-role { font-size: 0.76rem; color: var(--text-mid); font-style: italic; }
+  .expand-toggle.npc-btn { flex: 0 0 auto; padding: 0; line-height: 1; }
+  .npc-entry .expand-body { flex: 0 0 100%; }
+  .npc-desc-inner {
+    padding-top: 0.55rem; margin-top: 0.45rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    font-size: 0.87rem; line-height: 1.65; color: var(--text-light); margin-bottom: 0;
+  }
 </style>
 </head>
 <body>
@@ -449,8 +494,9 @@
     <li><a href="#kelvin">I. Kelvopolis</a></li>
     <li><a href="#settlement">II. The Age of Roots</a></li>
     <li><a href="#sun">III. Sun of Lathander</a></li>
-    <li><a href="#nations">IV. The Three Nations</a></li>
-    <li><a href="#voyagers">V. The Voyagers</a></li>
+    <li><a href="#longcenturies">IV. The Long Centuries</a></li>
+    <li><a href="#nations">V. The Three Nations</a></li>
+    <li><a href="#voyagers">VI. The Voyagers</a></li>
   </ul>
 </nav>
 
@@ -469,11 +515,9 @@
     <p class="section-lead">Year Zero &middot; The Calendar Begins</p>
     <h2 class="section-title">Kelvin &amp; the Founding of Kelvopolis</h2>
 
-    <p class="drop-cap">Whatever brought him here, Kelvin arrived. The archaeological evidence for the founding of Kelvopolis is unambiguous: structures dated to Year Zero through Year 40 have been excavated, catalogued, and verified by multiple independent institutions. He came with a group of settlers — estimates based on early foundation footprints suggest somewhere between two hundred and eight hundred individuals — and founded a city on the eastern shore of the continent with clear intention of permanence.</p>
+    <p class="drop-cap">Whatever brought him here, Kelvin arrived. He came with settlers and founded a city on the eastern shore of the continent with clear intention of permanence. The texts that survive from the early Kelvian period are administrative in nature — land grants, inventories, a partial census. They describe a functioning settlement, not a founding hero. He is referenced only as "the Founder." His decisions are recorded without explanation.</p>
 
-    <p>What kind of man he was is nearly entirely lost to us. The texts that survive from the early Kelvian period are administrative in nature: land grants, resource inventories, a partial census dated to approximately Year 12. They describe a functioning settlement, not a founding hero. The historical Kelvin does not speak in them. He is referenced only in the third person — as "the Founder" or occasionally "the Architect" — and his decisions are recorded without explanation or commentary.</p>
-
-    <p>The city would act as a bulwark against the harsh landscape, as the growing families of these early settlers grew to sustain expeditions and settlers of their own, spreading their culture, language, and technology to the local elven, dwarven, and halfling populations. Sarangshi, Sebrela, and Liebshire all attribute their founding to early Kelvian settlers.<span class="citation">[1]</span></p>
+    <p>From Kelvopolis, settlers spread west and south, carrying their culture and technology to dwarven, elven, and halfling populations already living across the continent. Sarangshi, Sebrela, and Liebshire all attribute their founding to early Kelvian expeditions.<span class="citation">[1]</span></p>
 
     <div class="footnotes">
       <p class="footnote"><span class="footnote-num">[1]</span> The current state of Kelvopolis ruins was surveyed by the Moriccian Geographic Commission in 1247 K.C. Their report, <em>The Eastern Reaches: A Field Survey</em>, documents substantial goblin and orc habitation across the original city footprint, with several structures in active use.</p>
@@ -494,30 +538,40 @@
       <div class="timeline-entry">
         <p class="timeline-year">Year 0 &middot; The Kelvian Calendar</p>
         <p class="timeline-event">The Founding of Kelvopolis</p>
-        <p class="timeline-desc">Kelvin arrives on the eastern shore of the continent with a group of settlers. The Kelvian Calendar begins. All subsequent dates are measured from this moment.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Kelvin arrives on the eastern shore of the continent with a group of settlers. The Kelvian Calendar begins. All subsequent dates are measured from this moment.</p></div>
       </div>
       <div class="timeline-entry">
         <p class="timeline-year">Years 50–300 &middot; The Quiet Centuries</p>
         <p class="timeline-event">The Westward Dispersal</p>
-        <p class="timeline-desc">Settlers move inland and southward from Kelvopolis, intermingling with dwarven, elven, and halfling communities. Regional culture begins to differentiate along geographic lines. No single power dominates. Dozens of holds and small cities rise, trade, and disappear.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Settlers move inland and southward from Kelvopolis, intermingling with dwarven, elven, and halfling communities. Regional culture begins to differentiate along geographic lines. No single power dominates. Dozens of holds and small cities rise, trade, and disappear.</p></div>
       </div>
       <div class="timeline-entry">
-        <p class="timeline-year">Before Year 420 &middot; Exact Date Disputed</p>
+        <p class="timeline-year">Years 300–420 &middot; Three Cities Emerge</p>
+        <p class="timeline-event">The Shape of Things to Come</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Three regional centers grow from trading posts into genuine powers. Sarangshi rises from the southern steppes on overland trade and mountain pass control. Sebrela anchors the western coast on sea commerce. Liebshire, in the northern heartlands, becomes the continent's seat of both Lathanderian and Selunite tradition — the city whose fate will matter most in the decade to come.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Before Year 430 &middot; Exact Date Disputed</p>
         <p class="timeline-event">The Burning of the Southern Forests</p>
-        <p class="timeline-desc">Sectarian tensions between the early Nakensia and Moricci regions over Selunite religious practices in Liebshire result in widespread arson across elven forest communities in the south. Thousands of elves are displaced. The land they held — which had served as a natural defensive buffer — is left open. This will matter within the decade.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Sectarian tensions between the early Nakensia and Moricci regions over Selunite religious practices in Liebshire result in widespread arson across elven forest communities in the south. Thousands of elves are displaced. The land they held — which had served as a natural defensive buffer — is left open. This will matter within the decade.</p></div>
       </div>
       <div class="timeline-entry">
-        <p class="timeline-year">Year ~433</p>
-        <p class="timeline-event">Three Cities Emerge</p>
-        <p class="timeline-desc">Sarangshi, Sebrela, and Liebshire consolidate regional influence. What had been informal centers of trade begin to assert territorial and cultural identity. The seeds of Nakensia, Moricci, and Alems are formally planted.</p>
+        <p class="timeline-year">Years 430–433 &middot; The Invasion of the Tolkesh</p>
+        <p class="timeline-event">Fire Over the Mountains of Alems</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">A coordinated force of orcs, giants, and goblins presses south and west through the mountain passes — not raiders, but a sustained campaign. The elven forest communities displaced years prior had served as a natural buffer. That buffer is gone. The Tolkesh drive deep into Alems, burning settlements and destroying agricultural infrastructure, and push into the western reaches of Nakensia. The three young city-powers face it largely alone.</p></div>
       </div>
     </div>
   </section>
 
   <!-- IV: SUN OF LATHANDER -->
-  <section class="section" id="sun">
+  <section class="section section-sacred" id="sun">
     <div class="section-divider"><span class="section-num">Chapter III</span></div>
-    <p class="section-lead">Year 420–433 &middot; The Defining Event</p>
+    <p class="section-lead">Year 433 &middot; The Defining Event</p>
     <h2 class="section-title gold">The Sun of Lathander</h2>
 
     <p class="drop-cap">The single most consequential event in the recorded history of Mordis did not occur in a palace or a council chamber. It occurred in an open valley below the Braburg pass, during the worst military crisis the continent has ever faced. A wave of orcs, giants, and goblins — the historical record is consistent on scale; this was not a raiding party but a coordinated migration of force — pressed south and west through the mountain passes and across the open lands of northern Alems and Nakensia. The settlements of Liebshire, already weakened by the recent displacement of the elven communities who had served as their southern wall, faced destruction.</p>
@@ -541,9 +595,51 @@
     </div>
   </section>
 
+  <!-- IV: THE LONG CENTURIES -->
+  <section class="section" id="longcenturies">
+    <div class="section-divider"><span class="section-num">Chapter IV</span></div>
+    <p class="section-lead">Year 433 – Year 1261 &middot; Eight Centuries of Consequence</p>
+    <h2 class="section-title">The Long Centuries</h2>
+
+    <p class="drop-cap">The century following the Sun of Lathander remade the continent not through any single event but through the slow, merciless arithmetic of consequence. The Tolkesh invasion had emptied Alems of its mountain defenses and destroyed the agricultural communities that fed its east. The Holy Day had given the survivors a myth. What followed — famine, frost, territorial loss, and the grinding emergence of a lasting political order — built the world that now stands.</p>
+
+    <div class="timeline">
+      <div class="timeline-entry">
+        <p class="timeline-year">Years 433–480 &middot; The Famine of Eastern Alems</p>
+        <p class="timeline-event">The Nakensian Siphon</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">With eastern Alems' farming communities destroyed by the Tolkesh invasion, the region depends on food imports through Nakensian trade networks. Nakensia adjusts its pricing accordingly, diverting shipments to wealthier buyers while the east starves. The famine runs for decades. The distrust it produces shapes Alems foreign policy for centuries after.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year ~620 &middot; The Council of Eingarden</p>
+        <p class="timeline-event">The Doctrine of Mutual Dependence</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">Tensions between the Order of Lathander and the Selunite communities reach a formal reckoning at Eingarden, the only city all parties will enter willingly. What emerges is not a resolution but a doctrine: that neither tradition can exist without the other, sun and moon inseparable. The political tensions do not disappear, but the Council establishes a vocabulary for coexistence that holds for centuries after.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year 821 &middot; The Freezing of the Strait of Luna&rsquo;ara</p>
+        <p class="timeline-event">The Kaerel Liberation</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">The Strait of Luna'ara freezes solid. Alems marches across and presses into Moriccian territory. Kaerel and Cosayv — Moricci's most productive client states — fall within a season. Alems releases both as independent republics rather than occupy them. Moricci loses its two most valuable northern outposts without a single naval engagement. It does not forget.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Years ~1180–1220 &middot; The Island War</p>
+        <p class="timeline-event">The Zaremian Succession Crisis</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">When the ruling line of a Nakensian vassal state above Zaremia collapses without an heir, Nakensia and Moricci both advance claims. Moricci wins not through force but through trade — outpricing and out-contracting Nakensia harbor by harbor until the island councils simply accept Moriccian terms. Two naval engagements are attempted and go badly. The treaty cedes the islands and several coastal towns to Moricci.</p></div>
+      </div>
+      <div class="timeline-entry">
+        <p class="timeline-year">Year 1258 &middot; The Tolkesh Siege of the East</p>
+        <p class="timeline-event">The Dardan Expedition</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="timeline-desc">A coalition of Lathandarian admirals launches an armada crusade from Thassy — north, then east — to relieve the Tolkesh siege of Kelvopolis and Andiuvanos. Twenty percent of ships are lost in the northern seas where the ocean meets the ice. Half the soldiers who fought at Andiuvanos do not return. On the southern passage home, where the ocean meets the magma, eighty percent of the remaining fleet is lost. No survivor has ever spoken of what they encountered there. In formal Lathandarian records, the expedition is simply listed as having occurred.</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- V: NATIONS -->
   <section class="section" id="nations">
-    <div class="section-divider"><span class="section-num">Chapter IV</span></div>
+    <div class="section-divider"><span class="section-num">Chapter V</span></div>
     <p class="section-lead">The Modern Age &middot; Year 800 to Present</p>
     <h2 class="section-title">The Powers of Mordis</h2>
 
@@ -554,25 +650,29 @@
         <p class="nation-name">Moricci</p>
         <p class="nation-ruler">King Charles &middot; Western Seaboard</p>
         <div class="nation-tags"><span class="tag">Naval Power</span><span class="tag">Trade</span><span class="tag">Theology</span></div>
-        <p class="nation-desc">The dominant maritime power on the continent, Moricci controls the western sea lanes through superior naval architecture, fortified island chains, and centuries of mercantile calculation. Its society carries the sharpest inequalities on Mordis: a wealthy merchant and clerical class at the apex, a substantial slave class at the base, and limited passage between them. The question of Lis — pirate island chains to the west that raid Alems and embarrass Morician claims to oceanic dominance — has defined its foreign policy for a generation. That question appears close to resolution.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">The dominant maritime power on the continent. Moricci controls the western sea lanes through naval strength and centuries of mercantile calculation, with sharp class divisions between its merchant elite and a substantial slave class at the base. Its current foreign policy is defined by the question of Lis — pirate chains to the west that embarrass Moriccian claims to oceanic dominance. That question appears close to resolution.</p></div>
       </div>
       <div class="nation-card nakensia">
         <p class="nation-name">Nakensia</p>
         <p class="nation-ruler">Queen Kati &middot; Southern Reaches</p>
         <div class="nation-tags"><span class="tag">Military</span><span class="tag">Magic</span><span class="tag">Cultural Diversity</span></div>
-        <p class="nation-desc">Nakensia was not born unified — it was forged into unity through centuries of conquest and absorption. Dozens of tribes, city-states, and magical traditions were brought under central authority through processes that historians variously describe as consolidation or subjugation, depending on their sympathies. The result is a nation of extraordinary cultural depth and persistent internal tension: fiercely proud of its diversity, constantly negotiating the boundary between the authority of the center and the autonomy of its constituent peoples. Its military tradition is without peer on the continent.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">Forged through centuries of conquest and absorption, Nakensia is a nation of deep cultural diversity and persistent internal tension — proud of what it contains, constantly negotiating between central authority and the autonomy of its constituent peoples. Its military tradition is without peer on the continent.</p></div>
       </div>
       <div class="nation-card alems">
         <p class="nation-name">Alems</p>
         <p class="nation-ruler">King Unther &middot; Northern Plains</p>
         <div class="nation-tags"><span class="tag">Population</span><span class="tag">Agricultural Wealth</span><span class="tag">Bulwark</span></div>
-        <p class="nation-desc">The most populous nation on Mordis by a considerable margin, Alems stretches across the great northern plains and forest belts from the Lunara'a strait to the open grasslands of the east. Its wealth is agricultural; its chronic vulnerability is the same. When the crops fail, the cities starve. When the Lunara'a strait freezes — a rare but historically catastrophic event — armies walk across it. Alems has historically served as the continent's breadbasket and its northern bleeding edge: the civilization that absorbs the first shocks so that others do not have to.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">The most populous nation on Mordis, stretching across the northern plains from the Lunara'a strait to the eastern grasslands. Its wealth is agricultural; its vulnerability the same. When the strait freezes, armies walk across it. Alems absorbs the first shocks so that others do not have to.</p></div>
       </div>
       <div class="nation-card eingarden">
         <p class="nation-name">Eingarden</p>
         <p class="nation-ruler">King Ivan &middot; The Central Sanctum</p>
         <div class="nation-tags"><span class="tag">Diplomacy</span><span class="tag">Dynastic Legitimacy</span><span class="tag">Spiritual Authority</span></div>
-        <p class="nation-desc">Eingarden commands no great army, holds no great resource, and controls no great territory. It holds something more durable: the only legitimate neutral ground on the continent. King Ivan is uncle to Charles of Moricci, brother to Unther of Alems, and nephew to Queen Kati of Nakensia. The web of blood connecting the ruling families of Mordis passes through Eingarden's court. When the three powers need to stop fighting without appearing to back down, Eingarden is the table they agree to sit at. Ivan is exceptionally good at setting tables.</p>
+        <button class="expand-toggle" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body"><p class="nation-desc">No great army, no great territory — only the only legitimate neutral ground on the continent. King Ivan is uncle to Charles of Moricci, brother to Unther of Alems, and nephew to Queen Kati of Nakensia. When the three powers need to stop fighting without appearing to back down, Eingarden is the table. Ivan is exceptionally good at setting tables.</p></div>
       </div>
     </div>
 
@@ -586,7 +686,7 @@
 
   <!-- VI: VOYAGERS -->
   <section class="section" id="voyagers">
-    <div class="section-divider"><span class="section-num">Chapter V</span></div>
+    <div class="section-divider"><span class="section-num">Chapter VI</span></div>
     <p class="section-lead">Year 1261 &middot; The Present Day</p>
     <h2 class="section-title">The Voyagers</h2>
 
@@ -599,54 +699,52 @@
         <p class="char-class">Halfling Ranger &middot; Survivalist</p>
         <p class="char-name">Belnan</p>
         <p class="char-origin">Lunara'a &middot; Alems Border Territory</p>
-        <p class="char-desc">For many years he was a fixture of the trade roads between Lunara'a and Eberne — a caravan guard with a reputation for bringing travelers home intact. Then something interrupted that life, and the roads lost their light in the dark. Rates of missing travelers increased until years later Belnan found his way home. He does not speak of his time. Only of the secrets he now must hide.</p>
-        <div class="char-burden">What he doesn't know is that the family he came back to is still inside whatever took him.</div>
-      </div>
-
-      <div class="character-card galilei">
-        <p class="char-class">Elven Warlock &middot; Navigator</p>
-        <p class="char-name">Galilei</p>
-        <p class="char-origin">Meselia &middot; Liebshire &middot; Steins Gate Observatory</p>
-        <p class="char-desc">His published argument — that the world turns around the sun, not the moon — attracted sufficient theological complaint that his family's safety in the Liebshire community could no longer be taken for granted. The commission offered distance. His patron, the Tortle scholar who originally inspired his theories, gave him an opportunity to trace a trail by his own hands. Each, correctly identified, points toward a different city somewhere west of the western expanse.</p>
-        <div class="char-burden">He has been seeing things in the stars since before the crossing. Lines, at first. Since the sky changed above the western expanse, the shapes are nearly resolved into something with eyes.</div>
-        <div class="patron-annotation">
-          <svg class="const-svg" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
-            <line class="c-line" x1="18" y1="52" x2="48" y2="30"/>
-            <line class="c-line" x1="48" y1="30" x2="82" y2="18"/>
-            <line class="c-line" x1="82" y1="18" x2="110" y2="40"/>
-            <line class="c-line" x1="110" y1="40" x2="148" y2="14"/>
-            <line class="c-line" x1="148" y1="14" x2="185" y2="45"/>
-            <circle class="c-star" cx="18"  cy="52" r="2.2"/>
-            <circle class="c-star" cx="48"  cy="30" r="1.8"/>
-            <circle class="c-star" cx="82"  cy="18" r="2.2"/>
-            <circle class="c-star" cx="110" cy="40" r="2"/>
-            <circle class="c-star" cx="148" cy="14" r="2.2"/>
-            <circle class="c-star" cx="185" cy="45" r="2"/>
-            <g class="c-eye c-blink">
-              <ellipse cx="100" cy="37" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
-              <ellipse cx="122" cy="33" rx="5" ry="6" fill="rgba(180,140,230,0.7)"/>
-              <circle  cx="101" cy="38" r="2.5" fill="rgba(40,10,60,0.95)"/>
-              <circle  cx="123" cy="34" r="2.5" fill="rgba(40,10,60,0.95)"/>
-            </g>
-          </svg>
-          <span class="patron-label">margin notation &mdash; Galilei's personal journal, undated, post-crossing</span>
+        <p class="char-desc">For many years he was a fixture of the trade roads between Lunara'a and Eberne — a caravan guard with a reputation for bringing travelers home intact. A fresh rabbit for the hungry, a deer at the water's edge for the exhausted, a swift and quiet end for those who preyed on both.</p>
+        <div class="char-burden">Blood becomes an easy thing to spill when its in the service of your own.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">Then something found him on those roads. Not something that ambushed him — something that recognized him. The roads went dark in the years that followed, and the travelers who disappeared along them were not accidents. When Belnan came home, the roads were quieter. He does not explain why. He carries only what he cannot put down and the secrets he now must keep.</p>
+          <div class="char-fear">The darkness becomes harder to escape the more one sets out to play the role it hungers for.</div>
         </div>
       </div>
 
-      <div class="character-card fugoki">
+      <div class="character-card galicus">
+        <p class="char-class">Elven Warlock &middot; Navigator</p>
+        <p class="char-name">Galicus</p>
+        <p class="char-origin">Meselia &middot; Liebshire &middot; Steins Gate Observatory</p>
+        <p class="char-desc">His published argument — that the world turns around the sun, not the moon — attracted sufficient theological complaint that his family's safety in Liebshire could no longer be taken for granted. Amidst this, Selune has granted him providence.</p>
+        <div class="char-burden">The more he stares into the night sky, the more it seems to stare in return.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">He has spent his life at the edge of what is known, but he didn't expect the sky to close in. What is taking shape at the periphery of his observations is not something he can categorize, and the entity attending his work is not one he can name. He is not afraid of what he doesn't understand. He is afraid of what he may see.</p>
+          <div class="char-fear">You may always look into the unkown, but the void will always be staring back.</div>
+        </div>
+      </div>
+
+      <div class="character-card fogguki">
         <p class="char-class">Dwarf Fighter &middot; Champion</p>
-        <p class="char-name">Fugoki</p>
+        <p class="char-name">Fogguki</p>
         <p class="char-origin">Mines of Uroy &middot; Mines of Tabra'an</p>
-        <p class="char-desc">His mother is an oracle of the Mines of Uroy. His father is the general-king of the Mines of the Tabra'an, a man who regarded his son's gentleness as a liability and resolved the problem by offering him to the crown for the westward expedition. Fugoki accepted. There is nothing left to prove under his father's ceiling. There is everything to prove everywhere else.</p>
+        <p class="char-desc">His mother is an oracle of the Mines of Uroy, father the general-king of the Mines of the Tabra'an — a title won in blood, by tradition, since the lineage began. Fogguki was created, indoctrinated, and forged to be next. </p>
         <div class="char-burden">He is the strongest person most people have ever encountered. His father made sure he knows that is not sufficient.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">The succession fight is singular by tradition: two men enter, one man leaves. Fogguki entered the arena against his closest friend, Tarak, had him pinned and stood up. The title passed as he walked away, and with it his name in his father's house. He was sooner offered to the foreign crown rather than be acknowledged as a son who chose mercy over legacy. All too familiar with the lucha, the liberador sets out to conquer a ring of his own.</p>
+          <div class="char-fear">Every ache and weakness a mortal reminder that he will one day prove his father right .</div>
+        </div>
       </div>
 
       <div class="character-card mark">
-        <p class="char-class">Human Monk &middot; Administrator</p>
+        <p class="char-class">Tiefling Monk &middot; Administrator</p>
         <p class="char-name">Mark</p>
         <p class="char-origin">Aquenta &middot; Studied in Fries &middot; Served in Sebrela</p>
-        <p class="char-desc">He held the title of Right Hand of the King, earned on the strength of a reputation built across years of clerical administration in Sebrela — until a client of infernal character took several things from him at once: his sight, his sister, and the memory of how either happened. He retains his title. He retains his name, which still opens doors. What he has lost, beyond the obvious, is something he cannot identify, because he no longer remembers what was taken.</p>
-        <div class="char-burden">Something of his remains in the devil's possession. He does not know what. He does not remember enough to ask the right question.</div>
+        <p class="char-desc">Undefeated in court, renowned for knowing when someone in the room was righteous — a gift of divine vision he believed was Lathander's. An infernal twist of fortune tested his judgement and led him to wake from a coma without his sight or his sister.</p>
+        <div class="char-burden">He is working out what to do with a faith that was never wrong.</div>
+        <button class="expand-toggle" data-label-open="&middot; less &middot;" data-label-closed="&middot; more &middot;" aria-expanded="false">&middot; more &middot;</button>
+        <div class="expand-body">
+          <p class="char-desc">The trial exists in adjacent documents, with all its details expunged from text and memory — only his tiefling blood left as a testament. He still carries the title of Late Great State Magistrate, and now serves as the Right Hand of the King. He travels in search of a reason that does not require him to stop believing in the faith that repeadt leaves him broken.</p>
+          <div class="char-fear">He is afraid his gift never failed. That Lathander saw this coming and called it good.</div>
+        </div>
       </div>
     </div>
 
@@ -654,14 +752,418 @@
 
     <div class="lore-box">
       <p class="lore-title">The Three Constellations</p>
-      <p>The Tortle scholar's gift to Galilei was, on its surface, a children's picture book: simple illustrations of three star formations, labeled in a script that does not match any currently catalogued writing system. Each constellation, correctly identified in the night sky, points toward one of three cities somewhere to the west of the western expanse. The book was written for children, the Tortle explained, because adults look at stars and see what they expect to see. The cities are not named in the book. They will have to be found.</p>
+      <div class="bokeby-doodle">
+        <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+          <defs><filter id="bokglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <circle cx="12" cy="18" r="1.2" fill="rgba(201,168,76,0.55)"/>
+          <circle cx="69" cy="14" r="1.5" fill="rgba(180,140,230,0.45)"/>
+          <circle cx="74" cy="30" r="0.9" fill="rgba(201,168,76,0.4)"/>
+          <ellipse cx="28" cy="68" rx="9" ry="6" fill="rgba(158,118,208,0.85)"/>
+          <ellipse cx="52" cy="68" rx="9" ry="6" fill="rgba(158,118,208,0.85)"/>
+          <ellipse cx="13" cy="52" rx="8" ry="5" fill="rgba(168,128,218,0.75)" transform="rotate(-25,13,52)"/>
+          <ellipse cx="67" cy="52" rx="8" ry="5" fill="rgba(168,128,218,0.75)" transform="rotate(25,67,52)"/>
+          <ellipse cx="40" cy="47" rx="24" ry="22" fill="rgba(178,138,228,0.82)" filter="url(#bokglow)"/>
+          <circle cx="27" cy="52" r="6" fill="rgba(255,140,180,0.22)"/>
+          <circle cx="53" cy="52" r="6" fill="rgba(255,140,180,0.22)"/>
+          <ellipse cx="32" cy="44" rx="5.5" ry="6" fill="rgba(18,5,38,0.95)"/>
+          <ellipse cx="48" cy="44" rx="5.5" ry="6" fill="rgba(18,5,38,0.95)"/>
+          <circle cx="30" cy="42" r="2" fill="rgba(255,255,255,0.88)"/>
+          <circle cx="46" cy="42" r="2" fill="rgba(255,255,255,0.88)"/>
+        </svg>
+        <span class="bokeby-label">Bokeby</span>
+      </div>
+      <p>The Tortle scholar's gift to Galicus was, on its surface, a children's picture book: simple illustrations of three star formations, labeled in a script that does not match any currently catalogued writing system. Each constellation, correctly identified in the night sky, points toward one of three cities somewhere to the west of the western expanse. The book was written for children, the Tortle explained, because adults look at stars and see what they expect to see. The cities are not named in the book. They will have to be found.</p>
+      <div class="const-grid">
+        <figure class="const-figure">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="gb"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#F5A040" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="60" y1="18" x2="100" y2="15"/><line x1="60" y1="18" x2="80" y2="38"/><line x1="100" y1="15" x2="80" y2="38"/>
+              <line x1="80" y1="38" x2="52" y2="60"/><line x1="80" y1="38" x2="110" y2="58"/>
+              <line x1="52" y1="60" x2="80" y2="80"/><line x1="110" y1="58" x2="80" y2="80"/>
+              <line x1="80" y1="80" x2="48" y2="100"/><line x1="80" y1="80" x2="112" y2="98"/>
+              <line x1="110" y1="58" x2="135" y2="70"/><line x1="135" y1="70" x2="158" y2="76"/><line x1="158" y1="76" x2="150" y2="98"/>
+            </g>
+            <g filter="url(#gb)" fill="#F5A040">
+              <circle cx="60" cy="18" r="2.8"/><circle cx="100" cy="15" r="2.8"/>
+              <circle cx="80" cy="38" r="3.8"/>
+              <circle cx="52" cy="60" r="2.2"/><circle cx="110" cy="58" r="2.2"/>
+              <circle cx="80" cy="80" r="3.2"/>
+              <circle cx="48" cy="100" r="1.8"/><circle cx="112" cy="98" r="1.8"/>
+              <circle cx="135" cy="70" r="2.2"/><circle cx="158" cy="76" r="2.2"/><circle cx="150" cy="98" r="1.8"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#F5A040">The Beaver</span>
+        </figure>
+        <figure class="const-figure">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="go"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#4FC3F7" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="58" y1="16" x2="68" y2="40"/><line x1="112" y1="14" x2="102" y2="38"/>
+              <line x1="68" y1="40" x2="102" y2="38"/>
+              <line x1="68" y1="40" x2="85" y2="54"/><line x1="102" y1="38" x2="85" y2="54"/>
+              <line x1="30" y1="76" x2="58" y2="66"/><line x1="58" y1="66" x2="85" y2="54"/>
+              <line x1="85" y1="54" x2="112" y2="66"/><line x1="112" y1="66" x2="148" y2="76"/>
+              <line x1="85" y1="54" x2="85" y2="96"/>
+              <line x1="85" y1="96" x2="70" y2="118"/><line x1="85" y1="96" x2="100" y2="118"/>
+            </g>
+            <g filter="url(#go)" fill="#4FC3F7">
+              <circle cx="58" cy="16" r="2.2"/><circle cx="112" cy="14" r="2.2"/>
+              <circle cx="68" cy="40" r="3.8"/><circle cx="102" cy="38" r="3.8"/>
+              <circle cx="85" cy="54" r="2.8"/>
+              <circle cx="30" cy="76" r="1.8"/><circle cx="58" cy="66" r="2.2"/>
+              <circle cx="112" cy="66" r="2.2"/><circle cx="148" cy="76" r="1.8"/>
+              <circle cx="85" cy="96" r="2.8"/>
+              <circle cx="70" cy="118" r="1.8"/><circle cx="100" cy="118" r="1.8"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#4FC3F7">The Owl</span>
+        </figure>
+        <figure class="const-figure">
+          <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <defs><filter id="gs"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g stroke="#EF5350" stroke-width="0.7" opacity="0.35" fill="none">
+              <line x1="22" y1="38" x2="42" y2="55"/><line x1="42" y1="55" x2="22" y2="72"/>
+              <line x1="42" y1="55" x2="62" y2="52"/><line x1="62" y1="52" x2="82" y2="55"/>
+              <line x1="82" y1="55" x2="100" y2="58"/><line x1="100" y1="58" x2="118" y2="60"/>
+              <line x1="118" y1="60" x2="132" y2="68"/>
+              <line x1="132" y1="68" x2="148" y2="56"/><line x1="148" y1="56" x2="162" y2="40"/>
+              <line x1="162" y1="40" x2="172" y2="24"/><line x1="172" y1="24" x2="180" y2="14"/>
+            </g>
+            <g filter="url(#gs)" fill="#EF5350">
+              <circle cx="22" cy="38" r="2.2"/><circle cx="22" cy="72" r="2.2"/>
+              <circle cx="42" cy="55" r="2.8"/>
+              <circle cx="62" cy="52" r="2.2"/>
+              <circle cx="82" cy="55" r="3.5"/>
+              <circle cx="100" cy="58" r="2.2"/><circle cx="118" cy="60" r="2.2"/>
+              <circle cx="132" cy="68" r="1.8"/>
+              <circle cx="148" cy="56" r="2.2"/><circle cx="162" cy="40" r="2.2"/>
+              <circle cx="172" cy="24" r="2.8"/><circle cx="180" cy="14" r="3.5"/>
+            </g>
+          </svg>
+          <span class="const-label" style="color:#EF5350">The Scorpion</span>
+        </figure>
+      </div>
     </div>
   </section>
 
 
-  <!-- APPENDIX: THE GAUNTLET -->
+  <!-- APPENDIX I: PERSONS OF PRESENT ACCOUNT -->
+  <section class="section" id="persons">
+    <div class="section-divider"><span class="section-num">Appendix I</span></div>
+    <p class="section-lead">Field Annotations &middot; Known Associates</p>
+    <h2 class="section-title">Persons of Present Account</h2>
+
+    <p>The following persons appear not as subjects of history but as participants in what history is currently becoming. They are listed here by commission and association. Their full accounts, where they exist, are not yet complete.</p>
+
+    <div class="npc-register">
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Known Kin</span>
+        <span class="npc-group-sub">Families, Friends &amp; Prior Associations</span>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Jen &amp; Ken</span>
+          <span class="npc-role">Mother &amp; Father &middot; Belnan's Kin &middot; Lunara'a</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Migrants from the plains to Luna'ara, Jen and Ken sought to give Belnan the best life they could. Ken was a laborer, hired for manual work in construction and agriculture, and his mother was a hostess for Jodi and Codi. No one have heard .</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Jodi &amp; Codi</span>
+          <span class="npc-role">Aunt &amp; Uncle &middot; Belnan's Kin</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Belnan's aunt and uncle. Their account has not been written.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Forja</span>
+          <span class="npc-role">Selunite Oracle &middot; Mines of Uroy &middot; Fogguki's Mother</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fogguki's mother. An oracle from a matriarchal line of Selunite priestesses whose blood carries weight that requires no title. She did not object when Fogguki was offered to the crown. She has not been asked why.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Tarkhazir</span>
+          <span class="npc-role">General-King &middot; Mines of Tabra'an &middot; Fogguki's Father</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fogguki's father. General-king of the Mines of Tabra'an, a title won in blood since the lineage began. He has not been wrong about Fogguki yet. Fogguki is working on it.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Tarak</span>
+          <span class="npc-role">Fighter &middot; Mines of Tabra'an</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Fogguki's closest friend and the man who now holds the succession title he didn't finish taking. They did not part as enemies. That may be the part Fogguki cannot explain.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Emily</span>
+          <span class="npc-role">Mark's Sister &middot; Faerun</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Mark's sister. She is alive in Faerun. Her body is intact. Her soul is not.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Misty Wilson</span>
+          <span class="npc-role">Mark's Prior Associate</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A friend from Mark's career before the trial. Her account has not been written.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Juliana</span>
+          <span class="npc-role">Galicus's Mother &middot; Liebshire</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Galicus's mother. Last known in Liebshire, where his published work made certainty difficult to maintain.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Farziani</span>
+          <span class="npc-role">Galicus's Father &middot; Liebshire</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Galicus's father. The same.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Commission I &mdash; The First Vessel</span>
+        <span class="npc-group-sub">Team 1 &middot; Departed Second &middot; The Main Crossing</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Fugheris</span>
+          <span class="npc-role">Half-Orc Paladin &middot; Commander &middot; Islands of Da'a</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The leader of the first crossing commission. A half-orc paladin from the island territories southeast of Da'a, Fugheris carries his faith in Lathander openly and his burden in private. He is regarded as a sound commander by everyone under him; more so now brooding than angry.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Gabriel</span>
+          <span class="npc-role">Naturalist &middot; Cook &middot; Kovalta</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A naturalist and cook from Kovalta who attached himself to the expedition showing particular interest in Galicus's work and company. They really don't have anyone else.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Mehmed</span>
+          <span class="npc-role">Cook &middot; Nakensia &middot; Bar-I-Anai</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A young cook from the port districts of Nakensia, recruited near Bar-I-Anai by the Order. Looks forward to early mornings before breakfast getting swole with Fogguki.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Commission II &mdash; The Advance Party</span>
+        <span class="npc-group-sub">Team 2 &middot; Departed First &middot; Status Uncertain</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Morgan</span>
+          <span class="npc-role">Commander &middot; Soeros</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Leader of the second commission and its advance departure, from the port city of Soeros. Straightforward, competent, and thoroughly unremarkable in most respects he would name. He has read Galicus's work and likes Alexandra.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Yor</span>
+          <span class="npc-role">Late Great State Magistrate &middot; Left Hand of the King</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Son of a wealthy Aquenta noble, in contention for Late Great State Magistrate at twenty years old. He set out for glory and to serve Lathander, and has been appointed Left Hand of the King. He does not know that his second death has already been accounted for.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Alexandra</span>
+          <span class="npc-role">Arcanist &middot; Sarangshi &middot; Technocrat Lineage</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Daughter of a wealthy technocrat family from Sarangshi. Her specialisation is interrunic microthread magic — infusing lithographically inscribed orbs through necessary mediums as part of her incantations. Her ambitions are unknown, apart from her infatuation with Martin.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Martin Santos</span>
+          <span class="npc-role">Troubadour &middot; Origins Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Elusive, handsome, and wealthy troubadour. As quick to enter and leave a room as he is to captivate it. Origins and destinations unknown. In song, action, and word he has made it clear he points his sails only for Alexandra.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Dotty</span>
+          <span class="npc-role">Commission Member &middot; Vessel Second</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Equal parts vicious, equal parts gentleman. Dotty has a crazed look that can unsettle the most steadfast with mere sustained eye contact. Fogguki knows no such reserves upon meeting his gaze.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-cre w">
+        <div class="npc-header">
+          <span class="npc-name">David</span>
+          <span class="npc-role">Commission Member &middot; Vessel Second</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">Lifetime Democratic People Society card holder. David believes steadfastly in the lifelong pursuit of self-improvement — as scholar, worker, father, and lover — in opposition to what he calls the binary asphyxiation of blind consumption. He and Belnan understand each other completely.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Persons of Interest</span>
+        <span class="npc-group-sub">Notable Figures &amp; Irregular Characters</span>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">Henri</span>
+          <span class="npc-role">Cambion &middot; Thierry Henri &middot; Whereabouts Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A cambion known to the party by first name and by the shape of the damage he leaves. His full name is Thierry Henri. The records that would formally account for his role in the trial suffer from the same selective amnesia as the records that would account for Mark. He has not been encountered since. The entity he represents has not introduced itself.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">King Charles</span>
+          <span class="npc-role">Sovereign &middot; Moricci &middot; Western Seaboard</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The reigning sovereign of Moricci and the authority behind both commissions. His ambitions in the western expanse have not been disclosed to those he sent into it. His name travels ahead of him in ways he has arranged.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-shadow">
+        <div class="npc-header">
+          <span class="npc-name">Captain Tom</span>
+          <span class="npc-role">Drow Captain &middot; Western Approaches &middot; Identity Unclear</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The captain who facilitated the crossing. His name is Tom in the way that all such names are Tom — a working title, issued by particular hands for a particular arrangement. He has not been seen since departure.</p>
+        </div>
+      </div>
+
+      <div class="npc-group-header">
+        <span class="npc-group-title">Companions &amp; Familiars</span>
+        <span class="npc-group-sub">Beasts, Allies &amp; Unlikely Friends</span>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Zacariah</span>
+          <span class="npc-role">Donkey &middot; Property of Galicus</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">The donkey in Galicus's keeping, acquired before the crossing and technically still alive. Zacariah cannot speak, but he can understand — a fact made known to him regularly by a ranger who exercises his gift in that direction. He has sought help from everyone he has encountered. No one has listened.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-crew">
+        <div class="npc-header">
+          <span class="npc-name">Jocasta</span>
+          <span class="npc-role">Immortal Bird &middot; Belnan's Familiar</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">An immortal bird that arrived in Belnan's possession on the Queen's island — though possession overstates the arrangement. Where the albatross of the crossing was a thing of open sky and restraint, Jocasta is what answers when restraint is refused. She has not been tamed. She does not appear to require it.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Kermit</span>
+          <span class="npc-role">Frog &middot; Island of the Succession</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A frog. Kermit fought in no part for his Queen. He watched. He has since attached himself to the company on the understanding — held privately, shared with no one — that returning to that island as a bullywog is the only worthwhile ambition he has left. He does not discuss Queen Luciana.</p>
+        </div>
+      </div>
+
+      <div class="npc-entry npc-ally">
+        <div class="npc-header">
+          <span class="npc-name">Yertle</span>
+          <span class="npc-role">Tortle Scholar &middot; Origin Unknown</span>
+        </div>
+        <button class="expand-toggle npc-btn" data-label-open="&middot; close &middot;" data-label-closed="&middot; read &middot;" aria-expanded="false">&middot; read &middot;</button>
+        <div class="expand-body">
+          <p class="npc-desc-inner">A Tortle scholar whose work concerns reflections — specifically, whether the stars seen in still water are the same stars visible from the sky above, and whether the discrepancy, if one exists, is optical or cosmological. He puts the hell in shell. Patron in patronizing.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- APPENDIX II: THE GAUNTLET -->
   <section class="section" id="game">
-    <div class="section-divider"><span class="section-num">Appendix</span></div>
+    <div class="section-divider"><span class="section-num">Appendix II</span></div>
     <p class="section-lead" style="text-align:center">A Diversion &middot; For the Weary Scholar</p>
     <h2 class="section-title" style="text-align:center">The Gauntlet of Mordis</h2>
     <p style="text-align:center;color:var(--text-mid);font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:0.12em;margin-bottom:1.8rem;">
@@ -1408,7 +1910,7 @@
     const bob=Math.sin(t*0.12+idx*1.3)*5;
     const sw=Math.sin(t*0.08+idx*0.9)*4;
     ctx.save(); ctx.translate(cx+sw, cy+bob);
-    if(idx===0){ // Fugoki — stocky dwarf
+    if(idx===0){ // Fogguki — stocky dwarf
       ctx.fillStyle='#6a5030'; ctx.fillRect(-14,-24,28,24);
       ctx.fillStyle='#1e1408'; ctx.fillRect(-15,0,12,13); ctx.fillRect(3,0,12,13);
       ctx.fillStyle='#282010'; ctx.fillRect(-16,11,12,5); ctx.fillRect(4,11,12,5);
@@ -1441,7 +1943,7 @@
       ctx.strokeStyle='#6a3808'; ctx.lineWidth=2.5; ctx.lineCap='round';
       ctx.beginPath(); ctx.moveTo(-14,-24); ctx.bezierCurveTo(-19,-14,-18,-5,-14,2); ctx.stroke();
       ctx.strokeStyle='#c8c080'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(-14,-24); ctx.lineTo(-14,2); ctx.stroke();
-    } else { // Galilei — elf warlock
+    } else { // Galicus — elf warlock
       const eg=ctx.createLinearGradient(0,-72,0,14);
       eg.addColorStop(0,'#1c1640'); eg.addColorStop(1,'#100c28');
       ctx.fillStyle=eg; ctx.beginPath(); ctx.moveTo(-10,-72); ctx.lineTo(10,-72); ctx.lineTo(13,14); ctx.lineTo(-13,14); ctx.closePath(); ctx.fill();
@@ -1677,6 +2179,20 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.section, .timeline-entry').forEach(el => observer.observe(el));
 document.querySelectorAll('.timeline').forEach(tl => {
   tl.querySelectorAll('.timeline-entry').forEach((e, i) => { e.style.transitionDelay = `${i * 0.12}s`; });
+});
+</script>
+
+<script>
+/* ── EXPAND / COLLAPSE ── */
+document.querySelectorAll('.expand-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var body = this.nextElementSibling;
+    var open = body.classList.toggle('open');
+    var lo = this.dataset.labelOpen   || '\u00b7 close \u00b7';
+    var lc = this.dataset.labelClosed || '\u00b7 read \u00b7';
+    this.textContent = open ? lo : lc;
+    this.setAttribute('aria-expanded', open);
+  });
 });
 </script>
 </body>
