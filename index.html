@@ -1238,8 +1238,49 @@
   function recordBest(){ const lg=~~(score/10); if(lg>best){ best=lg; try{localStorage.setItem('mordisBest',best);}catch(e){} } }
   let shake=0, flash=0;
   function takeHit(){ if(ship.inv>0) return false; ship.hp--; ship.inv=78; flash=12; shake=11; explode(ship.x,ship.y,'#C9A84C',9);
-    if(ship.hp<=0){ state='dead'; ship.dead=true; recordBest(); } return true; }
+    if(ship.hp<=0){ state='dead'; ship.dead=true; recordBest(); sfx.death(); } else sfx.hit(); return true; }
   const keys={};
+
+  // ── AUDIO — procedural Web Audio (hand-coded DSP; no assets, no AI) ──
+  let ac=null, masterGain=null;
+  let muted=localStorage.getItem('mordisMute')==='1';
+  function ensureAudio(){
+    if(muted) return;
+    try{
+      if(!ac){ ac=new (window.AudioContext||window.webkitAudioContext)();
+        masterGain=ac.createGain(); masterGain.gain.value=0.22; masterGain.connect(ac.destination); }
+      if(ac.state==='suspended') ac.resume();
+    }catch(e){ ac=null; }
+  }
+  function blip(freq,dur,type,vol,slideTo){
+    if(!ac||muted) return;
+    const t=ac.currentTime, o=ac.createOscillator(), g=ac.createGain();
+    o.type=type||'triangle'; o.frequency.setValueAtTime(freq,t);
+    if(slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20,slideTo),t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||0.3,t+0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(masterGain); o.start(t); o.stop(t+dur+0.03);
+  }
+  function noiseBurst(dur,vol,filtType,filtFreq){
+    if(!ac||muted) return;
+    const t=ac.currentTime, n=Math.max(1,Math.floor(ac.sampleRate*dur)), buf=ac.createBuffer(1,n,ac.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n);
+    const src=ac.createBufferSource(); src.buffer=buf;
+    const f=ac.createBiquadFilter(); f.type=filtType||'lowpass'; f.frequency.value=filtFreq||1200;
+    const g=ac.createGain(); g.gain.value=vol||0.3;
+    src.connect(f); f.connect(g); g.connect(masterGain); src.start(t);
+  }
+  const sfx={
+    fire(){ blip(168,0.16,'triangle',0.28,72); noiseBurst(0.10,0.14,'lowpass',900); },
+    hit(){ noiseBurst(0.22,0.34,'lowpass',1600); blip(92,0.3,'sawtooth',0.30,46); },
+    bossHit(){ blip(240,0.12,'square',0.20,150); noiseBurst(0.07,0.12,'highpass',2200); },
+    bossFire(){ blip(72,0.28,'sawtooth',0.26,40); noiseBurst(0.14,0.16,'lowpass',520); },
+    lane(){ noiseBurst(0.06,0.07,'bandpass',1500); },
+    charge(){ blip(520,0.18,'sine',0.09,900); },
+    victory(){ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>blip(f,0.32,'triangle',0.24),i*150)); },
+    death(){ blip(210,0.6,'sawtooth',0.32,52); noiseBurst(0.38,0.2,'lowpass',700); },
+  };
+  function toggleMute(){ muted=!muted; try{localStorage.setItem('mordisMute',muted?'1':'0');}catch(e){} if(!muted) ensureAudio(); }
 
   const ship = {
     lane:1, x:130, y:LANES[1], targetY:LANES[1],
@@ -1256,10 +1297,10 @@
       if (this.laneCool>0) this.laneCool--;
       if (this.inv>0) this.inv--;
       if ((keys['KeyW']||keys['ArrowUp']) && this.lane>0 && this.laneCool===0) {
-        this.lane--; this.targetY=LANES[this.lane]; this.laneCool=14;
+        this.lane--; this.targetY=LANES[this.lane]; this.laneCool=14; sfx.lane();
       }
       if ((keys['KeyS']||keys['ArrowDown']) && this.lane<2 && this.laneCool===0) {
-        this.lane++; this.targetY=LANES[this.lane]; this.laneCool=14;
+        this.lane++; this.targetY=LANES[this.lane]; this.laneCool=14; sfx.lane();
       }
       if (state==='boss') {
         if (keys['KeyA']||keys['ArrowLeft'])  this.x=Math.max(55,  this.x-2.5);
@@ -1288,7 +1329,7 @@
     fire() {
       if (this.shotCool>0) return;
       this.shots.push({x:this.x+75, y:LANES[this.lane], propAngle:0});
-      this.shotCool=SHOT_CD;
+      this.shotCool=SHOT_CD; sfx.fire();
     },
 
     draw() {
@@ -1385,7 +1426,7 @@
 
     hit() {
       if(this.hp<=0||this.sliding) return;
-      this.hp--; this.hitFlash=22;
+      this.hp--; this.hitFlash=22; sfx.bossHit();
       explode(W-80, LANES[~~(Math.random()*3)], '#c83020', 18);
       if(this.hp<=0){
         explode(W-60, LANES[0], '#c83020', 35);
@@ -1397,7 +1438,7 @@
     update() {
       if(this.sliding){
         this.x+=3.5;
-        if(this.x>W+500 && state!=='victory'){ state='victory'; victoryTick=0; recordBest(); }
+        if(this.x>W+500 && state!=='victory'){ state='victory'; victoryTick=0; recordBest(); sfx.victory(); }
         return;
       }
       if(this.x>W*0.67) this.x-=1.2;
@@ -1414,6 +1455,7 @@
         else if(this.hp>=2){ const a=~~(Math.random()*3); let b; do{b=~~(Math.random()*3);}while(b===a); rows=[a,b]; }
         else { rows=[0,1,2]; if(Math.random()<0.5) rows.reverse(); }   // last heart: full sweep
         rows.forEach((row,k)=>this.charges.push({col, row, t:20, delay:k*15, fired:false}));
+        sfx.charge();
       }
       // Telegraph then fire each charged port
       this.charges.forEach(c=>{
@@ -1423,7 +1465,7 @@
           c.fired=true;
           const colX=this.x+[45,135,225][c.col];
           this.cballs.push({x:colX-20, y:LANES[c.row], lane:c.row, vx:-7-Math.random()*3});
-          this.flashPorts.push({col:c.col, row:c.row, t:12});
+          this.flashPorts.push({col:c.col, row:c.row, t:12}); sfx.bossFire();
         }
       });
       this.charges=this.charges.filter(c=>!c.fired);
@@ -1988,6 +2030,9 @@
       ctx.globalAlpha=0.38; ctx.fillStyle='#C9A84C'; ctx.font='10px Cinzel,serif'; ctx.textAlign='center';
       ctx.fillText('W / S  to change lanes',W/2,H-13); ctx.globalAlpha=1;
     }
+    ctx.textAlign='left'; ctx.font='10px Cinzel,serif';
+    ctx.fillStyle=muted?'rgba(190,120,120,0.55)':'rgba(201,168,76,0.5)';
+    ctx.fillText(muted?'♪ off (M)':'♪',14,H-12);
   }
 
   function overlay(t1,t2) {
@@ -2014,6 +2059,8 @@
     const pulse=0.55+Math.sin(frame*0.08)*0.45;
     ctx.globalAlpha=pulse; ctx.fillStyle='#e8c040'; ctx.font='13px Cinzel,serif';
     ctx.fillText('—  Press Space to set sail  —', W/2, H/2+92); ctx.globalAlpha=1;
+    ctx.globalAlpha=0.5; ctx.fillStyle='rgba(201,168,76,0.8)'; ctx.font='9px Cinzel,serif';
+    ctx.fillText(muted?'M — sound off':'M — mute', W/2, H/2+112); ctx.globalAlpha=1;
   }
 
   function explode(x,y,color,count) {
@@ -2026,21 +2073,23 @@
   document.addEventListener('keydown', e=>{
     keys[e.code]=true;
     if (e.code==='Space') { e.preventDefault(); handleSpace(); }
+    if (e.code==='KeyM') toggleMute();
   });
   document.addEventListener('keyup', e=>{ keys[e.code]=false; });
   canvas.addEventListener('click', handleSpace);
   // Touch: tap upper/lower third to change lanes; middle taps start / fire
   canvas.addEventListener('touchstart', e=>{
-    e.preventDefault();
+    e.preventDefault(); ensureAudio();
     if (state==='idle'||state==='dead'||state==='victory') { handleSpace(); return; }
     const r=canvas.getBoundingClientRect();
     const ty=(e.touches[0].clientY-r.top)/r.height;
-    if (ty<0.42) { if(ship.lane>0){ ship.lane--; ship.targetY=LANES[ship.lane]; } }
-    else if (ty>0.58) { if(ship.lane<2){ ship.lane++; ship.targetY=LANES[ship.lane]; } }
+    if (ty<0.42) { if(ship.lane>0){ ship.lane--; ship.targetY=LANES[ship.lane]; sfx.lane(); } }
+    else if (ty>0.58) { if(ship.lane<2){ ship.lane++; ship.targetY=LANES[ship.lane]; sfx.lane(); } }
     else if (state==='boss') ship.fire();
   },{passive:false});
 
   function handleSpace() {
+    ensureAudio();
     if (state==='idle')                     { state='running'; return; }
     if (state==='dead'||state==='victory')  { resetAll(); return; }
     if (state==='boss')                     { ship.fire(); return; }
