@@ -1248,7 +1248,7 @@
     if(muted) return;
     try{
       if(!ac){ ac=new (window.AudioContext||window.webkitAudioContext)();
-        masterGain=ac.createGain(); masterGain.gain.value=0.22; masterGain.connect(ac.destination); }
+        masterGain=ac.createGain(); masterGain.gain.value=0.30; masterGain.connect(ac.destination); }
       if(ac.state==='suspended') ac.resume();
     }catch(e){ ac=null; }
   }
@@ -1276,6 +1276,7 @@
     bossHit(){ blip(240,0.12,'square',0.20,150); noiseBurst(0.07,0.12,'highpass',2200); },
     bossFire(){ blip(72,0.28,'sawtooth',0.26,40); noiseBurst(0.14,0.16,'lowpass',520); },
     lane(){ noiseBurst(0.06,0.07,'bandpass',1500); },
+    start(){ blip(392,0.14,'triangle',0.22,523); blip(523,0.22,'sine',0.16,659); },  // "set sail" + audio confirmation
     charge(){ blip(520,0.18,'sine',0.09,900); },
     victory(){ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>blip(f,0.32,'triangle',0.24),i*150)); },
     death(){ blip(210,0.6,'sawtooth',0.32,52); noiseBurst(0.38,0.2,'lowpass',700); },
@@ -2161,6 +2162,10 @@
     }
   }
 
+  // Unlock/resume audio on ANY first interaction anywhere on the page
+  ['pointerdown','keydown','touchstart'].forEach(ev=>
+    window.addEventListener(ev, ()=>ensureAudio(), {passive:true}));
+
   document.addEventListener('keydown', e=>{
     keys[e.code]=true;
     if (e.code==='Space') { e.preventDefault(); handleSpace(); }
@@ -2181,8 +2186,8 @@
 
   function handleSpace() {
     ensureAudio();
-    if (state==='idle')                     { state='running'; return; }
-    if (state==='dead'||state==='victory')  { resetAll(); return; }
+    if (state==='idle')                     { state='running'; sfx.start(); return; }
+    if (state==='dead'||state==='victory')  { resetAll(); sfx.start(); return; }
     if (state==='boss')                     { ship.fire(); return; }
   }
 
