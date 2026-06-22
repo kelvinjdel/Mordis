@@ -1208,8 +1208,10 @@
   const LANES = [172, 215, 258];
   const LEN = 0.5;                          // TEMP: 0.5 = half-length for testing; set to 1 to restore the full voyage
   const T_DUSK = 270*LEN, T_BOSS = 550*LEN;
-  const BOSS_HP_MAX = 5;
+  const BOSS_HP_MAX = 6;
   const SHOT_CD = 75;                        // ~1.25s reload (was 120 / 2s)
+  const X_BASE = 130, X_FWD = 405;          // ship rest x .. furthest forward (mid-screen); forward = risk/reward
+  const MULT_MAX = 3;                         // score multiplier at full forward venture
 
   const PAL = {
     day:     ['#4a9acc','#b8e0f5','#1a5a8a','#0c3560'],
@@ -1263,7 +1265,9 @@
         if (keys['KeyA']||keys['ArrowLeft'])  this.x=Math.max(55,  this.x-2.5);
         if (keys['KeyD']||keys['ArrowRight']) this.x=Math.min(260, this.x+2.5);
       } else {
-        this.x += (130-this.x)*0.06;
+        // sail forward toward mid-screen for a higher score multiplier (less reaction time)
+        if (keys['KeyD']||keys['ArrowRight']) this.x=Math.min(X_FWD,  this.x+2.6);
+        if (keys['KeyA']||keys['ArrowLeft'])  this.x=Math.max(X_BASE, this.x-2.6);
       }
       this.y += (this.targetY-this.y)*0.2;
       this.bob+=0.035;
@@ -1372,11 +1376,11 @@
   const boss = {
     x:W+80, y:215,
     hp:BOSS_HP_MAX, hitFlash:0,
-    cballs:[], fireT:0, sliding:false, flashPorts:[],
+    cballs:[], fireT:0, sliding:false, flashPorts:[], charges:[],
 
     reset() {
       this.x=W+80; this.hp=BOSS_HP_MAX; this.hitFlash=0;
-      this.cballs=[]; this.fireT=0; this.sliding=false; this.flashPorts=[];
+      this.cballs=[]; this.fireT=0; this.sliding=false; this.flashPorts=[]; this.charges=[];
     },
 
     hit() {
@@ -1398,15 +1402,31 @@
       }
       if(this.x>W*0.67) this.x-=1.2;
       if(this.hitFlash>0) this.hitFlash--;
+      // Tiered fire: full health = measured single shots; second half = faster + double;
+      // last heart = a telegraphed three-lane sweeping volley.
+      const fi = this.hp>=4 ? 60 : this.hp>=2 ? 42 : 80;
       this.fireT++;
-      const fi=65-(BOSS_HP_MAX-this.hp)*9;
-      if(this.fireT>fi){
+      if(this.charges.length===0 && this.fireT>fi){
         this.fireT=0;
-        const col=~~(Math.random()*3), row=~~(Math.random()*3);
-        const colX=this.x+[45,135,225][col];
-        this.cballs.push({x:colX-20, y:LANES[row], lane:row, vx:-7-Math.random()*3});
-        this.flashPorts.push({col, row, t:12});
+        const col=~~(Math.random()*3);
+        let rows;
+        if(this.hp>=4) rows=[~~(Math.random()*3)];
+        else if(this.hp>=2){ const a=~~(Math.random()*3); let b; do{b=~~(Math.random()*3);}while(b===a); rows=[a,b]; }
+        else { rows=[0,1,2]; if(Math.random()<0.5) rows.reverse(); }   // last heart: full sweep
+        rows.forEach((row,k)=>this.charges.push({col, row, t:20, delay:k*15, fired:false}));
       }
+      // Telegraph then fire each charged port
+      this.charges.forEach(c=>{
+        if(c.delay>0){ c.delay--; return; }
+        if(c.t>0){ c.t--; return; }
+        if(!c.fired){
+          c.fired=true;
+          const colX=this.x+[45,135,225][c.col];
+          this.cballs.push({x:colX-20, y:LANES[c.row], lane:c.row, vx:-7-Math.random()*3});
+          this.flashPorts.push({col:c.col, row:c.row, t:12});
+        }
+      });
+      this.charges=this.charges.filter(c=>!c.fired);
       this.cballs.forEach(cb=>{ cb.x+=cb.vx; });
       this.cballs=this.cballs.filter(cb=>cb.x>-70);
       if(state==='boss'){
@@ -1455,6 +1475,15 @@
           const bLen=flash?4:18;
           ctx.fillStyle='#242018'; ctx.fillRect(portX-20-bLen,py-6,bLen+2,12);
           ctx.fillStyle='#342e28'; ctx.beginPath(); ctx.arc(portX-20-bLen,py,6,0,Math.PI*2); ctx.fill();
+          // Charging telegraph — a growing ember the moment before this port fires
+          const chg=this.charges.find(c=>c.col===col&&c.row===row&&c.delay<=0&&c.t>0&&!c.fired);
+          if(chg){
+            const cp=1-chg.t/20, cr=7+cp*15;
+            const cg=ctx.createRadialGradient(portX-22,py,0,portX-22,py,cr);
+            cg.addColorStop(0,'rgba(255,'+(150-~~(110*cp))+',50,'+(0.35+cp*0.55).toFixed(2)+')');
+            cg.addColorStop(1,'rgba(255,50,0,0)');
+            ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(portX-22,py,cr,0,Math.PI*2); ctx.fill();
+          }
           // Muzzle flash
           if(flash){
             const fg=ctx.createRadialGradient(portX-22,py,0,portX-22,py,28);
@@ -1930,6 +1959,12 @@
     ctx.fillText('Score: '+~~score, 14, 22);
     ctx.font='10px Cinzel,serif'; ctx.fillStyle='rgba(201,168,76,0.45)';
     ctx.fillText(~~(score/10)+' leagues', 14, 38);
+    if (state==='running') {
+      const m=1+(ship.x-X_BASE)/(X_FWD-X_BASE)*(MULT_MAX-1), hot=(m-1)/(MULT_MAX-1);
+      ctx.font='bold 12px Cinzel,serif';
+      ctx.fillStyle='rgb('+(200+~~(55*hot))+','+(168-~~(120*hot))+','+(76-~~(40*hot))+')';
+      ctx.fillText('×'+m.toFixed(1)+(hot>0.05?' venture':''), 14, 55);
+    }
     if (state==='boss') {
       const ready=ship.shotCool===0;
       const cdR=1-ship.shotCool/SHOT_CD;
@@ -1972,7 +2007,7 @@
     // controls legend
     ctx.font='11px Cinzel,serif'; ctx.fillStyle='rgba(220,205,160,0.78)';
     ctx.fillText('W / S  —  change lanes', W/2, H/2+8);
-    ctx.fillText('A / D  —  steer in the final stand', W/2, H/2+26);
+    ctx.fillText('A / D  —  sail forward for more points (riskier)', W/2, H/2+26);
     ctx.fillText('Space  —  loose a cannon', W/2, H/2+44);
     if (best>0) { ctx.fillStyle='rgba(201,168,76,0.6)'; ctx.fillText('Furthest voyage: '+best+' leagues', W/2, H/2+66); }
     // pulsing prompt
@@ -2224,10 +2259,15 @@
     ctx.save();
     if (shake>0) { ctx.translate((Math.random()-0.5)*shake,(Math.random()-0.5)*shake); shake--; }
     drawBG();
-    if (state==='running'||state==='boss') { frame++; score+=0.07; spd=4.0+score*0.006+Math.min(score/T_BOSS,1)**2*2.5; }
+    if (state==='running'||state==='boss') {
+      frame++;
+      const m = state==='running' ? (1+(ship.x-X_BASE)/(X_FWD-X_BASE)*(MULT_MAX-1)) : 1;
+      score += 0.07*m;
+      spd=4.0+score*0.006+Math.min(score/T_BOSS,1)**2*2.5;
+    }
     if (state==='running') {
       ship.update(null);
-      if (score>=T_BOSS) { state='boss'; boss.reset(); bossFrame=0; }
+      if (score>=T_BOSS) { state='boss'; boss.reset(); bossFrame=0; ship.x=130; }
       if (!obs&&frame>=nextSpawn) obs=spawnObs();
       if (obs) {
         obs.x-=spd*(obs.sm||1);
